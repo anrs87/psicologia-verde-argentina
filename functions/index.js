@@ -236,9 +236,6 @@ exports.createCheckoutPreference = functions.https.onRequest((req, res) => {
             id_producto: productId,
             email_usuario: user.email || ''
           },
-          payer: {
-            email: user.email || 'test_user_7615932610708843127@testuser.com'
-          },
           back_urls: {
             success: `${hostUrl}/portal/?status=success&product_id=${productId}`,
             failure: `${hostUrl}/portal/?status=failure`,
