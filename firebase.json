@@ -29,19 +29,11 @@
       },
       {
         "source": "/portal",
-        "destination": "/portal-app/index.html"
+        "destination": "/portal/index.html"
       },
       {
         "source": "/portal/**",
-        "destination": "/portal-app/index.html"
-      },
-      {
-        "source": "/portal-app",
-        "destination": "/portal-app/index.html"
-      },
-      {
-        "source": "/portal-app/**",
-        "destination": "/portal-app/index.html"
+        "destination": "/portal/index.html"
       },
       {
         "source": "/articulos/**",
