@@ -1,0 +1,18 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Portadas e imágenes públicas
+    match /covers/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+    }
+
+    // Recursos privados (audioguías MP3, cuadernillos PDF)
+    // Acceso denegado a lectura directa desde cliente: se consumen únicamente vía Signed URLs generadas por Cloud Functions
+    match /private_assets/{allPaths=**} {
+      allow read: if false;
+      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+    }
+  }
+}

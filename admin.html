@@ -189,14 +189,17 @@
       </div>
 
       <!-- Navegación por Pestañas -->
-      <div class="flex border-b border-brand-border/60 gap-2 mb-6">
-        <button onclick="switchTab('tab-content')" id="btn-tab-content" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-brand-accent text-brand-accent bg-brand-card/30 transition">
+      <div class="flex border-b border-brand-border/60 gap-2 mb-6 overflow-x-auto">
+        <button onclick="switchTab('tab-content')" id="btn-tab-content" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-brand-accent text-brand-accent bg-brand-card/30 transition whitespace-nowrap">
           📝 Contenido
         </button>
-        <button onclick="switchTab('tab-analytics')" id="btn-tab-analytics" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition">
+        <button onclick="switchTab('tab-products')" id="btn-tab-products" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition whitespace-nowrap">
+          🎧 Audioguías & Tienda
+        </button>
+        <button onclick="switchTab('tab-analytics')" id="btn-tab-analytics" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition whitespace-nowrap">
           📊 Analytics
         </button>
-        <button onclick="switchTab('tab-maintenance')" id="btn-tab-maintenance" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition">
+        <button onclick="switchTab('tab-maintenance')" id="btn-tab-maintenance" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition whitespace-nowrap">
           ⚙️ Copias de Seguridad
         </button>
       </div>
@@ -502,6 +505,104 @@
       </div>
       </div> <!-- Fin de #section-maintenance -->
 
+      <!-- SECCIÓN PRODUCTOS DIGITALES & AUDIOGUÍAS -->
+      <div id="section-products" class="hidden space-y-6">
+        <!-- Formulario de Alta / Edición de Producto -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-6">
+          <div class="border-b border-brand-border pb-3 flex justify-between items-center">
+            <div>
+              <h3 class="font-serif text-2xl text-white">Gestor de Recursos Terapéuticos</h3>
+              <p class="text-zinc-400 text-xs mt-1">Crea y administra audioguías y cuadernillos PDF descargables</p>
+            </div>
+            <a href="/portal" target="_blank" class="text-xs bg-[#8EB486]/10 text-brand-accent hover:bg-brand-accent hover:text-brand-black border border-brand-accent/30 font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+              <span>Ver Portal de Pacientes ↗</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Título del Recurso</label>
+              <input type="text" id="prod-title" placeholder="Ej: Gestión de la Ansiedad en un Entorno Especista" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Subtítulo / Breve resumen</label>
+              <input type="text" id="prod-subtitle" placeholder="Ej: 4 Audios Guiados + Cuadernillo en PDF" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Tipo de Recurso</label>
+              <select id="prod-type" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+                <option value="audio">🎧 Audioguía (Audio MP3)</option>
+                <option value="pdf">📄 Cuadernillo Terapéutico (PDF)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Precio (ARS)</label>
+              <input type="number" id="prod-price" placeholder="12500" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Estado</label>
+              <select id="prod-status" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+                <option value="publicado">🟢 Publicado (A la venta)</option>
+                <option value="borrador">⚪ Borrador (Oculto)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- CARGA DUAL DE ARCHIVOS -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-zinc-950/40 border border-brand-border/40 rounded-xl">
+            <!-- Portada Pública -->
+            <div>
+              <label class="block text-xs font-semibold text-brand-accent uppercase tracking-widest mb-1">🖼️ Portada (Pública)</label>
+              <p class="text-[11px] text-zinc-400 mb-2">Imagen que se mostrará en el catálogo (.webp, .jpg, .png)</p>
+              <input type="file" id="prod-cover-file" accept="image/*" class="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-card file:text-brand-accent hover:file:bg-brand-accent hover:file:text-brand-black cursor-pointer">
+            </div>
+
+            <!-- Archivo Privado -->
+            <div>
+              <label class="block text-xs font-semibold text-amber-400 uppercase tracking-widest mb-1">🔒 Archivo Fuente (Privado en Storage)</label>
+              <p class="text-[11px] text-zinc-400 mb-2">Audio MP3 o documento PDF protegido contra accesos públicos</p>
+              <input type="file" id="prod-asset-file" accept="audio/*,application/pdf" class="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-card file:text-amber-400 hover:file:bg-amber-400 hover:file:text-brand-black cursor-pointer">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Descripción Terapéutica Detallada</label>
+            <textarea id="prod-description" rows="4" placeholder="Describe los beneficios del recurso, a quién va dirigido y la estructura de los ejercicios..." class="w-full bg-brand-black border border-brand-border rounded-lg p-4 text-white focus:outline-none focus:border-brand-accent transition text-sm"></textarea>
+          </div>
+
+          <div id="prod-upload-progress" class="hidden text-xs text-brand-accent bg-brand-accent/10 p-3 rounded-lg border border-brand-accent/20">
+            ⏳ Subiendo archivos y guardando en Firestore... Por favor no cierres la ventana.
+          </div>
+
+          <div class="flex justify-end gap-3 pt-2">
+            <button onclick="resetProductForm()" type="button" class="px-5 py-2.5 bg-zinc-800 text-zinc-300 hover:text-white rounded-lg transition text-xs font-semibold cursor-pointer">
+              Limpiar Formulario
+            </button>
+            <button id="btn-save-product" onclick="saveProduct()" type="button" class="px-6 py-2.5 bg-brand-accent hover:bg-brand-accentHover text-brand-black rounded-lg transition text-xs font-bold shadow-lg shadow-brand-accent/10 flex items-center gap-2 cursor-pointer">
+              <span>Guardar Producto</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Catálogo de Productos Creados -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-4">
+          <div class="border-b border-brand-border pb-3 flex justify-between items-center">
+            <h4 class="font-serif text-xl text-white">Catálogo Actual de Recursos</h4>
+            <span id="products-count" class="text-xs font-mono text-brand-accent">0 recursos</span>
+          </div>
+
+          <div id="products-list-container" class="space-y-3">
+            <div class="text-center py-8 text-zinc-500 text-xs">Cargando catálogo...</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -609,7 +710,8 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCdbqrN9hRhSKiBTUVjTcuGcgsBXMedjNY",
@@ -624,6 +726,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     let articles = [];
     let testimonials = [];
@@ -1620,20 +1723,27 @@
     // Cambiar de pestaña en el dashboard de administración
     function switchTab(tabId) {
       document.getElementById('section-content').classList.add('hidden');
+      document.getElementById('section-products').classList.add('hidden');
       document.getElementById('section-analytics').classList.add('hidden');
       document.getElementById('section-maintenance').classList.add('hidden');
 
       document.getElementById('section-' + tabId.replace('tab-', '')).classList.remove('hidden');
 
-      const tabs = ['content', 'analytics', 'maintenance'];
+      const tabs = ['content', 'products', 'analytics', 'maintenance'];
       tabs.forEach(t => {
         const btn = document.getElementById('btn-tab-' + t);
-        if (t === tabId.replace('tab-', '')) {
-          btn.className = "px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-brand-accent text-brand-accent bg-brand-card/30 transition";
-        } else {
-          btn.className = "px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition";
+        if (btn) {
+          if (t === tabId.replace('tab-', '')) {
+            btn.className = "px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-brand-accent text-brand-accent bg-brand-card/30 transition whitespace-nowrap";
+          } else {
+            btn.className = "px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition whitespace-nowrap";
+          }
         }
       });
+
+      if (tabId === 'tab-products') {
+        renderProductsList();
+      }
 
       // Redimensionar y actualizar gráficos al cambiar a la pestaña de Analytics
       if (tabId === 'tab-analytics') {
@@ -1644,6 +1754,171 @@
         }, 50);
       }
     }
+
+    // ==========================================
+    // GESTIÓN DE PRODUCTOS DIGITALES (AUDIOGUÍAS & RECURSOS)
+    // ==========================================
+    let productsList = [];
+
+    async function saveProduct() {
+      const title = document.getElementById('prod-title').value.trim();
+      const subtitle = document.getElementById('prod-subtitle').value.trim();
+      const type = document.getElementById('prod-type').value;
+      const price = Number(document.getElementById('prod-price').value);
+      const status = document.getElementById('prod-status').value;
+      const description = document.getElementById('prod-description').value.trim();
+      const coverFile = document.getElementById('prod-cover-file').files[0];
+      const assetFile = document.getElementById('prod-asset-file').files[0];
+      const progressEl = document.getElementById('prod-upload-progress');
+      const btnSave = document.getElementById('btn-save-product');
+
+      if (!title || !price || isNaN(price)) {
+        showToast('Por favor completa el título y un precio válido.');
+        return;
+      }
+
+      try {
+        progressEl.classList.remove('hidden');
+        btnSave.disabled = true;
+
+        let url_portada = '';
+        let storage_path = '';
+
+        // 1. Subida de Portada (Pública)
+        if (coverFile) {
+          progressEl.innerText = '⏳ Subiendo portada pública...';
+          const coverRef = sRef(storage, `covers/${Date.now()}_${coverFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`);
+          const coverSnap = await uploadBytes(coverRef, coverFile);
+          url_portada = await getDownloadURL(coverSnap.ref);
+        }
+
+        // 2. Subida de Archivo Digital Fuente (Privado)
+        if (assetFile) {
+          progressEl.innerText = '⏳ Subiendo archivo digital privado...';
+          const safeName = assetFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+          storage_path = `private_assets/${Date.now()}_${safeName}`;
+          const assetRef = sRef(storage, storage_path);
+          await uploadBytes(assetRef, assetFile);
+        }
+
+        progressEl.innerText = '⏳ Guardando producto en base de datos...';
+        await addDoc(collection(db, 'products'), {
+          titulo: title,
+          subtitulo: subtitle,
+          tipo: type,
+          precio: price,
+          estado: status,
+          descripcion: description,
+          url_portada: url_portada,
+          storage_path: storage_path,
+          creadoEn: serverTimestamp()
+        });
+
+        showToast('✅ Producto guardado exitosamente.');
+        resetProductForm();
+        renderProductsList();
+      } catch (err) {
+        console.error('Error al guardar producto:', err);
+        showToast('❌ Error al guardar producto: ' + err.message);
+      } finally {
+        progressEl.classList.add('hidden');
+        btnSave.disabled = false;
+      }
+    }
+
+    function resetProductForm() {
+      document.getElementById('prod-title').value = '';
+      document.getElementById('prod-subtitle').value = '';
+      document.getElementById('prod-price').value = '';
+      document.getElementById('prod-description').value = '';
+      document.getElementById('prod-cover-file').value = '';
+      document.getElementById('prod-asset-file').value = '';
+    }
+
+    async function renderProductsList() {
+      const container = document.getElementById('products-list-container');
+      const countEl = document.getElementById('products-count');
+      if (!container) return;
+
+      container.innerHTML = '<div class="text-center py-6 text-zinc-500 text-xs">Cargando recursos...</div>';
+
+      try {
+        const q = query(collection(db, 'products'), orderBy('creadoEn', 'desc'));
+        const snap = await getDocs(q);
+        productsList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+        countEl.innerText = `${productsList.length} recursos`;
+
+        if (productsList.length === 0) {
+          container.innerHTML = '<div class="text-center py-8 text-zinc-500 text-xs">No hay productos cargados todavía. Creá el primero arriba.</div>';
+          return;
+        }
+
+        container.innerHTML = productsList.map(prod => `
+          <div class="p-4 bg-zinc-950/40 border border-brand-border/40 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-brand-border overflow-hidden shrink-0 flex items-center justify-center">
+                ${prod.url_portada ? `<img src="${prod.url_portada}" class="w-full h-full object-cover">` : `<span class="text-base">${prod.tipo === 'pdf' ? '📄' : '🎧'}</span>`}
+              </div>
+              <div>
+                <h5 class="text-sm font-semibold text-white leading-tight">${prod.titulo}</h5>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-[11px] font-mono text-brand-accent">$${Number(prod.precio || 0).toLocaleString('es-AR')} ARS</span>
+                  <span class="text-[10px] text-zinc-500">•</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-mono ${prod.estado === 'publicado' ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/20' : 'bg-zinc-800 text-zinc-400'}">
+                    ${prod.estado === 'publicado' ? 'Publicado' : 'Borrador'}
+                  </span>
+                  <span class="text-[10px] text-zinc-500">•</span>
+                  <span class="text-[10px] text-zinc-400">${prod.tipo === 'pdf' ? 'PDF' : 'Audio MP3'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 self-end sm:self-center">
+              <button onclick="toggleProductStatus('${prod.id}', '${prod.estado}')" class="px-3 py-1.5 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition cursor-pointer">
+                ${prod.estado === 'publicado' ? 'Pausar' : 'Publicar'}
+              </button>
+              <button onclick="deleteProduct('${prod.id}')" class="px-3 py-1.5 text-xs bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-500/30 rounded-lg transition cursor-pointer">
+                Eliminar
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Error al listar productos:', err);
+        container.innerHTML = '<div class="text-center py-6 text-red-400 text-xs">Error al cargar productos: ' + err.message + '</div>';
+      }
+    }
+
+    async function toggleProductStatus(id, currentStatus) {
+      try {
+        const newStatus = currentStatus === 'publicado' ? 'borrador' : 'publicado';
+        await updateDoc(doc(db, 'products', id), { estado: newStatus });
+        showToast(`Estado actualizado a: ${newStatus}`);
+        renderProductsList();
+      } catch (err) {
+        console.error(err);
+        showToast('Error al actualizar estado.');
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+      try {
+        await deleteDoc(doc(db, 'products', id));
+        showToast('Producto eliminado.');
+        renderProductsList();
+      } catch (err) {
+        console.error(err);
+        showToast('Error al eliminar producto.');
+      }
+    }
+
+    window.saveProduct = saveProduct;
+    window.resetProductForm = resetProductForm;
+    window.renderProductsList = renderProductsList;
+    window.toggleProductStatus = toggleProductStatus;
+    window.deleteProduct = deleteProduct;
 
     // Procesar y renderizar estadísticas del sitio
     function updateAnalytics() {

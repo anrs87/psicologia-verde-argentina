@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+:root {
+  --brand-black: #0A0D0A;
+  --brand-dark: #0e130e;
+  --brand-card: #141a14;
+  --brand-card-hover: #1a231a;
+  --brand-light: #E2E8F0;
+  --brand-accent: #8EB486;
+  --brand-accent-hover: #7CA074;
+  --brand-accent-light: #B5CFB0;
+  --brand-muted: #8F9B8D;
+  --brand-border: #232f23;
+}
+
+body {
+  margin: 0;
+  background-color: #0A0D0A;
+  color: #E2E8F0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
