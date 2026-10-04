@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  base: '/portal/',
+  base: '/portal-app/',
   build: {
     outDir: '../portal-app',
     emptyOutDir: true

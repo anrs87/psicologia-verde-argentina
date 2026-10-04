@@ -36,6 +36,14 @@
         "destination": "/portal-app/index.html"
       },
       {
+        "source": "/portal-app",
+        "destination": "/portal-app/index.html"
+      },
+      {
+        "source": "/portal-app/**",
+        "destination": "/portal-app/index.html"
+      },
+      {
         "source": "/articulos/**",
         "function": "serveArticlePreview"
       },
