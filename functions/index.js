@@ -1,3 +1,4 @@
+require('dotenv').config();
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
@@ -235,13 +236,14 @@ exports.createCheckoutPreference = functions.https.onRequest((req, res) => {
             id_producto: productId,
             email_usuario: user.email || ''
           },
-          external_reference: `${user.uid}___${productId}`,
-          back_urls: {
-            success: `${hostUrl}/portal?status=success&product_id=${productId}`,
-            failure: `${hostUrl}/portal?status=failure`,
-            pending: `${hostUrl}/portal?status=pending`
+          payer: {
+            email: user.email || 'test_user_7615932610708843127@testuser.com'
           },
-          auto_return: 'approved',
+          back_urls: {
+            success: `${hostUrl}/portal/?status=success&product_id=${productId}`,
+            failure: `${hostUrl}/portal/?status=failure`,
+            pending: `${hostUrl}/portal/?status=pending`
+          },
           notification_url: `https://us-central1-psicologiaveganaarg.cloudfunctions.net/mercadopagoWebhook`
         }
       });
