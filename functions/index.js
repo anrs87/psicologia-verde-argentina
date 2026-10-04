@@ -8,7 +8,9 @@ const express = require('express');
 const cors = require('cors')({ origin: true });
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
 
-admin.initializeApp();
+admin.initializeApp({
+  storageBucket: 'psicologiaveganaarg.firebasestorage.app'
+});
 const db = getFirestore();
 const auth = getAuth();
 const storage = getStorage();
@@ -367,7 +369,7 @@ exports.getSignedResourceUrl = functions.https.onRequest((req, res) => {
       return res.status(401).json({ error: 'No autenticado' });
     }
 
-    const { productId } = req.body;
+    const { productId, itemId } = req.body;
     if (!productId) {
       return res.status(400).json({ error: 'Falta productId' });
     }
@@ -388,12 +390,45 @@ exports.getSignedResourceUrl = functions.https.onRequest((req, res) => {
       }
 
       const product = prodDoc.data();
-      if (!product.storage_path) {
-        return res.status(400).json({ error: 'El producto no tiene archivo asociado configurado' });
+      let targetPath = product.storage_path;
+      let targetTitle = product.titulo;
+      let targetType = product.tipo || 'audio';
+
+      // Si el producto tiene items ordenados (bundle / módulos múltiples)
+      if (Array.isArray(product.items) && product.items.length > 0) {
+        if (itemId) {
+          const item = product.items.find(i => String(i.id) === String(itemId));
+          if (item) {
+            targetPath = item.storage_path;
+            targetTitle = item.titulo || product.titulo;
+            targetType = item.tipo || 'audio';
+          }
+        } else {
+          // Si no se especificó itemId, seleccionar el primer entregable por orden
+          const sorted = [...product.items].sort((a, b) => (a.orden || 0) - (b.orden || 0));
+          const firstItem = sorted[0];
+          targetPath = firstItem.storage_path;
+          targetTitle = firstItem.titulo || product.titulo;
+          targetType = firstItem.tipo || 'audio';
+        }
+      }
+
+      if (!targetPath) {
+        return res.status(400).json({ error: 'El producto o módulo no tiene archivo asociado configurado' });
+      }
+
+      // Si storage_path es una URL directa (ej. HTTP/S o demo stream)
+      if (targetPath.startsWith('http://') || targetPath.startsWith('https://')) {
+        return res.status(200).json({
+          signedUrl: targetPath,
+          expiresAt: Date.now() + 2 * 60 * 60 * 1000,
+          titulo: targetTitle,
+          tipo: targetType
+        });
       }
 
       const bucket = storage.bucket();
-      const file = bucket.file(product.storage_path);
+      const file = bucket.file(targetPath);
 
       const [exists] = await file.exists();
       if (!exists) {
@@ -411,8 +446,8 @@ exports.getSignedResourceUrl = functions.https.onRequest((req, res) => {
       return res.status(200).json({
         signedUrl: signedUrl,
         expiresAt: expiresAt,
-        titulo: product.titulo,
-        tipo: product.tipo || 'audio'
+        titulo: targetTitle,
+        tipo: targetType
       });
     } catch (err) {
       console.error('Error generando Signed URL:', err);

@@ -11,7 +11,7 @@ export default function AudioPlayer({ resource, onClose }) {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [resumeNotice, setResumeNotice] = useState(null);
 
-  const storageKey = resource ? `audio_pos_${resource.productId}` : null;
+  const storageKey = resource ? (resource.itemId ? `audio_pos_${resource.productId}_${resource.itemId}` : `audio_pos_${resource.productId}`) : null;
 
   // Cargar punto guardado en localStorage
   useEffect(() => {
@@ -137,7 +137,7 @@ export default function AudioPlayer({ resource, onClose }) {
             </div>
             <div className="min-w-0 flex-1">
               <h4 className="text-sm font-medium text-[#E2E8F0] truncate">{resource.titulo}</h4>
-              <p className="text-xs text-[#8F9B8D] truncate">Audioguía Terapéutica</p>
+              <p className="text-xs text-[#8F9B8D] truncate">{resource.productTitle || 'Audioguía Terapéutica'}</p>
             </div>
           </div>
 

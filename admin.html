@@ -533,10 +533,11 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Tipo de Recurso</label>
+              <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Formato Principal</label>
               <select id="prod-type" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
-                <option value="audio">🎧 Audioguía (Audio MP3)</option>
-                <option value="pdf">📄 Cuadernillo Terapéutico (PDF)</option>
+                <option value="bundle">📦 Pack Integral (Audios + PDFs)</option>
+                <option value="audio">🎧 Audioguía</option>
+                <option value="pdf">📄 Cuadernillo / Libro Digital</option>
               </select>
             </div>
 
@@ -554,20 +555,32 @@
             </div>
           </div>
 
-          <!-- CARGA DUAL DE ARCHIVOS -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-zinc-950/40 border border-brand-border/40 rounded-xl">
-            <!-- Portada Pública -->
-            <div>
-              <label class="block text-xs font-semibold text-brand-accent uppercase tracking-widest mb-1">🖼️ Portada (Pública)</label>
-              <p class="text-[11px] text-zinc-400 mb-2">Imagen que se mostrará en el catálogo (.webp, .jpg, .png)</p>
-              <input type="file" id="prod-cover-file" accept="image/*" class="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-card file:text-brand-accent hover:file:bg-brand-accent hover:file:text-brand-black cursor-pointer">
+          <!-- Portada Pública -->
+          <div class="p-4 bg-zinc-950/40 border border-brand-border/40 rounded-xl">
+            <label class="block text-xs font-semibold text-brand-accent uppercase tracking-widest mb-1">🖼️ Portada del Recurso (Pública)</label>
+            <p class="text-[11px] text-zinc-400 mb-2">Imagen que se mostrará en la tienda y catálogo (.webp, .jpg, .png)</p>
+            <input type="file" id="prod-cover-file" accept="image/*" class="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-card file:text-brand-accent hover:file:bg-brand-accent hover:file:text-brand-black cursor-pointer">
+          </div>
+
+          <!-- GESTOR DINÁMICO DE ENTREGABLES / MÓDULOS SECUENCIALES -->
+          <div class="p-5 bg-zinc-950/40 border border-brand-border/40 rounded-xl space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border/40 pb-3">
+              <div>
+                <h4 class="text-sm font-semibold text-amber-400 flex items-center gap-1.5">
+                  <span>🔒 Módulos y Entregables del Recurso (Orden Secuencial)</span>
+                </h4>
+                <p class="text-[11px] text-zinc-400 mt-0.5">
+                  Organiza el orden exacto en que el paciente debe consumir el material (ej: 1° PDF explicativo, 2° Audioguía 1, 3° Cuaderno de ejercicios).
+                </p>
+              </div>
+              <button type="button" onclick="addModuleRow()" class="self-start sm:self-auto px-3 py-1.5 bg-[#8EB486]/10 text-brand-accent hover:bg-brand-accent hover:text-brand-black border border-brand-accent/30 rounded-lg text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
+                <span>+ Agregar Módulo</span>
+              </button>
             </div>
 
-            <!-- Archivo Privado -->
-            <div>
-              <label class="block text-xs font-semibold text-amber-400 uppercase tracking-widest mb-1">🔒 Archivo Fuente (Privado en Storage)</label>
-              <p class="text-[11px] text-zinc-400 mb-2">Audio MP3 o documento PDF protegido contra accesos públicos</p>
-              <input type="file" id="prod-asset-file" accept="audio/*,application/pdf" class="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-card file:text-amber-400 hover:file:bg-amber-400 hover:file:text-brand-black cursor-pointer">
+            <!-- Contenedor dinámico de módulos -->
+            <div id="prod-modules-container" class="space-y-3">
+              <!-- Renderizado dinámico de filas de módulos -->
             </div>
           </div>
 
@@ -1759,6 +1772,95 @@
     // GESTIÓN DE PRODUCTOS DIGITALES (AUDIOGUÍAS & RECURSOS)
     // ==========================================
     let productsList = [];
+    let currentEditingProductId = null;
+    let productModules = [];
+
+    function addModuleRow(initial = null) {
+      const newMod = initial || {
+        id: 'mod_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+        titulo: '',
+        tipo: 'audio',
+        file: null,
+        storage_path: ''
+      };
+      productModules.push(newMod);
+      renderModuleRows();
+    }
+
+    function removeModuleRow(index) {
+      productModules.splice(index, 1);
+      renderModuleRows();
+    }
+
+    function moveModuleRow(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= productModules.length) return;
+      const temp = productModules[index];
+      productModules[index] = productModules[targetIndex];
+      productModules[targetIndex] = temp;
+      renderModuleRows();
+    }
+
+    function updateModuleField(index, field, value) {
+      if (productModules[index]) {
+        productModules[index][field] = value;
+      }
+    }
+
+    function handleModuleFileChange(index, input) {
+      if (productModules[index] && input.files && input.files[0]) {
+        productModules[index].file = input.files[0];
+      }
+    }
+
+    function renderModuleRows() {
+      const container = document.getElementById('prod-modules-container');
+      if (!container) return;
+
+      if (productModules.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-6 border border-dashed border-brand-border/40 rounded-xl p-4 text-zinc-400 text-xs">
+            <p>No hay módulos asignados a este recurso.</p>
+            <button type="button" onclick="addModuleRow()" class="mt-2 text-brand-accent hover:underline font-semibold text-xs">
+              + Agregar el primer entregable (Audio o PDF)
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = productModules.map((mod, idx) => `
+        <div class="p-3 bg-brand-black border border-brand-border/60 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-brand-card border border-brand-border text-brand-accent font-mono text-xs flex items-center justify-center font-bold">
+              ${idx + 1}
+            </span>
+            <div class="flex flex-col gap-0.5">
+              <button type="button" onclick="moveModuleRow(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="text-[10px] text-zinc-400 hover:text-white disabled:opacity-20 cursor-pointer">▲</button>
+              <button type="button" onclick="moveModuleRow(${idx}, 1)" ${idx === productModules.length - 1 ? 'disabled' : ''} class="text-[10px] text-zinc-400 hover:text-white disabled:opacity-20 cursor-pointer">▼</button>
+            </div>
+            <select onchange="updateModuleField(${idx}, 'tipo', this.value)" class="bg-zinc-900 border border-brand-border rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-accent">
+              <option value="audio" ${mod.tipo === 'audio' ? 'selected' : ''}>🎧 Audio MP3</option>
+              <option value="pdf" ${mod.tipo === 'pdf' ? 'selected' : ''}>📄 PDF</option>
+            </select>
+          </div>
+
+          <div class="flex-1">
+            <input type="text" value="${mod.titulo || ''}" oninput="updateModuleField(${idx}, 'titulo', this.value)" placeholder="Título del paso (ej: 1. Introducción o Pista 1)" class="w-full bg-zinc-900 border border-brand-border rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-brand-accent">
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="max-w-[200px] truncate">
+              <input type="file" accept="${mod.tipo === 'pdf' ? '.pdf,application/pdf' : '.mp3,audio/*,application/pdf'}" onchange="handleModuleFileChange(${idx}, this)" class="text-[11px] text-zinc-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:bg-zinc-800 file:text-brand-accent hover:file:bg-brand-accent hover:file:text-brand-black cursor-pointer">
+              ${mod.storage_path ? `<span class="text-[10px] text-emerald-400 block truncate" title="${mod.storage_path}">✓ Archivo cargado</span>` : ''}
+            </div>
+            <button type="button" onclick="removeModuleRow(${idx})" class="p-1.5 text-zinc-500 hover:text-red-400 rounded-lg transition cursor-pointer" title="Quitar módulo">
+              ✕
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
 
     async function saveProduct() {
       const title = document.getElementById('prod-title').value.trim();
@@ -1768,7 +1870,6 @@
       const status = document.getElementById('prod-status').value;
       const description = document.getElementById('prod-description').value.trim();
       const coverFile = document.getElementById('prod-cover-file').files[0];
-      const assetFile = document.getElementById('prod-asset-file').files[0];
       const progressEl = document.getElementById('prod-upload-progress');
       const btnSave = document.getElementById('btn-save-product');
 
@@ -1777,14 +1878,22 @@
         return;
       }
 
+      if (productModules.length === 0) {
+        showToast('Debes agregar al menos un módulo o entregable (Audio o PDF).');
+        return;
+      }
+
       try {
         progressEl.classList.remove('hidden');
         btnSave.disabled = true;
 
         let url_portada = '';
-        let storage_path = '';
+        if (currentEditingProductId) {
+          const existing = productsList.find(p => p.id === currentEditingProductId);
+          if (existing) url_portada = existing.url_portada || '';
+        }
 
-        // 1. Subida de Portada (Pública)
+        // 1. Subida de Portada si se seleccionó una nueva
         if (coverFile) {
           progressEl.innerText = '⏳ Subiendo portada pública...';
           const coverRef = sRef(storage, `covers/${Date.now()}_${coverFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`);
@@ -1792,29 +1901,52 @@
           url_portada = await getDownloadURL(coverSnap.ref);
         }
 
-        // 2. Subida de Archivo Digital Fuente (Privado)
-        if (assetFile) {
-          progressEl.innerText = '⏳ Subiendo archivo digital privado...';
-          const safeName = assetFile.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-          storage_path = `private_assets/${Date.now()}_${safeName}`;
-          const assetRef = sRef(storage, storage_path);
-          await uploadBytes(assetRef, assetFile);
+        // 2. Subida de Archivos de cada módulo
+        const finalItems = [];
+        for (let i = 0; i < productModules.length; i++) {
+          const mod = productModules[i];
+          let finalPath = mod.storage_path || '';
+
+          if (mod.file) {
+            progressEl.innerText = `⏳ Subiendo módulo ${i + 1}/${productModules.length} (${mod.titulo || 'archivo'})...`;
+            const safeName = mod.file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+            finalPath = `private_assets/${Date.now()}_${i + 1}_${safeName}`;
+            const assetRef = sRef(storage, finalPath);
+            await uploadBytes(assetRef, mod.file);
+          }
+
+          finalItems.push({
+            id: mod.id || `mod_${Date.now()}_${i}`,
+            titulo: mod.titulo || `Módulo ${i + 1}`,
+            tipo: mod.tipo || 'audio',
+            storage_path: finalPath,
+            orden: i + 1
+          });
         }
 
-        progressEl.innerText = '⏳ Guardando producto en base de datos...';
-        await addDoc(collection(db, 'products'), {
+        const productData = {
           titulo: title,
           subtitulo: subtitle,
-          tipo: type,
+          tipo: finalItems.length > 1 ? 'bundle' : (finalItems[0]?.tipo || type),
           precio: price,
           estado: status,
           descripcion: description,
           url_portada: url_portada,
-          storage_path: storage_path,
-          creadoEn: serverTimestamp()
-        });
+          storage_path: finalItems[0]?.storage_path || '',
+          items: finalItems,
+          actualizadoEn: serverTimestamp()
+        };
 
-        showToast('✅ Producto guardado exitosamente.');
+        progressEl.innerText = '⏳ Guardando producto en base de datos...';
+        if (currentEditingProductId) {
+          await updateDoc(doc(db, 'products', currentEditingProductId), productData);
+          showToast('✅ Recurso actualizado exitosamente.');
+        } else {
+          productData.creadoEn = serverTimestamp();
+          await addDoc(collection(db, 'products'), productData);
+          showToast('✅ Nuevo recurso publicado exitosamente.');
+        }
+
         resetProductForm();
         renderProductsList();
       } catch (err) {
@@ -1826,13 +1958,57 @@
       }
     }
 
+    function editProduct(id) {
+      const prod = productsList.find(p => p.id === id);
+      if (!prod) return;
+
+      currentEditingProductId = id;
+      document.getElementById('prod-title').value = prod.titulo || '';
+      document.getElementById('prod-subtitle').value = prod.subtitulo || '';
+      document.getElementById('prod-type').value = prod.tipo || 'bundle';
+      document.getElementById('prod-price').value = prod.precio || '';
+      document.getElementById('prod-status').value = prod.estado || 'publicado';
+      document.getElementById('prod-description').value = prod.descripcion || '';
+
+      // Cargar módulos existentes o generar 1 por defecto
+      if (Array.isArray(prod.items) && prod.items.length > 0) {
+        productModules = prod.items.map(item => ({
+          id: item.id || 'mod_' + Math.random().toString(36).substring(2, 6),
+          titulo: item.titulo || '',
+          tipo: item.tipo || 'audio',
+          file: null,
+          storage_path: item.storage_path || ''
+        }));
+      } else if (prod.storage_path) {
+        productModules = [{
+          id: 'mod_legacy',
+          titulo: prod.titulo || 'Entregable principal',
+          tipo: prod.tipo || 'audio',
+          file: null,
+          storage_path: prod.storage_path
+        }];
+      } else {
+        productModules = [];
+      }
+
+      renderModuleRows();
+
+      const btnSave = document.getElementById('btn-save-product');
+      btnSave.innerHTML = '<span>Actualizar Producto</span>';
+      window.scrollTo({ top: document.getElementById('section-products').offsetTop - 50, behavior: 'smooth' });
+    }
+
     function resetProductForm() {
+      currentEditingProductId = null;
       document.getElementById('prod-title').value = '';
       document.getElementById('prod-subtitle').value = '';
       document.getElementById('prod-price').value = '';
       document.getElementById('prod-description').value = '';
       document.getElementById('prod-cover-file').value = '';
-      document.getElementById('prod-asset-file').value = '';
+      productModules = [];
+      renderModuleRows();
+      const btnSave = document.getElementById('btn-save-product');
+      btnSave.innerHTML = '<span>Guardar Producto</span>';
     }
 
     async function renderProductsList() {
@@ -1854,11 +2030,13 @@
           return;
         }
 
-        container.innerHTML = productsList.map(prod => `
+        container.innerHTML = productsList.map(prod => {
+          const itemsCount = Array.isArray(prod.items) ? prod.items.length : (prod.storage_path ? 1 : 0);
+          return `
           <div class="p-4 bg-zinc-950/40 border border-brand-border/40 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-brand-border overflow-hidden shrink-0 flex items-center justify-center">
-                ${prod.url_portada ? `<img src="${prod.url_portada}" class="w-full h-full object-cover">` : `<span class="text-base">${prod.tipo === 'pdf' ? '📄' : '🎧'}</span>`}
+                ${prod.url_portada ? `<img src="${prod.url_portada}" class="w-full h-full object-cover">` : `<span class="text-base">${prod.tipo === 'pdf' ? '📄' : prod.tipo === 'bundle' ? '📦' : '🎧'}</span>`}
               </div>
               <div>
                 <h5 class="text-sm font-semibold text-white leading-tight">${prod.titulo}</h5>
@@ -1869,12 +2047,15 @@
                     ${prod.estado === 'publicado' ? 'Publicado' : 'Borrador'}
                   </span>
                   <span class="text-[10px] text-zinc-500">•</span>
-                  <span class="text-[10px] text-zinc-400">${prod.tipo === 'pdf' ? 'PDF' : 'Audio MP3'}</span>
+                  <span class="text-[10px] text-zinc-400">${itemsCount} entregable(s) ordenado(s)</span>
                 </div>
               </div>
             </div>
 
             <div class="flex items-center gap-2 self-end sm:self-center">
+              <button onclick="editProduct('${prod.id}')" class="px-3 py-1.5 text-xs bg-zinc-800 hover:bg-zinc-700 text-brand-accent border border-brand-accent/20 rounded-lg transition cursor-pointer">
+                Editar / Módulos
+              </button>
               <button onclick="toggleProductStatus('${prod.id}', '${prod.estado}')" class="px-3 py-1.5 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition cursor-pointer">
                 ${prod.estado === 'publicado' ? 'Pausar' : 'Publicar'}
               </button>
@@ -1883,7 +2064,7 @@
               </button>
             </div>
           </div>
-        `).join('');
+        `}).join('');
       } catch (err) {
         console.error('Error al listar productos:', err);
         container.innerHTML = '<div class="text-center py-6 text-red-400 text-xs">Error al cargar productos: ' + err.message + '</div>';

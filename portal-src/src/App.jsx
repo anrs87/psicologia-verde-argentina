@@ -23,7 +23,11 @@ import {
   AlertCircle, 
   ShoppingBag, 
   ArrowRight, 
-  Loader2 
+  Loader2,
+  Play,
+  Layers,
+  X,
+  ListOrdered
 } from 'lucide-react';
 
 export default function App() {
@@ -34,9 +38,10 @@ export default function App() {
   const [purchasedIds, setPurchasedIds] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
 
-  // Estados de reproductores
+  // Estados de reproductores y contenidos
   const [activeAudio, setActiveAudio] = useState(null);
   const [activePdf, setActivePdf] = useState(null);
+  const [activeResourceModal, setActiveResourceModal] = useState(null);
   const [loadingResource, setLoadingResource] = useState(false);
   const [checkoutLoadingId, setCheckoutLoadingId] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
@@ -116,9 +121,16 @@ export default function App() {
     return () => unsubscribe();
   }, [user]);
 
-  // Manejar consumo de recurso protegido con Signed URL
-  const handleOpenResource = async (product) => {
+  // Manejar consumo de recurso protegido con Signed URL (soporta módulos individuales)
+  const handleOpenResource = async (product, item = null) => {
     if (!user) return;
+
+    // Si el producto tiene múltiples módulos secuenciales y no se clickeó uno puntual, abrir índice
+    if (Array.isArray(product.items) && product.items.length > 1 && !item) {
+      setActiveResourceModal(product);
+      return;
+    }
+
     setLoadingResource(true);
     setAlertMessage(null);
 
@@ -133,7 +145,10 @@ export default function App() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ productId: product.id })
+        body: JSON.stringify({ 
+          productId: product.id,
+          itemId: item ? item.id : undefined 
+        })
       });
 
       if (!response.ok) {
@@ -144,9 +159,11 @@ export default function App() {
       const data = await response.json();
       const resourceData = {
         productId: product.id,
-        titulo: product.titulo,
+        itemId: item ? item.id : null,
+        titulo: data.titulo || (item ? item.titulo : product.titulo),
+        productTitle: product.titulo,
         signedUrl: data.signedUrl,
-        tipo: product.tipo || 'audio'
+        tipo: data.tipo || (item ? item.tipo : (product.tipo || 'audio'))
       };
 
       if (resourceData.tipo === 'pdf') {
@@ -312,7 +329,11 @@ export default function App() {
                           <div className="text-4xl text-[#8EB486]/20">🌿</div>
                         )}
                         <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0A0D0A]/80 backdrop-blur border border-[#8EB486]/30 text-[10px] font-mono text-[#8EB486] rounded-full flex items-center gap-1.5">
-                          {prod.tipo === 'pdf' ? (
+                          {prod.items && prod.items.length > 1 ? (
+                            <>
+                              <Layers className="w-3 h-3" /> {prod.items.length} Módulos
+                            </>
+                          ) : prod.tipo === 'pdf' ? (
                             <>
                               <FileText className="w-3 h-3" /> PDF
                             </>
@@ -341,7 +362,12 @@ export default function App() {
                           disabled={loadingResource}
                           className="w-full py-2.5 px-4 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
                         >
-                          {prod.tipo === 'pdf' ? (
+                          {prod.items && prod.items.length > 1 ? (
+                            <>
+                              <ListOrdered className="w-4 h-4" />
+                              <span>Ver Contenidos ({prod.items.length} módulos)</span>
+                            </>
+                          ) : prod.tipo === 'pdf' ? (
                             <>
                               <FileText className="w-4 h-4" />
                               <span>Abrir Cuadernillo PDF</span>
@@ -401,7 +427,7 @@ export default function App() {
                           <div className="text-4xl text-[#8EB486]/20">🌿</div>
                         )}
                         <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0A0D0A]/80 backdrop-blur border border-[#8EB486]/30 text-[10px] font-mono text-[#8EB486] rounded-full">
-                          {prod.tipo === 'pdf' ? 'Cuadernillo PDF' : 'Audioguía MP3'}
+                          {prod.items && prod.items.length > 1 ? `Pack (${prod.items.length} módulos)` : prod.tipo === 'pdf' ? 'Cuadernillo PDF' : 'Audioguía MP3'}
                         </span>
                       </div>
 
@@ -443,6 +469,92 @@ export default function App() {
             </div>
           )}
         </main>
+      )}
+
+      {/* Modal de Módulos y Entregables del Recurso */}
+      {activeResourceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-2xl bg-[#141a14] border border-[#232f23] rounded-2xl flex flex-col overflow-hidden shadow-2xl max-h-[85vh]">
+            {/* Modal Header */}
+            <div className="p-6 bg-[#0e130e] border-b border-[#232f23] flex items-start justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-xl bg-zinc-900 border border-[#232f23] overflow-hidden shrink-0 flex items-center justify-center">
+                  {activeResourceModal.url_portada ? (
+                    <img src={activeResourceModal.url_portada} alt={activeResourceModal.titulo} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl">📦</span>
+                  )}
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#8EB486]/10 text-[#8EB486] border border-[#8EB486]/20 uppercase">
+                    Recurso Integral Multimódulo
+                  </span>
+                  <h3 className="text-lg font-serif font-medium text-[#E2E8F0] mt-1 leading-snug">
+                    {activeResourceModal.titulo}
+                  </h3>
+                  <p className="text-xs text-[#8F9B8D] mt-0.5">
+                    {activeResourceModal.subtitulo || `${activeResourceModal.items?.length || 0} entregables secuenciales`}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveResourceModal(null)}
+                className="p-1.5 rounded-lg text-[#8F9B8D] hover:text-[#E2E8F0] hover:bg-[#232f23] transition cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body / Lista de Módulos */}
+            <div className="p-6 overflow-y-auto space-y-3 flex-1">
+              <div className="text-xs text-[#8F9B8D] leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: activeResourceModal.descripcion || '' }} />
+              
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-[#8EB486] mb-3">
+                Plan de Trabajo / Contenidos en Orden:
+              </h4>
+
+              <div className="space-y-2.5">
+                {(activeResourceModal.items || []).map((item, idx) => (
+                  <div
+                    key={item.id || idx}
+                    className="p-3.5 bg-[#0e130e] border border-[#232f23] hover:border-[#8EB486]/40 rounded-xl flex items-center justify-between gap-3 transition group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="w-7 h-7 rounded-lg bg-[#1a231a] text-[#8EB486] text-xs font-mono font-bold flex items-center justify-center shrink-0 border border-[#8EB486]/20">
+                        {idx + 1}
+                      </span>
+                      <div className="min-w-0">
+                        <h5 className="text-sm font-medium text-[#E2E8F0] truncate group-hover:text-[#8EB486] transition">
+                          {item.titulo || `Módulo ${idx + 1}`}
+                        </h5>
+                        <span className="text-[11px] text-[#8F9B8D] font-mono flex items-center gap-1.5 mt-0.5">
+                          {item.tipo === 'pdf' ? (
+                            <>
+                              <FileText className="w-3 h-3 text-amber-400" /> Documento PDF
+                            </>
+                          ) : (
+                            <>
+                              <Headphones className="w-3 h-3 text-[#8EB486]" /> Audioguía MP3
+                            </>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleOpenResource(activeResourceModal, item)}
+                      disabled={loadingResource}
+                      className="py-1.5 px-3.5 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shrink-0 shadow-md disabled:opacity-50 cursor-pointer"
+                    >
+                      {item.tipo === 'pdf' ? <FileText className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+                      <span>{item.tipo === 'pdf' ? 'Leer PDF' : 'Reproducir'}</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Reproductor de Audio Persistente */}
