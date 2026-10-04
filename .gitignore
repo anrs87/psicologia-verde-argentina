@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Firebase cache & emulators
+.firebase/
+firestore-debug.log
+ui-debug.log
+firebase-debug.log
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Project specific
+originales/
+.DS_Store
+Thumbs.db

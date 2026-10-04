@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psicólogo Vegano | Lic. Mauro García</title>
+  <meta name="description" content="Atención psicológica especializada en personas veganas en Argentina. Ansiedad, culpa, aislamiento y sufrimiento en un mundo especista. Un espacio de terapia empático y seguro.">
+  <link rel="canonical" href="https://psicologiaveganaarg.web.app/">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="/assets/logo_v2.webp">
+
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHKJW1Y4Y7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DHKJW1Y4Y7');
+  </script>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://psicologiaveganaarg.web.app/">
+  <meta property="og:title" content="Psicólogo Vegano | Lic. Mauro García">
+  <meta property="og:description" content="Atención psicológica especializada en personas veganas en Argentina. Ansiedad, culpa, aislamiento y sufrimiento en un mundo especista. Un espacio de terapia empático y seguro.">
+  <meta property="og:image" content="https://psicologiaveganaarg.web.app/assets/logo_v2.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://psicologiaveganaarg.web.app/">
+  <meta property="twitter:title" content="Psicólogo Vegano | Lic. Mauro García">
+  <meta property="twitter:description" content="Atención psicológica especializada en personas veganas en Argentina. Ansiedad, culpa, aislamiento y sufrimiento en un mundo especista. Un espacio de terapia empático y seguro.">
+  <meta property="twitter:image" content="https://psicologiaveganaarg.web.app/assets/logo_v2.webp">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Inter & Playfair Display para una estética elegante y empática) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              black: '#0A0D0A',
+              card: '#121712',
+              light: '#E2E8F0',
+              accent: '#8EB486',
+              accentHover: '#7CA074',
+              muted: '#6B7280',
+              border: '#1F2937'
+            }
+          }
+        }
+      }
+    }
+
+    // Función de respaldo si el entorno bloquea la carga de la imagen relativa image_3c6ba1.png
+    function handleLogoError(img) {
+      const svgLogo = `
+        <svg viewBox="0 0 500 500" class="w-full h-full p-2 bg-[#0A0D0A]" xmlns="http://www.w3.org/2000/svg">
+          <!-- Círculo externo -->
+          <circle cx="250" cy="250" r="210" fill="none" stroke="#8EB486" stroke-width="2" />
+          <!-- Puntos decorativos del lado izquierdo -->
+          <circle cx="90" cy="180" r="4" fill="#8EB486" />
+          <circle cx="75" cy="210" r="4" fill="#8EB486" />
+          <circle cx="70" cy="246" r="4" fill="#8EB486" />
+          <circle cx="74" cy="282" r="4" fill="#8EB486" />
+          <circle cx="86" cy="316" r="4" fill="#8EB486" />
+          
+          <!-- Símbolo Psi (Psicología) -->
+          <path d="M 200,160 C 200,250 300,250 300,160 M 250,125 L 250,290" fill="none" stroke="#8EB486" stroke-width="12" stroke-linecap="round" />
+          
+          <!-- Hojas saliendo del tridente de la Psi -->
+          <path d="M 300,160 C 320,130 360,120 380,120 C 350,140 330,170 300,160 Z" fill="#8EB486" />
+          <path d="M 300,160 C 330,150 370,155 390,175 C 355,170 325,165 300,160 Z" fill="#8EB486" />
+          <path d="M 300,160 Q 340,145 380,130" fill="none" stroke="#8EB486" stroke-width="3" />
+          
+          <!-- Tipografía estilizada de la marca -->
+          <text x="250" y="345" font-family="'Playfair Display', serif" font-weight="600" font-size="34" fill="#e2e8f0" text-anchor="middle" letter-spacing="4">PSICÓLOGO</text>
+          <text x="250" y="390" font-family="'Playfair Display', serif" font-size="28" fill="#8EB486" text-anchor="middle" letter-spacing="6">VEGANO</text>
+          
+          <!-- Ramas decorativas inferiores -->
+          <path d="M 250,420 C 220,410 180,410 160,425 C 190,425 220,425 250,420 Z" fill="#8EB486" />
+          <path d="M 250,420 C 280,410 320,410 340,425 C 310,425 280,425 250,420 Z" fill="#8EB486" />
+          <path d="M 250,420 Q 250,400 250,395" fill="none" stroke="#8EB486" stroke-width="3" />
+          <circle cx="140" cy="425" r="3" fill="#8EB486" />
+          <circle cx="360" cy="425" r="3" fill="#8EB486" />
+        </svg>
+      `;
+      img.style.display = 'none';
+      const container = img.parentElement;
+      container.innerHTML = svgLogo;
+    }
+  </script>
+
+  <!-- Datos estructurados de Google (JSON-LD) para SEO local y profesional -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalBusiness",
+    "name": "Psicólogo Vegano | Lic. Mauro García Rodriguez",
+    "alternateName": "Psicólogo Vegano Argentina",
+    "image": "https://psicologiaveganaarg.web.app/assets/logo.jpg",
+    "@id": "https://psicologiaveganaarg.web.app/#professional-profile",
+    "url": "https://psicologiaveganaarg.web.app/",
+    "telephone": "+5491133791108",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "AR",
+      "addressRegion": "Entre Ríos"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "09:00",
+      "closes": "20:00"
+    },
+    "sameAs": [
+      "https://www.instagram.com/maurogarcia.psicoverde/"
+    ],
+    "knowsAbout": ["Terapia Psicológica", "Veganismo", "Fatiga por Compasión", "Acompañamiento en el Duelo", "Liberación Animal", "Ansiedad Social", "Desilusión Relacional"],
+    "description": "Atención psicológica profesional y especializada para personas veganas en Argentina. Espacio clínico seguro para abordar la culpa, la ansiedad social, la desilusión relacional y el malestar derivado del especismo."
+  }
+  </script>
+
+  <style>
+    @font-face {
+      font-family: 'Bahnschrift';
+      src: url('/assets/BAHNSCHRIFT.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    /* Personalización para integrar Quill con Tailwind oscuro */
+    .ql-toolbar.ql-snow {
+      background-color: #1A201C !important;
+      border: 1px solid #2D3748 !important;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+    }
+    .ql-container.ql-snow {
+      border: 1px solid #2D3748 !important;
+      border-bottom-left-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+      background-color: #121712 !important;
+      color: #E2E8F0 !important;
+      font-family: 'Inter', sans-serif;
+      min-height: 250px;
+    }
+    .ql-editor p {
+      margin-bottom: 1rem;
+    }
+    .ql-snow .ql-stroke {
+      stroke: #E2E8F0 !important;
+    }
+    .ql-snow .ql-fill {
+      fill: #E2E8F0 !important;
+    }
+    .ql-snow .ql-picker {
+      color: #E2E8F0 !important;
+    }
+    .ql-snow .ql-picker-options {
+      background-color: #1A201C !important;
+      border-color: #2D3748 !important;
+    }
+    /* Ocultar barra de scroll para Chrome, Safari y Opera */
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    /* Ocultar barra de scroll para IE, Edge y Firefox */
+    .scrollbar-none {
+      -ms-overflow-style: none;  /* IE y Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="bg-brand-black text-brand-light font-sans antialiased selection:bg-brand-accent selection:text-brand-black">
+
+  <!-- TOAST DE NOTIFICACIONES PERSONALIZADO (Evitamos alert) -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none bg-brand-accent text-brand-black px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3">
+    <span id="toast-icon"></span>
+    <span id="toast-text"></span>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- LANDING PAGE PÚBLICA -->
+  <!-- ========================================================================= -->
+  <main class="transition-opacity duration-300">
+    
+    <!-- HERO SECTION CON SLIDER DE FONDO Y MARCA DE AGUA -->
+    <header class="relative overflow-hidden py-20 sm:py-24 border-b border-brand-border">
+      <div class="absolute inset-0 z-0">
+        <!-- Imagen 1: Hero Slider 1 (Mauro señalando la pizarra con público abajo) -->
+        <div id="hero-slide-1" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-100" style="background-image: url('assets/hero5_optimized.webp'); background-position: center 8%; filter: brightness(0.8);"></div>
+        <!-- Imagen 2: Hero Slider 2 -->
+        <div id="hero-slide-2" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0" style="background-image: url('assets/hero1_optimized.webp'); background-position: center 25%; filter: brightness(0.8);"></div>
+        <!-- Imagen 3: Hero Slider 3 -->
+        <div id="hero-slide-3" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0" style="background-image: url('assets/hero2_optimized_v3.webp'); background-position: center 45%; filter: brightness(0.8);"></div>
+        <!-- Imagen 4: Hero Slider 4 -->
+        <div id="hero-slide-4" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0" style="background-image: url('assets/hero3_optimized.webp'); background-position: center 25%; filter: brightness(0.8);"></div>
+        <!-- Imagen 5: Hero Slider 5 (Mauro de pie de plano entero medio) -->
+        <div id="hero-slide-5" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0" style="background-image: url('assets/hero6_optimized.webp'); background-position: center 12%; filter: brightness(0.8);"></div>
+        
+        <!-- Sombreado por encima (Degradé de abajo hacia arriba para integrarlo al negro de fondo sin oscurecer de más) -->
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/20 to-transparent"></div>
+      </div>
+
+      <!-- Contenido en primer plano (z-10) -->
+      <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+        <h1 class="text-5xl sm:text-7xl text-white tracking-tight leading-none mb-8 drop-shadow-lg" style="font-family: 'Bahnschrift', sans-serif;">
+          Psicólogo Vegano
+        </h1>
+        <!-- Logo de Símbolo Solo (Marca de agua en primer plano) centrado debajo del texto
+             Opciones de Sombra Silueta (Modificar filtro drop-shadow en la clase img abajo):
+             - Halo Verde (Opción B - Activo): drop-shadow-[0_0_15px_rgba(142,180,134,0.4)]
+             - Clásica Oscura (Opción A): drop-shadow-[0_10px_10px_rgba(0,0,0,0.9)]
+             - 3D Doble Sombra (Opción C): drop-shadow-[0_2px_3px_rgba(0,0,0,0.95)] drop-shadow-[0_10px_20px_rgba(0,0,0,0.75)]
+             - Sin Sombra (Original): Remover 'filter' y 'drop-shadow-...' de la clase img
+         -->
+        <div class="mx-auto w-[130px] h-[130px] sm:w-[170px] sm:h-[170px] pointer-events-none opacity-85">
+          <img src="assets/logo_transparente4_optimized.webp" alt="Símbolo Psicólogo Vegano" class="w-full h-full object-contain select-none filter drop-shadow-[0_0_15px_rgba(142,180,134,0.4)]">
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="max-w-4xl mx-auto px-6 py-16">
+      
+      <!-- 1. IDENTIFICACIÓN DEL DOLOR (Sección Inicial) -->
+      <section class="mb-24 scroll-mt-24">
+        <div class="flex flex-col items-center mb-16 text-center">
+          <p class="text-brand-accent text-sm font-mono uppercase tracking-widest mb-6">
+            Psicologo clinico especialista en veganismo
+          </p>
+          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-brand-border bg-zinc-950 shadow-2xl mb-6 relative group">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-full blur opacity-25 group-hover:opacity-45 transition duration-300"></div>
+            <img src="assets/fotoperfil_v2.webp" alt="Lic. Mauro García" class="relative w-full h-full object-cover object-center select-none rounded-full">
+          </div>
+          <p class="max-w-2xl mx-auto text-zinc-300 text-lg sm:text-xl italic leading-relaxed px-4">
+            “Pocos psicólogos comprenden lo que implica vivir sintiendo el sufrimiento animal en un mundo que lo normaliza.”
+          </p>
+        </div>
+        
+        <!-- PROPUESTA INTEGRADA: QUÉ NOS PASA PSÍQUICAMENTE -->
+        <div class="w-full bg-gradient-to-b from-[#0F1410] to-brand-black border border-brand-border/60 rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden mt-8">
+          <!-- Logotipo de Marca de Agua con Halo Verde (alineado arriba junto al encabezado) -->
+          <div class="absolute right-10 top-24 -translate-y-1/2 w-48 h-48 opacity-20 pointer-events-none filter drop-shadow-[0_0_15px_rgba(142,180,134,0.3)]">
+            <img src="assets/logo_transparente4_optimized.webp" alt="Símbolo Psicólogo Vegano" class="w-full h-full object-contain select-none">
+          </div>
+
+          <div class="relative z-10 space-y-10">
+            <div class="max-w-xl mx-auto space-y-4 text-center">
+              <h2 class="font-serif text-2xl sm:text-3xl md:text-5xl text-white leading-tight text-center">
+                Qué nos pasa psíquicamente <br>
+                al ser veganos <br>
+                <span class="block mt-1 text-white">en un mundo <span class="italic text-[#C4D7B2]">que no lo es</span></span>
+              </h2>
+              <div class="w-16 h-0.5 bg-brand-accent/60 rounded mx-auto"></div>
+              <p class="text-zinc-400 text-sm md:text-base leading-relaxed font-sans text-center">
+                Elegir no participar de la explotación transforma tu forma de vivir, sentir y vincularte. <br>
+                <span class="text-zinc-200 font-medium">Y eso tiene un impacto emocional real.</span>
+              </p>
+            </div>
+
+            <!-- Tarjetas de los 4 Pilares -->
+            <div class="grid grid-cols-1 gap-4 max-w-3xl">
+              
+              <!-- Pilar 1: Aislamiento y desconexión -->
+              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
+                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <img src="assets/isolated_person_sad_night.png" alt="Icono Aislamiento" class="w-full h-full object-cover select-none">
+                </div>
+                <div class="space-y-1 my-auto text-left">
+                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Aislamiento y desconexión</h4>
+                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                    Sentís que tus valores te separan de los demás. Te cuesta encontrar lugares donde encajar.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pilar 2: Sobrecarga emocional -->
+              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
+                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <img src="assets/emotional_overload_tangle.png" alt="Icono Sobrecarga" class="w-full h-full object-cover select-none">
+                </div>
+                <div class="space-y-1 my-auto text-left">
+                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Sobrecarga emocional</h4>
+                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                    La exposición constante a la violencia y al especismo genera tristeza, enojo, impotencia y agotamiento.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pilar 3: Culpa y exigencia permanente -->
+              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
+                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <img src="assets/guilt_silhouete_sprout.png" alt="Icono Culpa" class="w-full h-full object-cover select-none">
+                </div>
+                <div class="space-y-1 my-auto text-left">
+                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Culpa y exigencia permanente</h4>
+                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                    La búsqueda de coherencia absoluta puede volverse una carga pesada de sostener.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Pilar 4: Conflictos vinculares -->
+              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
+                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                  <img src="assets/relationship_conflict_profiles.png" alt="Icono Conflictos" class="w-full h-full object-cover select-none">
+                </div>
+                <div class="space-y-1 my-auto text-left">
+                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Conflictos vinculares</h4>
+                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
+                    Diferencias de valores que generan tensión en la familia, en la pareja, en el trabajo y en las amistades.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Cierre y CTA -->
+            <div class="pt-6 border-t border-brand-border/60 max-w-3xl flex flex-col md:flex-row justify-between items-center gap-6">
+              <div class="flex items-center gap-3 text-center md:text-left">
+                <div class="w-8 h-8 shrink-0 flex items-center justify-center text-brand-accent">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9" />
+                  </svg>
+                </div>
+                <p class="text-brand-accent text-xs md:text-sm italic text-left">
+                  Tu sensibilidad no es un problema, es tu brújula. <span class="text-zinc-300 not-italic font-sans block md:inline">Podemos trabajar juntxs para que deje de doler tanto.</span>
+                </p>
+              </div>
+              <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20hacerte%20una%20consulta%20terapéutica." target="_blank" rel="noopener noreferrer" class="w-full md:w-auto px-6 py-3 bg-brand-accent text-brand-black hover:bg-brand-accentHover font-bold text-xs uppercase tracking-wider rounded-xl transition duration-200 shadow-lg text-center shrink-0">
+                Iniciar consulta terapéutica
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PRESENTACIÓN DE MAURO -->
+      <section class="mb-24 border-t border-brand-border pt-16">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div class="md:col-span-5 relative group">
+            <div class="absolute -inset-1.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-2xl blur opacity-30 group-hover:opacity-55 transition duration-300"></div>
+            <div class="relative rounded-2xl overflow-hidden border border-brand-border/60 bg-zinc-950 shadow-2xl h-[420px] w-full">
+              <img id="slideshow-img-1" src="assets/confe5_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100">
+              <img id="slideshow-img-2" src="assets/confe_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0">
+              <img id="slideshow-img-3" src="assets/confe6_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0">
+              <img id="slideshow-img-4" src="assets/mauroverde_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0">
+              <img id="slideshow-img-5" src="assets/confe4_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0" style="object-position: 8% center;">
+            </div>
+          </div>
+          <div class="md:col-span-7 space-y-4">
+            <p class="text-brand-accent text-xs font-mono uppercase tracking-widest">Acompañamiento especializado</p>
+            <h2 class="font-serif text-3xl text-white">Lic. Mauro García Rodriguez</h2>
+            <div class="text-zinc-300 text-base leading-relaxed space-y-4">
+              <p>
+                Soy psicólogo clínico especializado en acompañar a personas veganas y sensibles al sufrimiento animal.
+                Trabajo con quienes eligen no anestesiarse, para que puedan sostener su sensibilidad sin que eso se convierta en angustia, bronca o agotamiento.
+              </p>
+              <p>
+                Mi camino no es solo teórico. Después de años en la ciudad, elegí salir de esa lógica y radicarme en Entre Ríos, donde desarrollo un espacio de encuentros terapéuticos en la naturaleza que acompañan y profundizan el proceso clínico.
+              </p>
+            </div>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-card/40 border border-brand-border/50 p-4 rounded-xl">
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-20 flex-shrink-0 overflow-hidden rounded-lg border border-brand-border bg-zinc-900">
+                  <img src="/assets/libro_corporalidad.webp" alt="Portada del Libro" class="w-full h-full object-cover" loading="lazy">
+                </div>
+                <div>
+                  <p class="text-[10px] text-brand-accent font-semibold tracking-widest uppercase">Coautor de "Acerca de la corporalidad"</p>
+                  <p class="text-white font-serif text-sm font-semibold mt-0.5">Capítulo: Cuerpos no humanos</p>
+                  <p class="text-zinc-400 text-xs mt-1 leading-relaxed">
+                    Un análisis sobre el narcisismo, la empatía y el antropocentrismo en el vínculo con los animales.
+                  </p>
+                </div>
+              </div>
+              <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20pedirte%20el%20cap%C3%ADtulo%20de%20regalo%20del%20libro%20en%20el%20que%20participaste." target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-zinc-800 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black text-xs font-bold rounded-lg transition duration-200 shrink-0 mt-2 sm:mt-0 sm:ml-auto">
+                Pedirme el capítulo de regalo
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. LLAMADO A LA ACCIÓN PRINCIPAL (Sesión de orientación) -->
+      <section class="bg-gradient-to-b from-brand-card to-brand-black border border-brand-border rounded-2xl p-8 sm:p-12 text-center relative overflow-hidden mb-8">
+        <div class="absolute -top-12 -left-12 w-24 h-24 bg-brand-accent/10 rounded-full blur-2xl"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <span class="text-brand-accent text-xs font-mono uppercase tracking-widest block mb-2">Punto de inicio terapéutico</span>
+          <h2 class="font-serif text-3xl text-white mb-4">Sesión de orientación</h2>
+          <p class="text-zinc-400 mb-8 text-sm sm:text-base">
+            Una entrevista psicologica para ordenar lo que te está pasando y encontrar herramientas concretas frente al malestar derivado de habitar nuestra realidad actual desde el veganismo.
+          </p>
+          <div class="inline-block relative group">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+            <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20coordinar%20una%20sesión%20de%20orientación." target="_blank" rel="noopener noreferrer" class="relative block bg-brand-accent text-brand-black font-bold px-8 py-4 rounded-lg hover:bg-brand-accentHover transition duration-300 shadow-xl flex items-center gap-2">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.031 2c-5.514 0-9.99 4.477-9.99 9.99 0 1.761.459 3.479 1.332 5.006L2 22l5.185-1.359c1.472.802 3.13 1.226 4.82 1.229h.004c5.513 0 9.99-4.477 9.99-9.99 0-2.673-1.042-5.184-2.934-7.078C17.168 2.909 14.671 2.001 12.031 2zm6.368 14.26c-.279.782-1.393 1.433-1.921 1.527-.478.084-1.1.157-3.197-.714-2.683-1.114-4.412-3.83-4.545-4.009-.133-.178-1.077-1.432-1.077-2.733 0-1.3.679-1.936.921-2.203.242-.267.53-.332.707-.332.178 0 .356.009.51.018.161.01.378-.063.593.454.223.534.76 1.852.825 1.986.066.134.11.29.02.47-.09.18-.135.292-.269.45-.134.156-.282.348-.402.467-.134.133-.274.28-.117.55.157.27.697 1.15 1.493 1.862.977.873 1.794 1.144 2.052 1.272.258.127.41.107.561-.067.151-.178.647-.751.821-1.006.174-.255.348-.214.587-.125.24.09 1.517.714 1.776.843.258.128.43.192.493.302.064.11.064.637-.216 1.42z"/>
+              </svg>
+              Quiero coordinar mi orientación
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROPUESTAS TERAPÉUTICAS INTERACTIVAS -->
+      <section class="mb-24 border-t border-brand-border pt-16">
+        <div class="max-w-xl mx-auto bg-brand-card border border-brand-border rounded-3xl p-6 shadow-2xl space-y-6">
+          
+          <!-- Encabezado de la sección -->
+          <div class="text-center">
+            <span class="text-brand-accent text-xs font-mono uppercase tracking-widest block mb-1">Modalidades de Consulta</span>
+            <h2 class="font-serif text-3xl text-white font-semibold">Propuestas terapéuticas</h2>
+          </div>
+
+          <!-- Mosaico de Fotos (Arriba) -->
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Tarjeta Foto 1: Mauro Online -->
+            <div id="photo-online" onclick="selectModalidad('online')" class="rounded-2xl overflow-hidden border border-brand-border shadow-lg relative aspect-[4/5] cursor-pointer transition-all duration-500 transform hover:scale-[1.02]">
+              <img src="assets/mauro_notebook_nature.webp" alt="Sesión Online" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-3 text-left">
+                <div>
+                  <span class="text-[9px] text-brand-accent font-mono uppercase tracking-wider block">Sesiones</span>
+                  <span class="text-[11px] text-white font-semibold">Online / Remoto</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Tarjeta Foto 2: Refugio / Frontera -->
+            <div id="photo-refugio" onclick="selectModalidad('refugio')" class="rounded-2xl overflow-hidden border border-brand-border shadow-lg relative aspect-[4/5] cursor-pointer transition-all duration-500 transform hover:scale-[1.02]">
+              <img src="assets/frontera_original.jpg" alt="Refugio Vegano" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-3 text-left">
+                <div>
+                  <span class="text-[9px] text-brand-accent font-mono uppercase tracking-wider block">Naturaleza</span>
+                  <span class="text-[11px] text-white font-semibold">Refugio Vegano</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Acción (Emojis/Pestañas) -->
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <!-- Botón Online -->
+            <button id="btn-online" onclick="selectModalidad('online')" class="p-3 rounded-xl border font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1">
+              <span class="text-2xl">💻</span>
+              <span class="text-[11px] font-medium tracking-wide">Online</span>
+            </button>
+            
+            <!-- Botón Refugio -->
+            <button id="btn-refugio" onclick="selectModalidad('refugio')" class="p-3 rounded-xl border font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1">
+              <span class="text-2xl">🏡</span>
+              <span class="text-[11px] font-medium tracking-wide">Refugio Vegano</span>
+            </button>
+          </div>
+
+          <!-- Texto Descriptivo Dinámico -->
+          <div class="min-h-[110px] flex items-center justify-center bg-zinc-950/30 border border-brand-border/60 p-4 rounded-2xl text-center">
+            <p id="dynamic-text" class="text-zinc-300 text-xs sm:text-sm leading-relaxed transition-all duration-300 opacity-100 transform translate-y-0"></p>
+          </div>
+
+          <!-- Botón de Acción de WhatsApp dinámico -->
+          <div>
+            <a id="btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-brand-accent text-brand-black hover:bg-brand-accentHover font-bold py-3.5 rounded-xl transition duration-300 shadow-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.031 2c-5.514 0-9.99 4.477-9.99 9.99 0 1.761.459 3.479 1.332 5.006L2 22l5.185-1.359c1.472.802 3.13 1.226 4.82 1.229h.004c5.513 0 9.99-4.477 9.99-9.99 0-2.673-1.042-5.184-2.934-7.078C17.168 2.909 14.671 2.001 12.031 2zm6.368 14.26c-.279.782-1.393 1.433-1.921 1.527-.478.084-1.1.157-3.197-.714-2.683-1.114-4.412-3.83-4.545-4.009-.133-.178-1.077-1.432-1.077-2.733 0-1.3.679-1.936.921-2.203.242-.267.53-.332.707-.332.178 0 .356.009.51.018.161.01.378-.063.593.454.223.534.76 1.852.825 1.986.066.134.11.29.02.47-.09.18-.135.292-.269.45-.134.156-.282.348-.402.467-.134.133-.274.28-.117.55.157.27.697 1.15 1.493 1.862.977.873 1.794 1.144 2.052 1.272.258.127.41.107.561-.067.151-.178.647-.751.821-1.006.174-.255.348-.214.587-.125.24.09 1.517.714 1.776.843.258.128.43.192.493.302.064.11.064.637-.216 1.42z"/>
+              </svg>
+              <span id="btn-whatsapp-text">Consultar</span>
+            </a>
+          </div>
+
+        </div>
+
+        <script>
+          const data = {
+            online: {
+              text: "Sesiones profesionales por videollamada para personas veganas de toda Argentina. Un espacio clínico seguro y empático donde abordar la ansiedad, el aislamiento, la culpa y la fatiga por compasión ante el especismo, sin moverte de tu casa.",
+              whatsappUrl: "https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20coordinar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20Online.",
+              buttonText: "Pedir orientación Online 💻"
+            },
+            refugio: {
+              text: "Encuentros intensivos y alojamiento terapéutico en el Refugio Vegano en Entre Ríos. Una propuesta presencial inmersiva diseñada para profundizar procesos clínicos en pleno contacto con la naturaleza, el silencio y la desconexión.",
+              whatsappUrl: "https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20consultar%20sobre%20el%20alojamiento%20terap%C3%A9utico%20en%20el%20Refugio%20Vegano.",
+              buttonText: "Consultar por el Refugio 🏡"
+            }
+          };
+
+          function selectModalidad(type) {
+            const textElement = document.getElementById('dynamic-text');
+            const btnWhatsapp = document.getElementById('btn-whatsapp');
+            const btnWhatsappText = document.getElementById('btn-whatsapp-text');
+
+            const photoOnline = document.getElementById('photo-online');
+            const photoRefugio = document.getElementById('photo-refugio');
+            const btnOnline = document.getElementById('btn-online');
+            const btnRefugio = document.getElementById('btn-refugio');
+
+            // Animación de salida del texto
+            textElement.style.opacity = '0';
+            textElement.style.transform = 'translateY(4px)';
+
+            setTimeout(() => {
+              // Actualizar textos y enlaces
+              textElement.innerHTML = data[type].text;
+              btnWhatsapp.href = data[type].whatsappUrl;
+              btnWhatsappText.innerText = data[type].buttonText;
+
+              // Animación de entrada
+              textElement.style.opacity = '1';
+              textElement.style.transform = 'translateY(0)';
+            }, 200);
+
+            // Estilo de fotos y botones activos
+            if (type === 'online') {
+              // Destacar Online
+              photoOnline.className = "rounded-2xl overflow-hidden border-2 border-brand-accent shadow-2xl relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[1.02] opacity-100";
+              photoRefugio.className = "rounded-2xl overflow-hidden border border-brand-border/40 shadow-sm relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[0.98] opacity-40 hover:opacity-60";
+              
+              btnOnline.className = "p-3 rounded-xl border-2 border-brand-accent bg-brand-accent/10 text-brand-accent font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1 shadow-md";
+              btnRefugio.className = "p-3 rounded-xl border border-brand-border/60 bg-transparent text-zinc-400 hover:text-zinc-200 font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1";
+            } else {
+              // Destacar Refugio
+              photoOnline.className = "rounded-2xl overflow-hidden border border-brand-border/40 shadow-sm relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[0.98] opacity-40 hover:opacity-60";
+              photoRefugio.className = "rounded-2xl overflow-hidden border-2 border-brand-accent shadow-2xl relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[1.02] opacity-100";
+              
+              btnOnline.className = "p-3 rounded-xl border border-brand-border/60 bg-transparent text-zinc-400 hover:text-zinc-200 font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1";
+              btnRefugio.className = "p-3 rounded-xl border-2 border-brand-accent bg-brand-accent/10 text-brand-accent font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1 shadow-md";
+            }
+          }
+
+          // Inicializar con la modalidad online activa
+          document.addEventListener("DOMContentLoaded", () => {
+            selectModalidad('online');
+          });
+        </script>
+      </section>
+
+      <!-- 4. DESTACADO DEL CERTIFICADO DE ANIMAL DE APOYO -->
+      <section class="mb-24 max-w-3xl mx-auto px-4 sm:px-0">
+        <div class="bg-gradient-to-b from-brand-card to-zinc-950 border border-brand-border rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden group hover:border-brand-accent/20 transition-all duration-300">
+          <div class="flex flex-col md:flex-row items-center gap-8">
+            
+            <!-- Logo del Certificado y Badge Visual -->
+            <div class="flex flex-col items-center gap-3 shrink-0">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center p-2 bg-zinc-950/40 rounded-2xl border border-brand-border/80 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                <img src="assets/logocertificado_optimized.webp" alt="Logotipo Certificado Animal de Apoyo Emocional" class="w-full h-full object-contain select-none">
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-widest text-brand-accent bg-brand-accent/5 border border-brand-accent/15 px-2 py-0.5 rounded-full">
+                Validez Nacional
+              </span>
+            </div>
+            
+            <!-- Contenido Principal -->
+            <div class="flex-grow space-y-4 text-center md:text-left w-full">
+              <div class="space-y-1">
+                <span class="text-brand-accent text-[10px] font-mono uppercase tracking-widest font-semibold flex items-center justify-center md:justify-start gap-1.5">
+                  <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>Familia Multiespecie
+                </span>
+                <h3 class="text-white font-serif text-xl sm:text-2xl font-semibold leading-snug">
+                  ¿Tenés familia multiespecie?
+                </h3>
+                <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-xl">
+                  Cuidar el vínculo con los animales de nuestra familia también implica proteger sus derechos y nuestra tranquilidad. Un <strong>Certificado de Apoyo Emocional</strong> les permite convivir y trasladarse juntos sin barreras.
+                </p>
+              </div>
+
+              <!-- Beneficios estructurados en tags/badges -->
+              <div class="space-y-2">
+                <p class="text-zinc-300 text-xs font-semibold">Podés obtener un certificado profesional para facilitar:</p>
+                <div class="flex flex-wrap justify-center md:justify-start gap-2">
+                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
+                    ✈️ Viajes
+                  </span>
+                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
+                    🏨 Hospedajes
+                  </span>
+                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
+                    🍽️ Restaurantes
+                  </span>
+                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
+                    📍 Lugares públicos
+                  </span>
+                </div>
+              </div>
+
+              <!-- CTA Directo -->
+              <div class="pt-2">
+                <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quer%C3%ADa%20consultarte%20sobre%20el%20certificado%20de%20animal%20de%20apoyo%20emocional%20para%20mi%20familia%20multiespecie." 
+                   target="_blank" rel="noopener noreferrer" 
+                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-accent text-brand-black hover:bg-brand-accentHover text-xs font-bold rounded-xl transition duration-200 shadow-md">
+                  <span>Solicitar evaluación profesional</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. CASOS CLÍNICOS / CONSULTAS -->
+      <section id="experiencias-section" class="mb-24 border-t border-brand-border pt-16 scroll-mt-24">
+        <!-- Encabezado Unificado -->
+        <div class="mb-10 text-center sm:text-left">
+          <h2 class="font-serif text-3xl text-white">Casos clínicos / consultas</h2>
+          <p class="text-zinc-500 text-sm mt-1">Encuentros, testimonios y lecturas del espacio clínico de forma integrada.</p>
+        </div>
+        
+        <div class="space-y-12">
+          <!-- Bloque de Artículos (Listado vertical de ancho completo) -->
+          <div class="space-y-6">
+            <h3 class="text-xs font-mono uppercase tracking-widest text-brand-accent mb-1 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>Reflexiones escritas
+            </h3>
+            <div id="articles-feed" class="space-y-6">
+              <!-- Renderizado dinámico de artículos -->
+            </div>
+
+            <!-- Botón para ver reflexiones históricas -->
+            <div id="historical-btn-container" class="text-center mt-6 hidden">
+              <button onclick="toggleAllArticles()" id="btn-toggle-articles" class="w-full sm:w-auto px-6 py-2.5 bg-zinc-900 border border-brand-border text-zinc-300 hover:border-brand-accent hover:text-white rounded-lg text-xs font-bold transition duration-200">
+                📖 Ver todas las reflexiones anteriores
+              </button>
+            </div>
+          </div>
+
+          <!-- Bloque de Testimonios (Carrusel horizontal deslizable en todas las pantallas) -->
+          <div id="testimonials-block" class="space-y-4">
+            <h3 class="text-xs font-mono uppercase tracking-widest text-brand-accent mb-1 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>Voces del espacio
+            </h3>
+            <!-- Contenedor con scroll horizontal en todas las pantallas -->
+            <div id="testimonials-feed" class="flex gap-4 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory">
+              <!-- Renderizado dinámico de testimonios -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- SERVICIO INTERNACIONAL -->
+      <div class="border-t border-brand-border pt-12 text-center max-w-2xl mx-auto space-y-3">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-brand-accent/5 border border-brand-accent/15 text-brand-accent text-xs font-mono uppercase tracking-wider rounded-full">
+          🌎 Servicio Internacional
+        </span>
+        <p class="text-zinc-400 text-sm leading-relaxed">
+          Atención psicológica especializada para personas hispanohablantes en el exterior. <br>
+          <span class="text-zinc-300 font-medium">Medios de pago: Paypal · Western Union · Criptomonedas</span>
+        </p>
+      </div>
+
+      <!-- REDES SOCIALES / CONTACTO DIRECTO -->
+      <div class="border-t border-brand-border pt-16 mb-16 text-center space-y-6">
+        <h2 class="font-serif text-3xl text-white">Ponete en contacto</h2>
+        <div class="flex flex-wrap justify-center items-center gap-6 sm:gap-8 pt-2">
+        <!-- WhatsApp Link -->
+        <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20vi%20tu%20web%20y%20quer%C3%ADa%20hacerte%20una%20consulta." target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-brand-accent transition duration-200 text-sm">
+          <svg class="w-5 h-5 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12.031 2c-5.514 0-9.99 4.477-9.99 9.99 0 1.761.459 3.479 1.332 5.006L2 22l5.185-1.359c1.472.802 3.13 1.226 4.82 1.229h.004c5.513 0 9.99-4.477 9.99-9.99 0-2.673-1.042-5.184-2.934-7.078C17.168 2.909 14.671 2.001 12.031 2zm6.368 14.26c-.279.782-1.393 1.433-1.921 1.527-.478.084-1.1.157-3.197-.714-2.683-1.114-4.412-3.83-4.545-4.009-.133-.178-1.077-1.432-1.077-2.733 0-1.3.679-1.936.921-2.203.242-.267.53-.332.707-.332.178 0 .356.009.51.018.161.01.378-.063.593.454.223.534.76 1.852.825 1.986.066.134.11.29.02.47-.09.18-.135.292-.269.45-.134.156-.282.348-.402.467-.134.133-.274.28-.117.55.157.27.697 1.15 1.493 1.862.977.873 1.794 1.144 2.052 1.272.258.127.41.107.561-.067.151-.178.647-.751.821-1.006.174-.255.348-.214.587-.125.24.09 1.517.714 1.776.843.258.128.43.192.493.302.064.11.064.637-.216 1.42z"/>
+          </svg>
+          <span class="font-medium text-zinc-300 hover:text-brand-accent">+54 9 11 3379-1108</span>
+        </a>
+        <!-- Instagram Link -->
+        <a href="https://www.instagram.com/maurogarcia.psicoverde/?hl=es" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-brand-accent transition duration-200 text-sm">
+          <svg class="w-5 h-5 text-brand-accent" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+          <span class="font-medium text-zinc-300 hover:text-brand-accent">@maurogarcia.psicoverde</span>
+        </a>
+        <!-- Email Link -->
+        <a href="mailto:verde.psicologia@gmail.com" class="flex items-center gap-2 hover:text-brand-accent transition duration-200 text-sm">
+          <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <span class="font-medium text-zinc-300 hover:text-brand-accent">verde.psicologia@gmail.com</span>
+        </a>
+      </div>
+    </div>
+
+      <!-- 6. PREGUNTAS FRECUENTES (FAQ) -->
+      <section id="faq-section" class="mb-24 border-t border-brand-border pt-16 scroll-mt-24">
+        <div class="mb-10 text-center sm:text-left">
+          <h2 class="font-serif text-3xl text-white">Preguntas frecuentes</h2>
+          <p class="text-zinc-500 text-sm mt-1">Dudas comunes sobre la modalidad, los servicios y el espacio terapéutico.</p>
+        </div>
+        
+        <div id="faq-feed" class="space-y-4 max-w-3xl mx-auto">
+          <!-- Renderizado dinámico de FAQ en formato acordeón -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="border-t border-brand-border bg-brand-black py-16 text-zinc-400 text-sm">
+      <div class="max-w-4xl mx-auto px-6 space-y-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left text-zinc-500">
+          <p>© Psicólogo Vegano - Lic. Mauro García Rodriguez. Todos los derechos reservados.</p>
+          <p class="text-brand-accent/50">Matrícula Profesional M.N. 50127 Registrada en Argentina</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  
+  <script type="module">
+    // Importar SDK de Firebase v10 (solo lectura pública de Firestore)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Configuración de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdbqrN9hRhSKiBTUVjTcuGcgsBXMedjNY",
+      authDomain: "psicologiaveganaarg.firebaseapp.com",
+      projectId: "psicologiaveganaarg",
+      storageBucket: "psicologiaveganaarg.firebasestorage.app",
+      messagingSenderId: "42654132231",
+      appId: "1:42654132231:web:132953d04f7da6bf64e2a2",
+      measurementId: "G-DHKJW1Y4Y7"
+    };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Sistema de tracking personalizado (Analytics)
+    async function trackVisit(path, articuloTitulo = '') {
+      try {
+        let sessionID = localStorage.getItem('pva_analytics_session');
+        const sessionTime = localStorage.getItem('pva_analytics_session_time');
+        const now = Date.now();
+        
+        // Expirar sesión después de 24 horas
+        if (!sessionID || !sessionTime || (now - parseInt(sessionTime)) > 24 * 60 * 60 * 1000) {
+          sessionID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          localStorage.setItem('pva_analytics_session', sessionID);
+          localStorage.setItem('pva_analytics_session_time', now.toString());
+        }
+
+        let rawReferrer = document.referrer || '';
+        let referrer = 'Acceso Directo';
+        
+        if (rawReferrer) {
+          try {
+            const url = new URL(rawReferrer);
+            if (url.hostname !== window.location.hostname) {
+              const host = url.hostname.toLowerCase();
+              if (host.includes('instagram.com')) {
+                referrer = 'Instagram';
+              } else if (host.includes('facebook.com')) {
+                referrer = 'Facebook';
+              } else if (host.includes('t.co') || host.includes('twitter.com')) {
+                referrer = 'Twitter/X';
+              } else if (host.includes('google.com')) {
+                referrer = 'Búsqueda de Google';
+              } else if (host.includes('linkedin.com')) {
+                referrer = 'LinkedIn';
+              } else {
+                referrer = url.hostname.replace('www.', '');
+              }
+            }
+          } catch (e) {
+            console.error("Error parseando referrer:", e);
+          }
+        }
+
+        const d = new Date();
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const fechaStr = `${yyyy}-${mm}-${dd}`;
+
+        await addDoc(collection(db, "registro_visitas"), {
+          path: path,
+          articulo: articuloTitulo || '',
+          referrer: referrer,
+          fecha: fechaStr,
+          session: sessionID,
+          timestamp: serverTimestamp()
+        });
+      } catch (err) {
+        console.warn("Error enviando telemetría de analíticas:", err);
+      }
+    }
+
+    // Listado de artículos en memoria para renderizado local
+    let articles = [];
+    let testimonials = [];
+    let faqs = [];
+    let showAllArticles = false;
+    let pendingArticleSlug = null; // Guardar slug si se accede por link directo
+    let currentOpenArticle = null;
+
+    // FAQs predeterminadas por defecto (se usan si Firestore está vacío)
+    const defaultFaqs = [
+      {
+        pregunta: "¿Qué servicios puedo solicitar y en qué consisten?",
+        respuesta: "Ofrecemos tres servicios especializados:<br><strong>1. Acompañamiento psicoterapéutico individual:</strong> Sesiones continuas (online para toda Argentina y presencial en Entre Ríos) adaptadas a la vivencia ética del veganismo y al choque con el entorno especista.<br><strong>2. Consulta única de orientación:</strong> Sesión práctica para ordenar tu situación, realizar un primer diagnóstico de tu salud mental y brindarte pautas concretas frente al malestar.<br><strong>3. Certificado de animal de apoyo emocional:</strong> Evaluación profesional y emisión del certificado correspondiente para viajar y convivir legalmente con tu animal de apoyo.",
+        orden: 1
+      },
+      {
+        pregunta: "¿Cómo puedo agendar una consulta o solicitar orientación?",
+        respuesta: "Podés iniciar tu consulta de forma simple haciendo clic en el botón flotante de WhatsApp que se encuentra en la esquina inferior derecha de la pantalla, o completando el enlace de WhatsApp en cualquiera de los botones de contacto de la página. Te responderemos a la brevedad para coordinar días, horarios y enviarte la información administrativa.",
+        orden: 2
+      },
+      {
+        pregunta: "¿Es necesario ser vegano o vegetariano para atenderse?",
+        respuesta: "No es un requisito excluyente, pero el espacio terapéutico está diseñado con especial sensibilidad y conocimiento de la fatiga por compasión, la ansiedad social y el sufrimiento asociados a la violencia hacia los animales. Si estás en transición, sos activista o sentís que tu sensibilidad ética afecta tu bienestar y tus vínculos, aquí encontrarás un espacio seguro y libre de juicios.",
+        orden: 3
+      },
+      {
+        pregunta: "¿Cómo se realizan las sesiones online y cuáles son los medios de pago?",
+        respuesta: "Las sesiones virtuales se realizan por videollamadas seguras (Google Meet o Zoom). Los honorarios dentro de Argentina se abonan de forma práctica a través de transferencia bancaria (Mercado Pago o CBU). Si te encontrás en el exterior, consultanos para coordinar medios de pago alternativos.",
+        orden: 4
+      }
+    ];
+
+    // Generar un slug amigable para URL
+    function getSlug(title) {
+      return title.toLowerCase()
+        .replace(/[^a-z0-9 -]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+      // Suscribirse a Firestore en tiempo real (artículos)
+      const q = query(collection(db, "articulos"), orderBy("fecha", "desc"));
+      onSnapshot(q, (querySnapshot) => {
+        articles = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          articles.push({
+            id: doc.id,
+            titulo: data.titulo,
+            fecha: data.fecha,
+            contenido: data.contenido,
+            testimonio: data.testimonio || '',
+            imagenPortada: data.imagenPortada || '',
+            imagenOrientacion: data.imagenOrientacion || ''
+          });
+        });
+        renderArticles();
+        renderTestimonials();
+        checkAndOpenPendingArticle();
+      }, (error) => {
+        console.error("Error al escuchar cambios en Firestore: ", error);
+        showToast("Error al cargar artículos en tiempo real", "error");
+      });
+
+      // Suscribirse a la colección de testimonios en tiempo real
+      const qTest = query(collection(db, "testimonios"));
+      onSnapshot(qTest, (querySnapshot) => {
+        testimonials = [];
+        querySnapshot.forEach((d) => {
+          const data = d.data();
+          testimonials.push({
+            id: d.id,
+            cita: data.cita,
+            autor: data.autor || '',
+            creadoEn: data.creadoEn || null
+          });
+        });
+        testimonials.sort((a, b) => {
+          if (a.creadoEn && b.creadoEn) {
+            const timeA = a.creadoEn.toMillis ? a.creadoEn.toMillis() : a.creadoEn;
+            const timeB = b.creadoEn.toMillis ? b.creadoEn.toMillis() : b.creadoEn;
+            return timeB - timeA;
+          }
+          return 0;
+        });
+        renderTestimonials();
+      }, (error) => {
+        console.error("Error al escuchar testimonios: ", error);
+        testimonials = [];
+        renderTestimonials();
+      });
+
+      // Suscribirse a la colección de faqs en tiempo real
+      const qFaq = query(collection(db, "faqs"), orderBy("orden", "asc"));
+      onSnapshot(qFaq, (querySnapshot) => {
+        faqs = [];
+        querySnapshot.forEach((d) => {
+          const data = d.data();
+          faqs.push({
+            id: d.id,
+            pregunta: data.pregunta,
+            respuesta: data.respuesta,
+            orden: data.orden || 0
+          });
+        });
+        if (faqs.length === 0) {
+          faqs = defaultFaqs;
+        }
+        renderFAQs();
+      }, (error) => {
+        console.error("Error al escuchar FAQs: ", error);
+        faqs = defaultFaqs;
+        renderFAQs();
+      });
+
+      // Registrar visita general
+      trackVisit(window.location.pathname);
+
+      // Manejar enrutamiento según la URL al cargar la página
+      handleRouting();
+
+      // Slideshow de fotos en el Hero (Cabecera)
+      const heroSlides = [
+        document.getElementById('hero-slide-1'),
+        document.getElementById('hero-slide-2'),
+        document.getElementById('hero-slide-3'),
+        document.getElementById('hero-slide-4'),
+        document.getElementById('hero-slide-5'),
+        document.getElementById('hero-slide-6')
+      ].filter(slide => slide !== null);
+
+      if (heroSlides.length > 1) {
+        let currentSlideIndex = 0;
+        setInterval(() => {
+          const nextSlideIndex = (currentSlideIndex + 1) % heroSlides.length;
+          heroSlides[currentSlideIndex].classList.replace('opacity-100', 'opacity-0');
+          heroSlides[nextSlideIndex].classList.replace('opacity-0', 'opacity-100');
+          currentSlideIndex = nextSlideIndex;
+        }, 6000);
+      }
+
+      // Slideshow de fotos en la presentación de Mauro
+      const presentationSlides = [
+        document.getElementById('slideshow-img-1'),
+        document.getElementById('slideshow-img-2'),
+        document.getElementById('slideshow-img-3'),
+        document.getElementById('slideshow-img-4'),
+        document.getElementById('slideshow-img-5')
+      ].filter(slide => slide !== null);
+
+      if (presentationSlides.length > 1) {
+        let currentPresIndex = 0;
+        setInterval(() => {
+          const nextPresIndex = (currentPresIndex + 1) % presentationSlides.length;
+          presentationSlides[currentPresIndex].classList.replace('opacity-100', 'opacity-0');
+          presentationSlides[nextPresIndex].classList.replace('opacity-0', 'opacity-100');
+          currentPresIndex = nextPresIndex;
+        }, 5000);
+      }
+    });
+
+    // Redirigir si se accede por link de artículo viejo
+    function handleRouting() {
+      const path = window.location.pathname;
+      const searchParams = new URLSearchParams(window.location.search);
+      const openParam = searchParams.get('open');
+      
+      if (path.includes('/articulos/')) {
+        const parts = path.split('/articulos/');
+        if (parts.length > 1) {
+          const slug = parts[1].split('?')[0].split('#')[0];
+          window.location.href = `/articulo.html?slug=${slug}`;
+        }
+      } else if (openParam) {
+        window.location.href = `/articulo.html?slug=${openParam}`;
+      }
+    }
+
+    handleRouting();
+    window.addEventListener('popstate', handleRouting);
+    window.addEventListener('hashchange', handleRouting);
+
+    // Alertas Flotantes sin Alert()
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      const icon = document.getElementById('toast-icon');
+
+      text.innerText = message;
+      icon.innerText = type === 'success' ? '✨' : '⚠️';
+
+      if (type === 'success') {
+        toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-brand-accent text-brand-black px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3";
+      } else {
+        toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3";
+      }
+
+      setTimeout(() => {
+        toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none bg-brand-accent text-brand-black px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3";
+      }, 3000);
+    }
+
+    // (Lógica administrativa delegada a admin.html)
+
+    // Renderizado en la Landing Page Pública
+    function renderArticles() {
+      const container = document.getElementById('articles-feed');
+      const histContainer = document.getElementById('historical-btn-container');
+      const toggleBtn = document.getElementById('btn-toggle-articles');
+      
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (articles.length === 0) {
+        container.innerHTML = '<p class="text-zinc-500 text-center py-10">No hay reflexiones publicadas todavía.</p>';
+        if (histContainer) histContainer.classList.add('hidden');
+        return;
+      }
+
+      // Filtrar según estado expandido
+      const articlesToShow = showAllArticles ? articles : articles.slice(0, 3);
+
+      articlesToShow.forEach((art) => {
+        // Formatear fecha legible local
+        const dateParts = art.fecha.split('-');
+        const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = localDate.toLocaleDateString('es-AR', dateOptions);
+
+        // Generar extracto de texto
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = art.contenido;
+        const textExcerpt = tempDiv.textContent || tempDiv.innerText || "";
+        const shortExcerpt = textExcerpt.length > 180 ? textExcerpt.substring(0, 180) + "..." : textExcerpt;
+
+        // Calcular tiempo estimado de lectura (200 palabras/min promedio en español)
+        const wordCount = textExcerpt.split(/\s+/).filter(w => w.length > 0).length;
+        const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+        const artElement = document.createElement('article');
+        artElement.className = "bg-brand-card/30 border border-brand-border/60 rounded-2xl p-6 sm:p-8 hover:border-brand-accent/20 transition-all duration-300 flex flex-col justify-between";
+        artElement.innerHTML = `
+          <div>
+            <header class="mb-3">
+              <div class="flex items-center justify-between mb-1">
+                <time class="text-xs text-brand-accent font-semibold tracking-wider uppercase">${formattedDate}</time>
+                <span class="text-[11px] text-zinc-500 font-medium">☕ ${readingTime} min de lectura</span>
+              </div>
+              <h3 class="font-serif text-xl sm:text-2xl text-white tracking-tight leading-snug">${art.titulo}</h3>
+            </header>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-6">${shortExcerpt}</p>
+          </div>
+          <div>
+            <a href="/articulos/${getSlug(art.titulo)}" class="text-brand-accent hover:text-white text-xs font-bold transition flex items-center gap-1">
+              <span>Leer reflexión completa</span>
+              <span>→</span>
+            </a>
+          </div>
+        `;
+        container.appendChild(artElement);
+      });
+
+      // Controlar botón ver todas
+      if (articles.length > 3) {
+        if (histContainer) histContainer.classList.remove('hidden');
+        if (toggleBtn) {
+          toggleBtn.innerText = showAllArticles 
+            ? "📖 Contraer listado e ir al inicio" 
+            : `📖 Ver todas las reflexiones anteriores (${articles.length - 3} más)`;
+        }
+      } else {
+        if (histContainer) histContainer.classList.add('hidden');
+      }
+    }
+
+    // Función auxiliar para extraer texto plano sin HTML agregando espacios entre bloques
+    function stripHtml(html) {
+      if (!html) return '';
+      const tmp = document.createElement("DIV");
+      tmp.innerHTML = html.replace(/<\/(p|div|h1|h2|h3|h4|h5|h6|li|blockquote)>/gi, ' </$1> ')
+                          .replace(/<br\s*[\/]?>/gi, ' ');
+      return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
+    }
+
+    // Renderizar Testimonios Clínicos y Tarjetas de Reflexiones
+    function renderTestimonials() {
+      const container = document.getElementById('testimonials-feed');
+      if (!container) return;
+
+      container.innerHTML = '';
+      
+      // 1. Obtener testimonios independientes de Firestore
+      const listToRender = testimonials;
+
+      const items = [];
+
+      listToRender.forEach((item) => {
+        items.push({
+          type: 'independent',
+          cita: item.cita,
+          autor: item.autor || 'Paciente anónimo'
+        });
+      });
+
+      // 2. Obtener extractos/frases de todas las reflexiones (automático o personalizado)
+      articles.forEach((art) => {
+        let citaText = '';
+        if (art.testimonio && art.testimonio.trim() !== '') {
+          citaText = art.testimonio.trim();
+        } else if (art.contenido) {
+          let cleanText = stripHtml(art.contenido);
+          // Si el texto plano comienza con el título del artículo (por etiquetas H1/H2), removerlo para no duplicar
+          if (cleanText.toLowerCase().startsWith(art.titulo.toLowerCase())) {
+            cleanText = cleanText.substring(art.titulo.length).trim().replace(/^[:\-\s]+/, '');
+          }
+          if (cleanText.length > 0) {
+            citaText = cleanText.length > 130 ? cleanText.substring(0, 130) + '...' : cleanText;
+          }
+        }
+
+        if (citaText) {
+          items.push({
+            type: 'linked',
+            id: art.id,
+            slug: getSlug(art.titulo),
+            cita: citaText,
+            titulo: art.titulo
+          });
+        }
+      });
+
+      const block = document.getElementById('testimonials-block');
+      if (items.length === 0) {
+        if (block) block.classList.add('hidden');
+        return;
+      } else {
+        if (block) block.classList.remove('hidden');
+      }
+
+      // Duplicar por 3 para lograr un bucle infinito real sin cortes visuales
+      for (let copy = 0; copy < 3; copy++) {
+        items.forEach((item) => {
+          const testElement = document.createElement('div');
+          testElement.className = "bg-brand-card border border-brand-border/60 rounded-xl p-6 hover:border-brand-accent/20 transition-all duration-300 flex flex-col justify-between group w-[280px] md:w-[350px] shrink-0 snap-start";
+          
+          if (item.type === 'independent') {
+            testElement.innerHTML = `
+              <div>
+                <span class="text-brand-accent/30 text-4xl font-serif block leading-none select-none mb-1">“</span>
+                <p class="text-zinc-300 italic text-sm leading-relaxed mb-6">${item.cita}</p>
+              </div>
+              <div class="border-t border-brand-border/40 pt-4 flex justify-between items-center">
+                <span class="text-xs text-zinc-500 font-mono">— ${item.autor}</span>
+              </div>
+            `;
+          } else {
+            testElement.innerHTML = `
+              <div>
+                <div class="flex items-center gap-1.5 mb-2.5">
+                  <span class="px-2 py-0.5 bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[10px] font-mono uppercase rounded-md tracking-wider">Reflexión</span>
+                </div>
+                <h4 class="text-white font-serif font-bold text-base leading-snug mb-2 line-clamp-2">${item.titulo}</h4>
+                <p class="text-zinc-300 text-xs leading-relaxed mb-6 font-sans">${item.cita}</p>
+              </div>
+              <div class="border-t border-brand-border/40 pt-4 flex justify-end items-center">
+                <a href="/articulos/${item.slug}" class="text-brand-accent hover:text-white text-xs font-bold transition flex items-center gap-1">
+                  <span>Leer artículo</span>
+                  <span>→</span>
+                </a>
+              </div>
+            `;
+          }
+          container.appendChild(testElement);
+        });
+      }
+
+      // Posicionar el scroll inicial en la copia del medio (sin transición abrupta)
+      setTimeout(() => {
+        const W = container.scrollWidth / 3;
+        if (W > 0) {
+          container.style.scrollBehavior = 'auto';
+          container.scrollLeft = W;
+        }
+      }, 50);
+
+      // Inicializar el auto-scroll loop
+      initTestimonialsAutoScroll();
+    }
+
+    let autoScrollInterval = null;
+    let isUserInteracting = false;
+    let scrollAdjustmentTimeout = null;
+    let scrollAnimationFrameId = null;
+
+    // Función propia de desplazamiento suave para regular la velocidad y asegurar compatibilidad
+    function smoothScrollTo(element, target, duration) {
+      if (scrollAnimationFrameId) {
+        cancelAnimationFrame(scrollAnimationFrameId);
+      }
+
+      const start = element.scrollLeft;
+      const change = target - start;
+      const startTime = performance.now();
+
+      function animateScroll(currentTime) {
+        const elapsedTime = currentTime - startTime;
+        if (elapsedTime >= duration) {
+          element.scrollLeft = target;
+          scrollAnimationFrameId = null;
+          return;
+        }
+
+        const timeFraction = elapsedTime / duration;
+        // Easing suave (easeInOutQuad)
+        const progress = timeFraction < 0.5 
+          ? 2 * timeFraction * timeFraction 
+          : -1 + (4 - 2 * timeFraction) * timeFraction;
+
+        element.scrollLeft = start + change * progress;
+        scrollAnimationFrameId = requestAnimationFrame(animateScroll);
+      }
+
+      scrollAnimationFrameId = requestAnimationFrame(animateScroll);
+    }
+
+    function initTestimonialsAutoScroll() {
+      const feed = document.getElementById('testimonials-feed');
+      if (!feed) return;
+
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+      }
+
+      if (!feed.dataset.listenersBound) {
+        feed.dataset.listenersBound = 'true';
+
+        // Eventos para pausar temporalmente el auto-desplazamiento al interactuar
+        feed.addEventListener('mouseenter', () => { isUserInteracting = true; });
+        feed.addEventListener('mouseleave', () => { isUserInteracting = false; });
+        feed.addEventListener('touchstart', () => { 
+          if (scrollAnimationFrameId) {
+            cancelAnimationFrame(scrollAnimationFrameId);
+            scrollAnimationFrameId = null;
+          }
+          isUserInteracting = true; 
+        }, { passive: true });
+        feed.addEventListener('touchend', () => { 
+          setTimeout(() => { isUserInteracting = false; }, 2500); 
+        }, { passive: true });
+
+        // Implementación de arrastre con mouse (drag-to-scroll) para PC
+        let isDown = false;
+        let startX;
+        let scrollLeftVal;
+
+        feed.addEventListener('mousedown', (e) => {
+          if (e.target.closest('button') || e.target.closest('a')) return;
+          if (scrollAnimationFrameId) {
+            cancelAnimationFrame(scrollAnimationFrameId);
+            scrollAnimationFrameId = null;
+          }
+          isDown = true;
+          feed.style.scrollBehavior = 'auto'; // Evita demoras en el arrastre
+          feed.style.scrollSnapType = 'none'; // Desactiva snap durante el arrastre manual
+          startX = e.pageX - feed.offsetLeft;
+          scrollLeftVal = feed.scrollLeft;
+          isUserInteracting = true;
+        });
+
+        feed.addEventListener('mouseleave', () => {
+          if (!isDown) return;
+          isDown = false;
+          feed.style.scrollBehavior = 'smooth';
+          feed.style.scrollSnapType = 'x mandatory';
+          setTimeout(() => { isUserInteracting = false; }, 2500);
+        });
+
+        feed.addEventListener('mouseup', () => {
+          if (!isDown) return;
+          isDown = false;
+          feed.style.scrollBehavior = 'smooth';
+          feed.style.scrollSnapType = 'x mandatory';
+          setTimeout(() => { isUserInteracting = false; }, 2500);
+        });
+
+        feed.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - feed.offsetLeft;
+          const walk = (x - startX) * 1.5; // multiplicador de velocidad
+          feed.scrollLeft = scrollLeftVal - walk;
+        });
+
+        // Escuchar el scroll para saltar de forma invisible entre las copias y mantener el loop infinito
+        feed.addEventListener('scroll', () => {
+          clearTimeout(scrollAdjustmentTimeout);
+          scrollAdjustmentTimeout = setTimeout(() => {
+            const W = feed.scrollWidth / 3;
+            if (W <= 0) return;
+
+            // Si se desplaza hacia la izquierda entrando a la primera copia, salta adelante
+            if (feed.scrollLeft < W - 10) {
+              feed.style.scrollBehavior = 'auto'; // Salto instantáneo
+              feed.scrollLeft += W;
+            }
+            // Si se desplaza hacia la derecha entrando a la tercera copia, salta atrás
+            else if (feed.scrollLeft >= 2 * W - 10) {
+              feed.style.scrollBehavior = 'auto'; // Salto instantáneo
+              feed.scrollLeft -= W;
+            }
+          }, 100);
+        });
+      }
+
+      autoScrollInterval = setInterval(() => {
+        if (isUserInteracting) return;
+
+        const cards = feed.children;
+        if (cards.length <= 1) return;
+
+        const cardWidth = (cards[0].offsetWidth || 350) + 16; // tarjeta + gap
+        
+        // Desactivar temporalmente snap para realizar una transición lenta y controlada de 1.2 segundos
+        feed.style.scrollSnapType = 'none';
+        smoothScrollTo(feed, feed.scrollLeft + cardWidth, 1200);
+
+        // Reactivar snap tras completarse la animación suave de scroll
+        setTimeout(() => {
+          if (!isUserInteracting) {
+            feed.style.scrollSnapType = 'x mandatory';
+          }
+        }, 1300);
+      }, 4500);
+    }
+
+    function toggleAllArticles() {
+      showAllArticles = !showAllArticles;
+      renderArticles();
+      if (!showAllArticles) {
+        document.getElementById('experiencias-section').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Renderizar Preguntas Frecuentes (FAQ) y generar JSON-LD para SEO
+    function renderFAQs() {
+      const container = document.getElementById('faq-feed');
+      if (!container) return;
+
+      container.innerHTML = '';
+      
+      const listToRender = faqs.length > 0 ? faqs : defaultFaqs;
+
+      listToRender.forEach((item, index) => {
+        const faqElement = document.createElement('div');
+        faqElement.className = "bg-brand-card border border-brand-border/60 rounded-xl overflow-hidden transition-all duration-300 hover:border-brand-accent/20";
+        
+        faqElement.innerHTML = `
+          <button onclick="toggleFaq(${index})" class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-900/30 transition">
+            <span class="font-serif text-base sm:text-lg text-white font-medium pr-4">${item.pregunta}</span>
+            <span id="faq-icon-${index}" class="text-brand-accent text-xl transition-transform duration-300 font-mono select-none">+</span>
+          </button>
+          <div id="faq-content-${index}" class="hidden border-t border-brand-border/40 bg-brand-black/20 px-6 py-4 text-zinc-300 text-sm leading-relaxed space-y-2 select-text font-sans">
+            <p>${item.respuesta}</p>
+          </div>
+        `;
+        container.appendChild(faqElement);
+      });
+
+      // Generar el script JSON-LD dinámico de FAQ
+      updateFaqSchema(listToRender);
+    }
+
+    // Toggle de Acordeón
+    function toggleFaq(index) {
+      const content = document.getElementById(`faq-content-${index}`);
+      const icon = document.getElementById(`faq-icon-${index}`);
+      if (!content || !icon) return;
+
+      const isHidden = content.classList.contains('hidden');
+      
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.innerText = "−";
+        icon.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        icon.innerText = "+";
+        icon.classList.remove('rotate-180');
+      }
+    }
+
+    // Generar JSON-LD estructurado de FAQ para Google
+    function updateFaqSchema(faqList) {
+      let schemaScript = document.getElementById('faq-schema');
+      if (!schemaScript) {
+        schemaScript = document.createElement('script');
+        schemaScript.id = 'faq-schema';
+        schemaScript.type = 'application/ld+json';
+        document.head.appendChild(schemaScript);
+      }
+
+      const schemaData = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqList.map(item => ({
+          "@type": "Question",
+          "name": item.pregunta,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.respuesta.replace(/<[^>]*>/g, '') // Limpiar HTML para los buscadores
+          }
+        }))
+      };
+
+      schemaScript.text = JSON.stringify(schemaData, null, 2);
+    }
+
+    // Exponer funciones necesarias al scope global (window)
+    window.toggleAllArticles = toggleAllArticles;
+    window.toggleFaq = toggleFaq;
+  </script>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+  <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20coordinar%20una%20consulta%20terap%C3%A9utica." target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl transition duration-300 hover:scale-110 flex items-center justify-center group" aria-label="Contacto por WhatsApp">
+    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.806-9.8.001-2.617-1.01-5.079-2.848-6.918C16.393 2.049 13.928.99 11.996.99 6.597.99 2.195 5.39 2.193 10.793c0 1.503.41 2.971 1.187 4.256l-.993 3.63 3.733-.978c1.3.708 2.6 1.05 3.937 1.053zM18.06 14.86c-.328-.164-1.94-.958-2.24-1.07-.3-.109-.52-.164-.738.164-.219.327-.847 1.07-1.039 1.288-.19.22-.382.245-.71.08-1.079-.54-1.89-1.08-2.63-2.35-.197-.338.197-.314.562-1.04.06-.12.03-.223-.015-.313-.045-.09-.382-.922-.524-1.26-.14-.336-.282-.29-.387-.295-.1-.005-.216-.005-.33-.005-.115 0-.3-.043-.456.128-.156.173-.596.58-.596 1.417s.609 1.64.695 1.758c.086.117 1.199 1.83 2.903 2.565.406.175.722.28.969.358.408.13.78.11 1.075.067.33-.049 1.94-.794 2.215-1.53.275-.738.275-1.37.19-1.503-.085-.13-.3-.213-.63-.377z"/>
+    </svg>
+    <span class="absolute right-14 bg-zinc-900 border border-brand-border text-white text-xs py-1.5 px-3 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition duration-300 shadow-xl whitespace-nowrap">
+      Iniciar consulta terapéutica
+    </span>
+  </a>
+
+</body>
+</html>

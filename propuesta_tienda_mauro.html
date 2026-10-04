@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propuesta Visual: Tienda de Audioguías & Recursos | Lic. Mauro García</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="assets/logo_v2.webp">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              black: '#0A0D0A',
+              dark: '#0e130e',
+              card: '#141a14',
+              cardHover: '#1a231a',
+              light: '#E2E8F0',
+              accent: '#8EB486',
+              accentHover: '#7CA074',
+              accentLight: '#B5CFB0',
+              muted: '#8F9B8D',
+              border: '#232f23'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-panel {
+      background: rgba(20, 26, 20, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(142, 180, 134, 0.15);
+    }
+    .gradient-glow {
+      background: radial-gradient(circle at 50% 20%, rgba(142, 180, 134, 0.15) 0%, transparent 65%);
+    }
+    .badge-glow {
+      box-shadow: 0 0 15px rgba(142, 180, 134, 0.25);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A0D0A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232f23;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8EB486;
+    }
+  </style>
+</head>
+<body class="bg-brand-black text-brand-light font-sans antialiased selection:bg-brand-accent selection:text-brand-black">
+
+  <!-- Glow Background Effect -->
+  <div class="fixed inset-0 gradient-glow pointer-events-none z-0"></div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-brand-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-brand-card border border-brand-accent/30 flex items-center justify-center text-brand-accent shadow-sm">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="font-serif font-bold text-lg text-white tracking-wide block">PROPUESTA TÉCNICA & VISUAL</span>
+          <span class="text-xs text-brand-accent uppercase tracking-widest font-semibold">Psicólogo Vegano • Lic. Mauro García</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-brand-accent/10 text-brand-accent border border-brand-accent/20">
+          <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+          100% Automatizado • 0 Costo Fijo
+        </span>
+        <a href="#contacto" class="bg-brand-accent hover:bg-brand-accentHover text-brand-black text-xs font-bold px-4 py-2.5 rounded-lg transition-all flex items-center gap-2 shadow-lg hover:shadow-brand-accent/20">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          Aprobar & Comenzar
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative z-10 pt-12 pb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-card border border-brand-border text-brand-accent mb-6 badge-glow">
+      <i data-lucide="headphones" class="w-4 h-4"></i>
+      Ecosistema Digital de Recursos Terapéuticos
+    </div>
+    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight mb-6">
+      Automatizá la venta y entrega de tus <br class="hidden sm:block">
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent via-brand-accentLight to-emerald-400">Audioguías y Cuadernillos</span>
+    </h1>
+    <p class="max-w-3xl mx-auto text-base sm:text-lg text-brand-muted leading-relaxed mb-10">
+      Una experiencia de compra elegante y sin fricciones integrada a tu propia web. El paciente paga con <strong class="text-white">Mercado Pago</strong> y recibe al instante acceso a un <strong class="text-white">reproductor privado online</strong> y descarga de todos los audios y materiales en PDF.
+    </p>
+
+    <!-- Key Metrics Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto text-left mb-12">
+      <div class="p-5 rounded-2xl bg-brand-card border border-brand-border/80">
+        <div class="w-9 h-9 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center mb-3">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-semibold text-white text-base">Entrega en 3 Segundos</h4>
+        <p class="text-xs text-brand-muted mt-1">El sistema despacha el acceso automáticamente apenas se aprueba el pago, 24/7 sin que tengas que intervenir.</p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-brand-card border border-brand-border/80">
+        <div class="w-9 h-9 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center mb-3">
+          <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-semibold text-white text-base">$0 Costo de Mantenimiento</h4>
+        <p class="text-xs text-brand-muted mt-1">Sin cuotas mensuales de Tiendanube ni Shopify. Solo la comisión normal de Mercado Pago por venta cobrada.</p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-brand-card border border-brand-border/80">
+        <div class="w-9 h-9 rounded-xl bg-brand-accent/10 text-brand-accent flex items-center justify-center mb-3">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <h4 class="font-semibold text-white text-base">Cobro Directo a tu Cuenta</h4>
+        <p class="text-xs text-brand-muted mt-1">Conexión directa con tu cuenta oficial de Mercado Pago. El dinero entra directo a tu cuenta bancaria / MP.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Mockups Tabs -->
+  <section class="relative z-10 py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+    <div class="flex flex-col items-center mb-8">
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white text-center mb-3">
+        Cómo funcionará cada parte del sistema
+      </h2>
+      <p class="text-sm text-brand-muted text-center max-w-xl">
+        Hacé clic en las pestañas para explorar cómo interactúa el paciente y cómo gestionás vos los productos desde tu panel:
+      </p>
+
+      <!-- Tab Buttons -->
+      <div class="mt-6 flex flex-wrap justify-center gap-2 p-1.5 bg-brand-card border border-brand-border rounded-xl">
+        <button onclick="switchTab('tienda')" id="btn-tienda" class="tab-btn active px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 bg-brand-accent text-brand-black shadow">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          1. La Tienda en la Web
+        </button>
+        <button onclick="switchTab('reproductor')" id="btn-reproductor" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 text-brand-muted hover:text-white">
+          <i data-lucide="play-circle" class="w-4 h-4"></i>
+          2. Hub Privado del Paciente
+        </button>
+        <button onclick="switchTab('admin')" id="btn-admin" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 text-brand-muted hover:text-white">
+          <i data-lucide="sliders" class="w-4 h-4"></i>
+          3. Tu Panel de Control
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: MOCKUP TIENDA -->
+    <div id="tab-tienda" class="tab-content block">
+      <div class="rounded-2xl bg-brand-dark border border-brand-border p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-brand-border pb-4 mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+            <span class="text-xs text-brand-muted font-mono ml-2">psicologiaveganaarg.web.app/recursos</span>
+          </div>
+          <span class="text-xs text-brand-accent font-medium">Vista del Comprador</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <!-- Columna Imagen / Portada -->
+          <div class="lg:col-span-5 relative group">
+            <div class="aspect-square rounded-2xl bg-gradient-to-br from-brand-card to-[#0d140e] border border-brand-border p-6 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-xl">
+              <div class="absolute -right-8 -top-8 w-32 h-32 bg-brand-accent/10 rounded-full blur-2xl pointer-events-none"></div>
+              <div class="w-20 h-20 rounded-full bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform duration-300">
+                <i data-lucide="headphones" class="w-10 h-10"></i>
+              </div>
+              <span class="text-xs uppercase tracking-widest text-brand-accent font-bold mb-1">Audioguía Terapéutica</span>
+              <h3 class="font-serif text-xl font-bold text-white mb-2">Gestión Emocional en Entornos Especistas</h3>
+              <p class="text-xs text-brand-muted">Pack Completo: 4 Audios Guiados + Cuadernillo de Integración en PDF</p>
+              
+              <div class="mt-4 inline-flex items-center gap-2 text-xs bg-brand-card/90 border border-brand-border px-3 py-1.5 rounded-full text-brand-light">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-accent"></i>
+                Duración total: 1h 15min
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Detalles & Compra -->
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-accent/10 text-brand-accent mb-3">
+              <i data-lucide="star" class="w-3.5 h-3.5 fill-brand-accent"></i> Recurso Más Solicitado
+            </div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-3">
+              Herramientas de afrontamiento ante la soledad, el duelo y la incomprensión social
+            </h2>
+            <p class="text-sm text-brand-muted mb-6 leading-relaxed">
+              Diseñado específicamente para personas veganas y vegetarianas. Un espacio de acompañamiento sonoro para regular el sistema nervioso, procesar la angustia y cultivar asertividad sin desgastar tus vínculos.
+            </p>
+
+            <!-- Lista de Contenidos -->
+            <div class="space-y-2.5 mb-6">
+              <div class="flex items-center gap-3 text-xs sm:text-sm text-brand-light bg-brand-card/50 p-2.5 rounded-lg border border-brand-border/60">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+                <span><strong>Audio 1:</strong> Validación y Desactivación de la Culpa (16 min)</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs sm:text-sm text-brand-light bg-brand-card/50 p-2.5 rounded-lg border border-brand-border/60">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+                <span><strong>Audio 2:</strong> Regulación Somática y Respiración Consciente (22 min)</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs sm:text-sm text-brand-light bg-brand-card/50 p-2.5 rounded-lg border border-brand-border/60">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+                <span><strong>Audio 3:</strong> Comunicación Asertiva en la Mesa Familiar (20 min)</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs sm:text-sm text-brand-light bg-brand-card/50 p-2.5 rounded-lg border border-brand-border/60">
+                <i data-lucide="file-text" class="w-4 h-4 text-brand-accent flex-shrink-0"></i>
+                <span><strong>Material PDF:</strong> Cuadernillo con 15 ejercicios prácticos imprimibles</span>
+              </div>
+            </div>
+
+            <!-- Caja de Precio y Botón de Pago -->
+            <div class="p-5 rounded-xl bg-brand-card border border-brand-accent/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <span class="text-xs text-brand-muted block">Inversión única (acceso de por vida)</span>
+                <div class="flex items-baseline gap-2">
+                  <span class="font-serif text-3xl font-bold text-white">$12.500</span>
+                  <span class="text-xs font-semibold text-brand-muted">ARS</span>
+                </div>
+              </div>
+
+              <button onclick="alert('Demostración: Aquí se abre el Checkout Pro de Mercado Pago solicitando el email del comprador.');" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-brand-black font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-brand-accent/25">
+                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                Comprar con Mercado Pago
+              </button>
+            </div>
+            <p class="text-[11px] text-brand-muted text-center mt-2.5 flex items-center justify-center gap-1.5">
+              <i data-lucide="shield" class="w-3.5 h-3.5 text-brand-accent"></i>
+              Pago seguro encriptado • Entrega inmediata a tu correo electrónico
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: MOCKUP REPRODUCTOR PRIVADO -->
+    <div id="tab-reproductor" class="tab-content hidden">
+      <div class="rounded-2xl bg-brand-dark border border-brand-border p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-brand-border pb-4 mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+            <span class="text-xs text-brand-muted font-mono ml-2">psicologiaveganaarg.web.app/mi-recurso?token=secure_8f92a</span>
+          </div>
+          <span class="text-xs text-brand-accent font-medium">Hub Privado Post-Compra</span>
+        </div>
+
+        <div class="max-w-3xl mx-auto">
+          <!-- Saludo Personalizado -->
+          <div class="text-center mb-8">
+            <span class="text-xs font-semibold text-brand-accent bg-brand-accent/10 px-3 py-1 rounded-full border border-brand-accent/20">Acceso Habilitado</span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mt-2">¡Hola, Lucía! Gracias por adquirir tu Audioguía</h3>
+            <p class="text-xs text-brand-muted mt-1">Podés escuchar los audios online directamente desde acá o descargar el pack a tu teléfono o PC.</p>
+          </div>
+
+          <!-- Reproductor Interactivo Estilizado -->
+          <div class="p-6 rounded-2xl bg-brand-card border border-brand-accent/30 mb-6 shadow-xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-[11px] text-brand-accent font-semibold uppercase tracking-wider block">Reproduciendo ahora</span>
+                <h4 class="text-base font-semibold text-white" id="player-title">Audio 1: Validación y Desactivación de la Culpa</h4>
+                <span class="text-xs text-brand-muted">Voz y guía: Lic. Mauro García</span>
+              </div>
+              <div class="w-12 h-12 rounded-full bg-brand-accent/10 border border-brand-accent/40 flex items-center justify-center text-brand-accent">
+                <i data-lucide="volume-2" class="w-6 h-6 animate-pulse"></i>
+              </div>
+            </div>
+
+            <!-- Barra de progreso simulada -->
+            <div class="space-y-1 mb-4">
+              <div class="w-full h-2 bg-brand-black rounded-full overflow-hidden cursor-pointer">
+                <div class="w-1/3 h-full bg-gradient-to-r from-brand-accent to-emerald-400 rounded-full"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-brand-muted font-mono">
+                <span>05:24</span>
+                <span>16:00</span>
+              </div>
+            </div>
+
+            <!-- Controles -->
+            <div class="flex items-center justify-center gap-6">
+              <button class="text-brand-muted hover:text-white transition-colors"><i data-lucide="skip-back" class="w-5 h-5"></i></button>
+              <button class="w-12 h-12 rounded-full bg-brand-accent text-brand-black flex items-center justify-center hover:scale-105 transition-transform shadow-lg">
+                <i data-lucide="play" class="w-5 h-5 fill-brand-black"></i>
+              </button>
+              <button class="text-brand-muted hover:text-white transition-colors"><i data-lucide="skip-forward" class="w-5 h-5"></i></button>
+            </div>
+          </div>
+
+          <!-- Lista de Descargas y Materiales -->
+          <h4 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+            <i data-lucide="folder-down" class="w-4 h-4 text-brand-accent"></i>
+            Descargas Individuales & Material Complementario
+          </h4>
+
+          <div class="space-y-2.5 mb-6">
+            <div class="flex items-center justify-between p-3 rounded-xl bg-brand-card border border-brand-border hover:border-brand-accent/40 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-black flex items-center justify-center text-brand-accent">
+                  <i data-lucide="music" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-semibold text-white">01_Validacion_Emocional.mp3</div>
+                  <div class="text-[11px] text-brand-muted">16 min • 18.4 MB</div>
+                </div>
+              </div>
+              <button class="px-3 py-1.5 rounded-lg bg-brand-black hover:bg-brand-accent hover:text-brand-black text-brand-light text-xs font-medium transition-all flex items-center gap-1.5 border border-brand-border">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Bajar
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded-xl bg-brand-card border border-brand-border hover:border-brand-accent/40 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-black flex items-center justify-center text-brand-accent">
+                  <i data-lucide="file-text" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-semibold text-white">Cuaderno_Ejercicios_Practicos.pdf</div>
+                  <div class="text-[11px] text-brand-muted">12 páginas • PDF Imprimible</div>
+                </div>
+              </div>
+              <button class="px-3 py-1.5 rounded-lg bg-brand-black hover:bg-brand-accent hover:text-brand-black text-brand-light text-xs font-medium transition-all flex items-center gap-1.5 border border-brand-border">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Bajar
+              </button>
+            </div>
+          </div>
+
+          <!-- Botón de Descargar Todo -->
+          <div class="text-center">
+            <button class="w-full py-3.5 rounded-xl bg-brand-card hover:bg-brand-cardHover border border-brand-accent text-brand-accent font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-lg">
+              <i data-lucide="archive" class="w-4 h-4"></i>
+              Descargar Pack Completo (.ZIP con todos los audios y PDF)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: MOCKUP PANEL ADMIN -->
+    <div id="tab-admin" class="tab-content hidden">
+      <div class="rounded-2xl bg-brand-dark border border-brand-border p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-brand-border pb-4 mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+            <span class="text-xs text-brand-muted font-mono ml-2">admin.html → Módulo de Recursos & Ventas</span>
+          </div>
+          <span class="text-xs text-brand-accent font-medium">Panel Exclusivo de Mauro</span>
+        </div>
+
+        <!-- Conexión Mercado Pago Card -->
+        <div class="p-5 rounded-2xl bg-gradient-to-r from-brand-card via-[#142017] to-brand-card border border-emerald-500/30 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#009EE3]/15 text-[#009EE3] flex items-center justify-center flex-shrink-0 border border-[#009EE3]/30">
+              <i data-lucide="credit-card" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-semibold text-white text-base">Cuenta de Mercado Pago</h4>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">CONECTADA</span>
+              </div>
+              <p class="text-xs text-brand-muted mt-0.5">Cobros directos a nombre de: <strong>Mauro García Rodriguez</strong> (maurogarcia...@gmail.com)</p>
+            </div>
+          </div>
+          <button class="px-4 py-2 rounded-lg bg-brand-black border border-brand-border text-xs text-brand-muted hover:text-white transition-colors">
+            Cambiar o Desvincular
+          </button>
+        </div>
+
+        <!-- Métricas Rápidas -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border">
+            <span class="text-xs text-brand-muted block">Ventas de este mes</span>
+            <span class="font-serif text-2xl font-bold text-white">24 audioguías</span>
+            <span class="text-[11px] text-emerald-400 block mt-1">↑ +18% vs mes anterior</span>
+          </div>
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border">
+            <span class="text-xs text-brand-muted block">Ingresos Netos Generados</span>
+            <span class="font-serif text-2xl font-bold text-brand-accent">$300.000 ARS</span>
+            <span class="text-[11px] text-brand-muted block mt-1">Acreditado automáticamente</span>
+          </div>
+          <div class="p-4 rounded-xl bg-brand-card border border-brand-border">
+            <span class="text-xs text-brand-muted block">Entregas por Email</span>
+            <span class="font-serif text-2xl font-bold text-white">100% Exitosas</span>
+            <span class="text-[11px] text-emerald-400 block mt-1">0 fallos de entrega</span>
+          </div>
+        </div>
+
+        <!-- Tabla de Órdenes Recientes -->
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="text-sm font-semibold text-white flex items-center gap-2">
+            <i data-lucide="receipt" class="w-4 h-4 text-brand-accent"></i>
+            Últimas Compras Registradas
+          </h4>
+          <button class="text-xs text-brand-accent hover:underline flex items-center gap-1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Cargar Nueva Audioguía
+          </button>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-brand-border bg-brand-card">
+          <table class="w-full text-left text-xs text-brand-light">
+            <thead class="bg-brand-black/60 text-brand-muted uppercase text-[10px] tracking-wider border-b border-brand-border">
+              <tr>
+                <th class="p-3.5">Fecha</th>
+                <th class="p-3.5">Paciente / Comprador</th>
+                <th class="p-3.5">Producto</th>
+                <th class="p-3.5">Monto</th>
+                <th class="p-3.5">Estado</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-brand-border/60">
+              <tr>
+                <td class="p-3.5 text-brand-muted font-mono">Hoy 19:42</td>
+                <td class="p-3.5 font-medium text-white">lucia.martinez@gmail.com</td>
+                <td class="p-3.5">Pack Gestión Emocional</td>
+                <td class="p-3.5 font-semibold text-brand-accent">$12.500</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Email Enviado</span></td>
+              </tr>
+              <tr>
+                <td class="p-3.5 text-brand-muted font-mono">Ayer 11:15</td>
+                <td class="p-3.5 font-medium text-white">gonzalez_fede@hotmail.com</td>
+                <td class="p-3.5">Pack Gestión Emocional</td>
+                <td class="p-3.5 font-semibold text-brand-accent">$12.500</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Email Enviado</span></td>
+              </tr>
+              <tr>
+                <td class="p-3.5 text-brand-muted font-mono">17 Ago 22:04</td>
+                <td class="p-3.5 font-medium text-white">camila.s@outlook.com</td>
+                <td class="p-3.5">Pack Gestión Emocional</td>
+                <td class="p-3.5 font-semibold text-brand-accent">$12.500</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Email Enviado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paso a Paso para Implementar -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="text-xs font-bold text-brand-accent uppercase tracking-widest block mb-2">Plan de Trabajo</span>
+      <h2 class="font-serif text-3xl font-bold text-white">¿Qué necesitamos para ponerlo en marcha?</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-brand-card border border-brand-border relative">
+        <div class="w-8 h-8 rounded-full bg-brand-accent text-brand-black font-bold text-xs flex items-center justify-center mb-4">1</div>
+        <h3 class="font-semibold text-white text-base mb-2">Audios y PDFs Listos</h3>
+        <p class="text-xs text-brand-muted leading-relaxed">
+          Tener los archivos de audio editados (.mp3) y los cuadernillos o guías (.pdf) con sus títulos, descripciones y precio deseado.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-brand-card border border-brand-border relative">
+        <div class="w-8 h-8 rounded-full bg-brand-accent text-brand-black font-bold text-xs flex items-center justify-center mb-4">2</div>
+        <h3 class="font-semibold text-white text-base mb-2">Conectar Mercado Pago</h3>
+        <p class="text-xs text-brand-muted leading-relaxed">
+          Mauro conecta su cuenta en 1 clic (o nos comparte el Access Token de producción) para que todas las ventas se cobren directamente en su cuenta.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-brand-card border border-brand-border relative">
+        <div class="w-8 h-8 rounded-full bg-brand-accent text-brand-black font-bold text-xs flex items-center justify-center mb-4">3</div>
+        <h3 class="font-semibold text-white text-base mb-2">Integración & Test</h3>
+        <p class="text-xs text-brand-muted leading-relaxed">
+          Subimos la tienda a la web, configuramos el envío automático de emails y hacemos una compra de prueba para verificar todo el circuito.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section id="contacto" class="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
+    <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-brand-card to-brand-dark border border-brand-accent/30 shadow-2xl relative overflow-hidden">
+      <div class="absolute inset-0 gradient-glow pointer-events-none"></div>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">
+        ¿Avanzamos con la implementación?
+      </h2>
+      <p class="text-sm text-brand-muted max-w-lg mx-auto mb-8">
+        El sistema está pensado para que vos no tengas que ocuparte de nada técnico: se monetizan tus recursos existentes de manera 100% automática.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <button onclick="alert('¡Listo para iniciar! Solo avísanos cuando quieras que empecemos la integración.');" class="px-8 py-3.5 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-brand-black font-bold text-sm transition-all shadow-lg hover:shadow-brand-accent/30 flex items-center gap-2">
+          <i data-lucide="rocket" class="w-4 h-4"></i>
+          ¡Dar Luz Verde a la Tienda!
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 text-center text-xs text-brand-muted border-t border-brand-border/60">
+    <p>Psicología Vegana Argentina • Propuesta técnica confidencial para Lic. Mauro García</p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-accent', 'text-brand-black', 'shadow', 'active');
+        btn.classList.add('text-brand-muted');
+      });
+
+      const activeContent = document.getElementById('tab-' + tabId);
+      const activeBtn = document.getElementById('btn-' + tabId);
+
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-accent', 'text-brand-black', 'shadow', 'active');
+        activeBtn.classList.remove('text-brand-muted');
+      }
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /functions/
+Disallow: /node_modules/
+
+Sitemap: https://psicologiaveganaarg.web.app/sitemap.xml

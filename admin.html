@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración | Psicólogo Vegano</title>
+  <link rel="icon" type="image/webp" href="/assets/logo.webp">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- Quill Editor CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <!-- Chart.js para analíticas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              black: '#0A0D0A',
+              card: '#121712',
+              light: '#E2E8F0',
+              accent: '#8EB486',
+              accentHover: '#7CA074',
+              muted: '#6B7280',
+              border: '#1F2937'
+            }
+          }
+        }
+      }
+    }
+
+    function handleLogoError(img) {
+      const svgLogo = `
+        <svg viewBox="0 0 500 500" class="w-full h-full p-2 bg-[#0A0D0A]" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="250" cy="250" r="210" fill="none" stroke="#8EB486" stroke-width="2" />
+          <circle cx="90" cy="180" r="4" fill="#8EB486" />
+          <circle cx="75" cy="210" r="4" fill="#8EB486" />
+          <circle cx="70" cy="246" r="4" fill="#8EB486" />
+          <circle cx="74" cy="282" r="4" fill="#8EB486" />
+          <circle cx="86" cy="316" r="4" fill="#8EB486" />
+          <path d="M 200,160 C 200,250 300,250 300,160 M 250,125 L 250,290" fill="none" stroke="#8EB486" stroke-width="12" stroke-linecap="round" />
+          <path d="M 300,160 C 320,130 360,120 380,120 C 350,140 330,170 300,160 Z" fill="#8EB486" />
+          <path d="M 300,160 C 330,150 370,155 390,175 C 355,170 325,165 300,160 Z" fill="#8EB486" />
+          <path d="M 300,160 Q 340,145 380,130" fill="none" stroke="#8EB486" stroke-width="3" />
+          <text x="250" y="345" font-family="'Playfair Display', serif" font-weight="600" font-size="34" fill="#e2e8f0" text-anchor="middle" letter-spacing="4">PSICOLOGÍA</text>
+          <text x="250" y="390" font-family="'Playfair Display', serif" font-size="28" fill="#8EB486" text-anchor="middle" letter-spacing="6">VEGANA</text>
+        </svg>
+      `;
+      img.outerHTML = svgLogo;
+    }
+  </script>
+
+  <style>
+    /* Estilos personalizados para Quill en modo oscuro */
+    .ql-toolbar.ql-snow {
+      background-color: #1A201C !important;
+      border: 1px solid #2D3748 !important;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+    }
+    .ql-container.ql-snow {
+      border: 1px solid #2D3748 !important;
+      border-bottom-left-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+      background-color: #121712 !important;
+      color: #E2E8F0 !important;
+      font-family: 'Inter', sans-serif;
+      min-height: 380px; /* Editor más alto de base */
+    }
+    .ql-editor p {
+      margin-bottom: 1rem;
+    }
+    .ql-editor.ql-blank::before {
+      color: #A0AEC0 !important; /* Gris claro/blanco gris para el placeholder */
+      font-style: normal !important;
+    }
+    .ql-snow .ql-stroke {
+      stroke: #E2E8F0 !important;
+    }
+    .ql-snow .ql-fill {
+      fill: #E2E8F0 !important;
+    }
+    .ql-snow .ql-picker {
+      color: #E2E8F0 !important;
+    }
+    .ql-snow .ql-picker-options {
+      background-color: #1A201C !important;
+      border-color: #2D3748 !important;
+    }
+  </style>
+</head>
+<body class="bg-brand-black text-brand-light font-sans min-h-screen selection:bg-brand-accent selection:text-brand-black">
+
+  <!-- BANNER DE ENTORNO DE DESARROLLO -->
+  <div id="dev-banner" class="hidden bg-brand-accent text-brand-black text-center text-xs py-1.5 font-bold tracking-wider uppercase border-b border-brand-border">
+    ⚙️ Consola de Edición Activa — Cualquier cambio se publicará directamente
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center border-b border-brand-border/40">
+    <div class="flex items-center gap-2">
+      <a href="/" class="text-xs text-zinc-400 hover:text-brand-accent transition flex items-center gap-1.5">
+        <span>← Volver al sitio público</span>
+      </a>
+    </div>
+    <span class="text-xs font-mono text-zinc-500">v1.1.0 - Panel Seguro</span>
+  </div>
+
+  <main id="view-admin" class="max-w-4xl mx-auto px-6 py-12">
+    
+    <!-- PANTALLA DE LOGIN -->
+    <div id="admin-login" class="max-w-md mx-auto bg-brand-card border border-brand-border rounded-2xl p-8 my-16 shadow-2xl">
+      <div class="text-center mb-6">
+        <div class="mx-auto w-24 h-24 mb-4 rounded-full overflow-hidden border border-brand-border flex items-center justify-center bg-zinc-950">
+          <img src="/assets/logo.webp" alt="Psicología Verde Logo" class="w-full h-full object-cover" onerror="handleLogoError(this)">
+        </div>
+        <h2 class="font-serif text-2xl text-white mt-3">Panel de Administración</h2>
+        <p class="text-zinc-400 text-sm mt-1">Ingresá tu credencial de acceso para redactar</p>
+      </div>
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Usuario</label>
+          <input type="text" id="login-user" required value="verde.psicologia@gmail.com" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Contraseña</label>
+          <input type="password" id="login-pass" placeholder="Ingresá tu contraseña de Firebase..." required class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition">
+          <p class="text-[10px] text-zinc-500 mt-1">Ingresá la contraseña de tu cuenta de administrador registrada en Firebase Auth.</p>
+        </div>
+        <button type="submit" class="w-full bg-brand-accent text-brand-black font-bold py-2.5 rounded-lg hover:bg-brand-accentHover transition">
+          Iniciar Sesión
+        </button>
+      </form>
+    </div>
+
+    <!-- ENTORNO DEL EDITOR (Oculto inicialmente hasta loguearse) -->
+    <div id="admin-dashboard" class="hidden space-y-6">
+      
+      <!-- Encabezado del Panel -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-brand-border pb-6 gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full overflow-hidden border border-brand-border hidden sm:flex items-center justify-center bg-zinc-950">
+            <img src="/assets/logo.webp" alt="Logo Chico" class="w-full h-full object-cover" onerror="handleLogoError(this)">
+          </div>
+          <div>
+            <h2 class="font-serif text-3xl text-white">Consola de Publicación</h2>
+            <p class="text-zinc-400 text-sm mt-1">Conectado de forma segura como <span class="text-brand-accent font-medium">Lic. Mauro García</span></p>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="px-4 py-1.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-lg text-xs font-medium transition">
+          Cerrar Sesión
+        </button>
+      </div>
+
+      <!-- Estadísticas reales de Firestore -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+          <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Artículos Publicados</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="stats-total-articles" class="text-3xl font-bold text-white">0</span>
+            <span class="text-xs text-brand-accent">en total</span>
+          </div>
+          <p class="text-[10px] text-zinc-400 mt-2">Lectura en tiempo real de Firestore</p>
+        </div>
+        <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+          <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Última Publicación</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="stats-last-date" class="text-sm font-bold text-white">Ninguno</span>
+          </div>
+          <p class="text-[10px] text-zinc-400 mt-2">Fecha de la nota más reciente</p>
+        </div>
+        <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+          <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Sesión Iniciada Como</p>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="stats-user-email" class="text-sm font-bold text-emerald-400 truncate block max-w-full">...</span>
+          </div>
+          <p class="text-[10px] text-zinc-400 mt-2">Proyecto: psicologiaveganaarg</p>
+        </div>
+      </div>
+
+      <!-- Navegación por Pestañas -->
+      <div class="flex border-b border-brand-border/60 gap-2 mb-6">
+        <button onclick="switchTab('tab-content')" id="btn-tab-content" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-brand-accent text-brand-accent bg-brand-card/30 transition">
+          📝 Contenido
+        </button>
+        <button onclick="switchTab('tab-analytics')" id="btn-tab-analytics" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition">
+          📊 Analytics
+        </button>
+        <button onclick="switchTab('tab-maintenance')" id="btn-tab-maintenance" class="px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition">
+          ⚙️ Copias de Seguridad
+        </button>
+      </div>
+
+      <!-- SECCIÓN CONTENIDO -->
+      <div id="section-content" class="space-y-6">
+        <!-- Formulario de Escritura -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-6">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Título de la nota</label>
+          <input type="text" id="article-title" placeholder="Ej: Superando la fatiga por compasión..." class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Fecha de publicación</label>
+          <input type="date" id="article-date" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition">
+        </div>
+ 
+        <!-- Selector e imagen de portada (Opcional) -->
+        <div class="space-y-3">
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest">Imagen de portada (Opcional)</label>
+          
+          <!-- Contenedor de Vista Previa -->
+          <div id="cover-preview-container" class="hidden relative rounded-xl overflow-hidden border border-brand-border max-w-sm aspect-[16/9] bg-zinc-950">
+            <img id="cover-preview-img" src="" alt="Vista previa de portada" class="w-full h-full object-cover">
+            <button type="button" onclick="removeCoverImage()" class="absolute top-2 right-2 bg-red-600/90 hover:bg-red-700 text-white rounded-full p-1.5 text-xs font-bold transition shadow-lg">
+              ✕ Quitar
+            </button>
+            <!-- Badge de orientación -->
+            <span id="cover-orientation-badge" class="absolute bottom-2 left-2 bg-brand-black/80 text-[10px] text-brand-accent px-2 py-0.5 rounded font-mono uppercase border border-brand-accent/20"></span>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <input type="file" id="article-cover-input" accept="image/*" class="hidden" onchange="handleCoverUpload(event)">
+            <button type="button" onclick="document.getElementById('article-cover-input').click()" class="bg-zinc-800 border border-brand-border hover:border-brand-accent/30 text-zinc-300 hover:text-white px-4 py-2.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+              📸 Seleccionar imagen de portada
+            </button>
+            <span id="cover-file-info" class="text-zinc-500 text-[10px]">Ninguna imagen seleccionada</span>
+          </div>
+        </div>
+
+        <!-- Editor de texto Quill integrado -->
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Cuerpo del artículo (Editor Enriquecido)</label>
+          <div id="quill-editor" class="rounded-lg bg-brand-black mb-1.5"></div>
+          <p class="text-[10px] text-zinc-500">📷 **Soporte para imágenes:** Podés pegar capturas de pantalla y arrastrar imágenes directamente al editor. Se recomienda usar imágenes optimizadas y de tamaño reducido para no saturar la base de datos (límite máximo de 1MB por artículo).</p>
+        </div>
+
+        <!-- Extracto o frase destacada para la tarjeta (Opcional) -->
+        <div>
+          <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">
+            Extracto o frase destacada para la tarjeta <span class="text-zinc-500 font-normal lowercase">(opcional)</span>
+          </label>
+          <input type="text" id="article-testimonial" placeholder="Dejá este campo en blanco para generar automáticamente con el inicio del artículo." class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-zinc-200 focus:outline-none focus:border-brand-accent transition text-sm">
+          <p class="text-[10px] text-zinc-500 mt-1">✨ Si se deja en blanco, la tarjeta en la landing page mostrará automáticamente los primeros renglones del artículo.</p>
+        </div>
+
+        <!-- Vista previa SEO -->
+        <div class="bg-zinc-950 border border-brand-border/40 p-4 rounded-xl">
+          <p class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Vista Previa de Indexación en Google</p>
+          <span class="text-[12px] text-[#8ab4f8] hover:underline cursor-pointer block truncate">
+            https://psicologiaveganaarg.web.app/articulos/<span id="seo-slug">ejemplo</span>
+          </span>
+          <span class="text-sm text-[#1a0dab] font-medium block truncate mt-0.5" id="seo-preview-title">
+            Título del Artículo - Psicólogo Vegano
+          </span>
+          <span class="text-xs text-zinc-400 block mt-1 line-clamp-2">
+            Lic. Mauro García - Espacio seguro de terapia. Leé nuestra última nota redactada con empatía.
+          </span>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex justify-end gap-3 pt-4 border-t border-brand-border">
+          <button id="btn-cancel-edit" onclick="cancelEdit()" class="hidden bg-zinc-800 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-zinc-700 transition">
+            Cancelar Edición
+          </button>
+          <button id="btn-submit-article" onclick="handleSaveArticle()" class="bg-brand-accent text-brand-black font-bold px-6 py-2.5 rounded-lg hover:bg-brand-accentHover transition shadow-lg">
+            🚀 Publicar Artículo
+          </button>
+        </div>
+      </div>
+
+      <!-- ADMINISTRAR ARTÍCULOS PUBLICADOS -->
+      <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-6">
+        <div class="flex justify-between items-center border-b border-brand-border pb-3">
+          <h3 class="font-serif text-2xl text-white">Administrar Notas Publicadas</h3>
+          <span class="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Acciones Directas</span>
+        </div>
+        <div id="admin-articles-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+          <!-- Renderizado dinámico de artículos -->
+        </div>
+      </div>
+
+      <!-- ADMINISTRAR TESTIMONIOS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Formulario Testimonio -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-4">
+          <div class="border-b border-brand-border pb-3 flex justify-between items-center">
+            <div>
+              <h3 id="testimonial-form-title" class="font-serif text-xl text-white">Crear Nuevo Testimonio</h3>
+              <p class="text-zinc-400 text-xs mt-1">Escribí un testimonio destacado o frase clínica</p>
+            </div>
+            <span class="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Testimonio</span>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Cita o Testimonio</label>
+            <textarea id="testimonial-cita" rows="4" placeholder="Ej: Sentí una gran contención..." required class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-zinc-200 focus:outline-none focus:border-brand-accent transition text-sm leading-relaxed"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Autor</label>
+            <input type="text" id="testimonial-autor" placeholder="Ej: Paciente anónimo" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <button id="btn-cancel-testimonial-edit" onclick="cancelTestimonialEdit()" class="hidden bg-zinc-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-zinc-700 transition text-xs">
+              Cancelar
+            </button>
+            <button id="btn-submit-testimonial" onclick="handleSaveTestimonial()" class="bg-brand-accent text-brand-black font-bold px-4 py-2 rounded-lg hover:bg-brand-accentHover transition shadow-lg text-xs">
+              🚀 Guardar Testimonio
+            </button>
+          </div>
+        </div>
+
+        <!-- Listado de Testimonios -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-4 flex flex-col">
+          <div class="border-b border-brand-border pb-3">
+            <h3 class="font-serif text-xl text-white">Testimonios en Base de Datos</h3>
+            <p class="text-zinc-400 text-xs mt-1">Listado dinámico en tiempo real</p>
+          </div>
+          <div id="admin-testimonials-list" class="space-y-4 overflow-y-auto pr-2 max-h-[350px] flex-1">
+            <!-- Renderizado dinámico de testimonios -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMINISTRAR PREGUNTAS FRECUENTES (FAQ) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-brand-border/60 pt-8">
+        <!-- Formulario FAQ -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-4">
+          <div class="border-b border-brand-border pb-3 flex justify-between items-center">
+            <div>
+              <h3 id="faq-form-title" class="font-serif text-xl text-white">Crear Nueva FAQ</h3>
+              <p class="text-zinc-400 text-xs mt-1">Escribí una pregunta frecuente de los pacientes</p>
+            </div>
+            <span class="text-zinc-500 text-xs font-semibold uppercase tracking-wider">FAQ</span>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Pregunta</label>
+            <input type="text" id="faq-pregunta" placeholder="Ej: ¿Atendés a personas no veganas?" required class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Respuesta (Soporta HTML básico)</label>
+            <textarea id="faq-respuesta" rows="4" placeholder="Ej: Sí, el espacio está abierto a..." required class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-zinc-200 focus:outline-none focus:border-brand-accent transition text-sm leading-relaxed"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-1.5">Orden de Visualización</label>
+            <input type="number" id="faq-orden" placeholder="Ej: 1" min="1" required class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <button id="btn-cancel-faq-edit" onclick="cancelFaqEdit()" class="hidden bg-zinc-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-zinc-700 transition text-xs">
+              Cancelar
+            </button>
+            <button id="btn-submit-faq" onclick="handleSaveFaq()" class="bg-brand-accent text-brand-black font-bold px-4 py-2 rounded-lg hover:bg-brand-accentHover transition shadow-lg text-xs">
+              🚀 Guardar FAQ
+            </button>
+          </div>
+        </div>
+
+        <!-- Listado de FAQs -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-4 flex flex-col">
+          <div class="border-b border-brand-border pb-3 flex justify-between items-center">
+            <div>
+              <h3 class="font-serif text-xl text-white">Preguntas Frecuentes Activas</h3>
+              <p class="text-zinc-400 text-xs mt-1">Listado dinámico en tiempo real</p>
+            </div>
+            <button onclick="seedDefaultFaqs()" id="btn-seed-faqs" class="hidden text-[10px] bg-zinc-900 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black px-2.5 py-1 rounded-md transition font-semibold">
+              🌱 Cargar Predeterminadas
+            </button>
+          </div>
+          <div id="admin-faqs-list" class="space-y-4 overflow-y-auto pr-2 max-h-[350px] flex-1">
+            <!-- Renderizado dinámico de faqs -->
+          </div>
+        </div>
+      </div>
+      </div> <!-- Fin de #section-content -->
+
+      <!-- SECCIÓN ANALYTICS (Oculta por defecto) -->
+      <div id="section-analytics" class="hidden space-y-6">
+        
+        <!-- KPIs de Analytics -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+            <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Visitas Totales</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span id="analytics-total-views" class="text-3xl font-bold text-white">0</span>
+              <span class="text-xs text-zinc-400">vistas</span>
+            </div>
+            <p class="text-[10px] text-zinc-400 mt-2">Cargas generales de la web</p>
+          </div>
+          <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+            <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Visitantes Únicos</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span id="analytics-unique-visitors" class="text-3xl font-bold text-brand-accent">0</span>
+              <span class="text-xs text-zinc-400">usuarios</span>
+            </div>
+            <p class="text-[10px] text-zinc-400 mt-2">Sesión de navegación diaria</p>
+          </div>
+          <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+            <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Lecturas de Notas</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span id="analytics-article-reads" class="text-3xl font-bold text-emerald-400">0</span>
+              <span class="text-xs text-zinc-400">clics</span>
+            </div>
+            <p class="text-[10px] text-zinc-400 mt-2">Visitas a reflexiones completas</p>
+          </div>
+          <div class="bg-brand-card border border-brand-border p-4 rounded-xl">
+            <p class="text-xs text-zinc-500 uppercase font-semibold tracking-wider">Canal Principal</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span id="analytics-top-source" class="text-lg font-bold text-white truncate max-w-full">Directo</span>
+            </div>
+            <p class="text-[10px] text-zinc-400 mt-2">Mayor origen de tráfico</p>
+          </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Evolución de Visitas (Líneas) -->
+          <div class="bg-brand-card border border-brand-border rounded-2xl p-5 md:col-span-2 space-y-4">
+            <h4 class="font-serif text-lg text-white">Evolución de Visitas (Últimos 15 días)</h4>
+            <div class="h-[250px] w-full relative">
+              <canvas id="chart-visits"></canvas>
+            </div>
+          </div>
+          <!-- Canales de Tráfico (Dona) -->
+          <div class="bg-brand-card border border-brand-border rounded-2xl p-5 space-y-4">
+            <h4 class="font-serif text-lg text-white">Canales de Tráfico</h4>
+            <div class="h-[250px] w-full relative flex justify-center items-center">
+              <canvas id="chart-sources"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listas y Rankings -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Ranking de Notas -->
+          <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4 flex flex-col">
+            <div class="border-b border-brand-border pb-3">
+              <h4 class="font-serif text-lg text-white">Notas Más Leídas</h4>
+              <p class="text-zinc-400 text-xs mt-1">Cantidad de aperturas por nota en la landing</p>
+            </div>
+            <div id="analytics-articles-ranking" class="space-y-3 overflow-y-auto max-h-[300px] flex-1 pr-1">
+              <!-- Cargado dinámicamente -->
+            </div>
+          </div>
+          <!-- Resumen de Visitas por Página/Sección -->
+          <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4 flex flex-col">
+            <div class="border-b border-brand-border pb-3">
+              <h4 class="font-serif text-lg text-white">Ingresos por Página / Sección</h4>
+              <p class="text-zinc-400 text-xs mt-1">Cantidad acumulada de visitas por cada sección</p>
+            </div>
+            <div id="analytics-live-traffic" class="space-y-3 overflow-y-auto max-h-[300px] flex-1 pr-1">
+              <!-- Cargado dinámicamente -->
+            </div>
+          </div>
+        </div>
+      </div> <!-- Fin de #section-analytics -->
+
+      <!-- SECCIÓN MANTENIMIENTO -->
+      <div id="section-maintenance" class="hidden space-y-6">
+        <!-- HERRAMIENTAS DE MANTENIMIENTO Y RESPALDOS -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-6 border-t border-brand-border/60 pb-6">
+        <div class="border-b border-brand-border pb-3 flex justify-between items-center">
+          <div>
+            <h3 class="font-serif text-2xl text-white">Copias de Seguridad e Integridad</h3>
+            <p class="text-zinc-400 text-xs mt-1">Exportar e importar notas, testimonios y FAQs de este sitio en formato JSON</p>
+          </div>
+          <span class="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Mantenimiento</span>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="bg-zinc-950/40 p-4 border border-brand-border/40 rounded-xl space-y-3 flex flex-col justify-between">
+            <div>
+              <h4 class="text-white font-semibold text-sm">Exportar Copia de Seguridad</h4>
+              <p class="text-zinc-400 text-xs mt-1">Descargá un archivo JSON con toda la base de datos de reflexiones, testimonios y preguntas frecuentes vigentes.</p>
+            </div>
+            <button onclick="exportBackup()" class="w-full bg-brand-accent text-brand-black hover:bg-brand-accentHover font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5 shadow-md">
+              📥 Descargar Backup (.json)
+            </button>
+          </div>
+          
+          <div class="bg-zinc-950/40 p-4 border border-brand-border/40 rounded-xl space-y-3 flex flex-col justify-between">
+            <div>
+              <h4 class="text-white font-semibold text-sm">Restaurar Copia de Seguridad</h4>
+              <p class="text-zinc-400 text-xs mt-1">Subí un archivo de copia de seguridad JSON previamente exportado. Esto actualizará e insertará los registros correspondientes en Firestore.</p>
+            </div>
+            <div>
+              <input type="file" id="import-backup-input" class="hidden" accept=".json" onchange="handleImportBackup(event)">
+              <button onclick="document.getElementById('import-backup-input').click()" class="w-full bg-zinc-800 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black font-bold py-2 rounded-lg transition text-xs flex items-center justify-center gap-1.5">
+                📤 Subir y Restaurar Backup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div> <!-- Fin de #section-maintenance -->
+
+    </div>
+  </main>
+
+  <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE ARTÍCULO -->
+  <div id="delete-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/75 backdrop-blur-sm transition-opacity duration-300">
+    <div class="bg-brand-card border border-brand-border max-w-sm w-full mx-4 rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform duration-300">
+      <div class="text-center">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 text-red-500 text-2xl mb-4">⚠️</span>
+        <h3 class="text-lg font-bold text-white mb-2">¿Eliminar artículo?</h3>
+        <p class="text-zinc-400 text-sm mb-6 font-sans">Esta acción es permanente y quitará la reflexión de la landing page pública.</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeDeleteModal()" class="flex-1 bg-zinc-800 text-zinc-300 font-medium py-2 rounded-lg hover:bg-zinc-700 transition">
+          Cancelar
+        </button>
+        <button onclick="confirmDelete()" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 transition shadow-lg shadow-red-600/20">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE TESTIMONIO -->
+  <div id="delete-testimonial-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/75 backdrop-blur-sm transition-opacity duration-300">
+    <div class="bg-brand-card border border-brand-border max-w-sm w-full mx-4 rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform duration-300">
+      <div class="text-center">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 text-red-500 text-2xl mb-4">⚠️</span>
+        <h3 class="text-lg font-bold text-white mb-2">¿Eliminar testimonio?</h3>
+        <p class="text-zinc-400 text-sm mb-6 font-sans">Esta acción es permanente y quitará el testimonio de la landing page pública.</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeTestimonialDeleteModal()" class="flex-1 bg-zinc-800 text-zinc-300 font-medium py-2 rounded-lg hover:bg-zinc-700 transition">
+          Cancelar
+        </button>
+        <button onclick="confirmTestimonialDelete()" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 transition shadow-lg shadow-red-600/20">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE FAQ -->
+  <div id="delete-faq-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/75 backdrop-blur-sm transition-opacity duration-300">
+    <div class="bg-brand-card border border-brand-border max-w-sm w-full mx-4 rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform duration-300">
+      <div class="text-center">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 text-red-500 text-2xl mb-4">⚠️</span>
+        <h3 class="text-lg font-bold text-white mb-2">¿Eliminar FAQ?</h3>
+        <p class="text-zinc-400 text-sm mb-6 font-sans">Esta acción es permanente y quitará la pregunta frecuente de la landing page pública.</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeFaqDeleteModal()" class="flex-1 bg-zinc-800 text-zinc-300 font-medium py-2 rounded-lg hover:bg-zinc-700 transition">
+          Cancelar
+        </button>
+        <button onclick="confirmFaqDelete()" class="flex-1 bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 transition shadow-lg shadow-red-600/20">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE ACTUALIZACIÓN DE CONTRASEÑA OBLIGATORIA (Se muestra una sola vez) -->
+  <div id="update-password-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black/85 backdrop-blur-md transition-opacity duration-300">
+    <div class="bg-brand-card border border-brand-border max-w-md w-full mx-4 rounded-2xl p-8 shadow-2xl transform scale-95 transition-transform duration-300">
+      <div class="text-center mb-6">
+        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-brand-accent/10 text-brand-accent text-3xl mb-4">🔑</span>
+        <h3 class="text-xl font-bold font-serif text-white mb-2">Actualización de Seguridad</h3>
+        <p class="text-zinc-400 text-xs font-sans leading-relaxed">
+          Para garantizar la máxima protección de la consola, debés actualizar tu contraseña de acceso por única vez.
+        </p>
+      </div>
+      <form id="update-password-form" class="space-y-4">
+        <!-- Campo Contraseña Actual (Oculto inicialmente, se muestra si se requiere reautenticación) -->
+        <div id="reauth-container" class="hidden space-y-1">
+          <label class="block text-[10px] font-semibold text-amber-400 uppercase tracking-widest">Confirmación: Contraseña Actual</label>
+          <input type="password" id="update-pass-current" class="w-full bg-brand-black border border-amber-500/40 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-amber-400 transition text-sm" placeholder="Ingresá tu contraseña actual...">
+          <p class="text-[10px] text-amber-500/80">Se requiere verificar tu identidad para esta operación sensible.</p>
+        </div>
+        <div>
+          <label class="block text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-1">Nueva Contraseña</label>
+          <input type="password" id="update-pass-new" required minlength="6" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm" placeholder="Mínimo 6 caracteres...">
+        </div>
+        <div>
+          <label class="block text-[10px] font-semibold text-zinc-400 uppercase tracking-widest mb-1">Confirmar Nueva Contraseña</label>
+          <input type="password" id="update-pass-confirm" required minlength="6" class="w-full bg-brand-black border border-brand-border rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm" placeholder="Repetí la nueva contraseña...">
+        </div>
+        <div class="pt-2">
+          <button type="submit" id="btn-submit-update-password" class="w-full bg-brand-accent text-brand-black font-bold py-2.5 rounded-lg hover:bg-brand-accentHover transition shadow-lg text-xs uppercase tracking-wider">
+            Actualizar Contraseña
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST ALERTS -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none bg-brand-accent text-brand-black px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3">
+    <span id="toast-icon">✨</span>
+    <span id="toast-text">Alerta</span>
+  </div>
+
+  <!-- Quill Library JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+  <!-- Firebase modules and dashboard logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdbqrN9hRhSKiBTUVjTcuGcgsBXMedjNY",
+      authDomain: "psicologiaveganaarg.firebaseapp.com",
+      projectId: "psicologiaveganaarg",
+      storageBucket: "psicologiaveganaarg.firebasestorage.app",
+      messagingSenderId: "42654132231",
+      appId: "1:42654132231:web:132953d04f7da6bf64e2a2",
+      measurementId: "G-DHKJW1Y4Y7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let articles = [];
+    let testimonials = [];
+    let faqs = [];
+    let visits = [];
+    let visitsChart = null;
+    let sourcesChart = null;
+    let editingArticleId = null;
+    let editingTestimonialId = null;
+    let editingFaqId = null;
+    let currentCoverBase64 = null;
+    let currentCoverOrientation = null;
+
+    function getSlug(title) {
+      return title.toLowerCase()
+        .replace(/[^a-z0-9 -]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
+    let quill;
+    document.addEventListener("DOMContentLoaded", function() {
+      quill = new Quill('#quill-editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{ 'header': 2 }, { 'header': 3 }],
+            ['link'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['clean']
+          ]
+        },
+        placeholder: 'Redactá el contenido aquí con total libertad...'
+      });
+
+      document.getElementById('article-date').valueAsDate = new Date();
+      document.getElementById('article-title').addEventListener('input', updateSEOPreview);
+
+      const updatePasswordForm = document.getElementById('update-password-form');
+      if (updatePasswordForm) {
+        updatePasswordForm.addEventListener('submit', handleUpdatePassword);
+      }
+
+      // Suscribirse a los artículos
+      const q = query(collection(db, "articulos"), orderBy("fecha", "desc"));
+      onSnapshot(q, (querySnapshot) => {
+        articles = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          articles.push({
+            id: doc.id,
+            titulo: data.titulo,
+            fecha: data.fecha,
+            contenido: data.contenido,
+            testimonio: data.testimonio || '',
+            imagenPortada: data.imagenPortada || '',
+            imagenOrientacion: data.imagenOrientacion || ''
+          });
+        });
+        renderAdminArticles();
+        updateDashboardStats();
+      }, (error) => {
+        console.error("Error al escuchar cambios en Firestore: ", error);
+        showToast("Error al cargar artículos en tiempo real", "error");
+      });
+
+      // Suscribirse a los testimonios
+      const qTest = query(collection(db, "testimonios"), orderBy("creadoEn", "desc"));
+      onSnapshot(qTest, (querySnapshot) => {
+        testimonials = [];
+        querySnapshot.forEach((d) => {
+          const data = d.data();
+          testimonials.push({
+            id: d.id,
+            cita: data.cita,
+            autor: data.autor || ''
+          });
+        });
+        renderAdminTestimonials();
+      }, (error) => {
+        console.error("Error al escuchar testimonios: ", error);
+      });
+
+      // Suscribirse a las FAQs
+      const qFaq = query(collection(db, "faqs"), orderBy("orden", "asc"));
+      onSnapshot(qFaq, (querySnapshot) => {
+        faqs = [];
+        querySnapshot.forEach((d) => {
+          const data = d.data();
+          faqs.push({
+            id: d.id,
+            pregunta: data.pregunta,
+            respuesta: data.respuesta,
+            orden: data.orden || 0
+          });
+        });
+        renderAdminFaqs();
+      }, (error) => {
+        console.error("Error al escuchar faqs: ", error);
+      });
+    });
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      const icon = document.getElementById('toast-icon');
+
+      text.innerText = message;
+      icon.innerText = type === 'success' ? '✨' : '⚠️';
+
+      if (type === 'success') {
+        toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-brand-accent text-brand-black px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3";
+      } else {
+        toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-0 opacity-100 transition-all duration-300 bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3";
+      }
+
+      setTimeout(() => {
+        toast.className = "fixed bottom-5 right-5 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none bg-brand-accent text-brand-black px-6 py-3 rounded-xl shadow-2xl font-semibold flex items-center gap-3";
+      }, 3000);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-user').value.trim();
+      const pass = document.getElementById('login-pass').value;
+
+      signInWithEmailAndPassword(auth, email, pass)
+        .then(() => {
+          showToast('Credenciales verificadas. Bienvenido, Mauro.');
+        })
+        .catch((error) => {
+          console.error("Error al iniciar sesión:", error);
+          showToast('Clave o usuario incorrectos en Firebase Auth.', 'error');
+        });
+    }
+
+    function handleLogout() {
+      signOut(auth)
+        .then(() => {
+          showToast('Sesión cerrada correctamente.');
+        })
+        .catch((error) => {
+          console.error("Error al cerrar sesión:", error);
+          showToast('Error al cerrar sesión.', 'error');
+        });
+    }
+
+    function updateDashboardStats() {
+      const totalArticlesElem = document.getElementById('stats-total-articles');
+      const lastDateElem = document.getElementById('stats-last-date');
+      const userEmailElem = document.getElementById('stats-user-email');
+
+      if (totalArticlesElem) {
+        totalArticlesElem.innerText = articles.length;
+      }
+
+      if (lastDateElem) {
+        if (articles.length > 0) {
+          const newest = articles[0];
+          const dateParts = newest.fecha.split('-');
+          const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+          lastDateElem.innerText = localDate.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+        } else {
+          lastDateElem.innerText = 'Ninguno';
+        }
+      }
+
+      if (userEmailElem && auth.currentUser) {
+        userEmailElem.innerText = auth.currentUser.email;
+      }
+    }
+
+    let unsubscribeVisits = null;
+
+    onAuthStateChanged(auth, (user) => {
+      const loginSection = document.getElementById('admin-login');
+      const dashboardSection = document.getElementById('admin-dashboard');
+      const devBanner = document.getElementById('dev-banner');
+      if (user) {
+        loginSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+        if (devBanner) devBanner.classList.remove('hidden');
+        updateDashboardStats();
+
+        // Suscribirse a las visitas en tiempo real una vez autenticado
+        if (!unsubscribeVisits) {
+          const qVisits = query(collection(db, "registro_visitas"), orderBy("timestamp", "desc"), limit(2000));
+          unsubscribeVisits = onSnapshot(qVisits, (querySnapshot) => {
+            visits = [];
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              let jsDate = null;
+              if (data.timestamp) {
+                jsDate = data.timestamp.toDate ? data.timestamp.toDate() : new Date(data.timestamp);
+              }
+              visits.push({
+                id: doc.id,
+                path: data.path,
+                articulo: data.articulo || '',
+                referrer: data.referrer || 'Acceso Directo',
+                fecha: data.fecha,
+                session: data.session,
+                timestamp: jsDate || new Date()
+              });
+            });
+            updateAnalytics();
+          }, (error) => {
+            console.error("Error al escuchar visitas: ", error);
+          });
+        }
+
+        // Comprobar si se debe pedir la actualización de la contraseña (solo 1 vez por navegador)
+        if (localStorage.getItem('pva_password_reset_prompted') !== 'true') {
+          setTimeout(() => {
+            const modal = document.getElementById('update-password-modal');
+            if (modal) {
+              modal.classList.remove('hidden');
+              setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+              }, 50);
+            }
+          }, 1500);
+        }
+      } else {
+        dashboardSection.classList.add('hidden');
+        loginSection.classList.remove('hidden');
+        if (devBanner) devBanner.classList.add('hidden');
+        document.getElementById('login-pass').value = '';
+        if (unsubscribeVisits) {
+          unsubscribeVisits();
+          unsubscribeVisits = null;
+        }
+        visits = [];
+        // Ocultar modal de password si se desloguea
+        const modal = document.getElementById('update-password-modal');
+        if (modal) modal.classList.add('hidden');
+      }
+    });
+
+    async function handleUpdatePassword(e) {
+      e.preventDefault();
+      const newPass = document.getElementById('update-pass-new').value;
+      const confirmPass = document.getElementById('update-pass-confirm').value;
+
+      if (newPass !== confirmPass) {
+        showToast('Las contraseñas nuevas no coinciden', 'error');
+        return;
+      }
+
+      if (newPass.length < 6) {
+        showToast('La nueva contraseña debe tener al menos 6 caracteres', 'error');
+        return;
+      }
+
+      const submitBtn = document.getElementById('btn-submit-update-password');
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Actualizando...';
+
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          showToast('No hay ningún usuario autenticado', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'Actualizar Contraseña';
+          return;
+        }
+
+        // Si el contenedor de reautenticación es visible, reautenticar primero
+        const reauthContainer = document.getElementById('reauth-container');
+        if (reauthContainer && !reauthContainer.classList.contains('hidden')) {
+          const currentPass = document.getElementById('update-pass-current').value;
+          if (!currentPass) {
+            showToast('Ingresá tu contraseña actual para confirmar', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Actualizar Contraseña';
+            return;
+          }
+          const credential = EmailAuthProvider.credential(user.email, currentPass);
+          await reauthenticateWithCredential(user, credential);
+        }
+
+        // Intentar actualizar contraseña
+        await updatePassword(user, newPass);
+        
+        // Guardar marca de que se completó
+        localStorage.setItem('pva_password_reset_prompted', 'true');
+        
+        showToast('¡Contraseña actualizada con éxito!');
+        closeUpdatePasswordModal();
+      } catch (error) {
+        console.error("Error al actualizar contraseña:", error);
+        
+        if (error.code === 'auth/requires-recent-login' || error.code === 'auth/credential-too-old-recent-login') {
+          // Mostrar contenedor para pedir contraseña actual
+          const reauthContainer = document.getElementById('reauth-container');
+          if (reauthContainer) {
+            reauthContainer.classList.remove('hidden');
+            document.getElementById('update-pass-current').setAttribute('required', 'true');
+          }
+          showToast('Por seguridad, ingresá tu contraseña actual y volvé a intentar', 'error');
+        } else {
+          showToast('Error al actualizar contraseña: ' + error.message, 'error');
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Actualizar Contraseña';
+      }
+    }
+
+    function closeUpdatePasswordModal() {
+      const modal = document.getElementById('update-password-modal');
+      if (modal) {
+        modal.firstElementChild.classList.remove('scale-100');
+        modal.firstElementChild.classList.add('scale-95');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 150);
+      }
+    }
+
+    function updateSEOPreview() {
+      const title = document.getElementById('article-title').value;
+      const previewTitle = document.getElementById('seo-preview-title');
+      const previewSlug = document.getElementById('seo-slug');
+
+      if (title.trim() === '') {
+        previewTitle.innerText = 'Título del Artículo - Psicólogo Vegano';
+        previewSlug.innerText = 'ejemplo';
+      } else {
+        previewTitle.innerText = `${title} - Psicólogo Vegano`;
+        previewSlug.innerText = getSlug(title);
+      }
+    }
+
+    async function handleSaveArticle() {
+      const title = document.getElementById('article-title').value.trim();
+      const date = document.getElementById('article-date').value;
+      const content = quill.root.innerHTML;
+      let testimonial = document.getElementById('article-testimonial').value.trim();
+
+      if (testimonial === '') {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = content;
+        const blockquote = tempDiv.querySelector('blockquote');
+        if (blockquote) {
+          testimonial = (blockquote.textContent || blockquote.innerText || '').trim();
+        }
+      }
+
+      if (!title || !date || quill.getText().trim() === '') {
+        showToast('Completá todos los campos antes de guardar', 'error');
+        return;
+      }
+
+      try {
+        if (editingArticleId) {
+          await updateDoc(doc(db, "articulos", editingArticleId), {
+            titulo: title,
+            fecha: date,
+            contenido: content,
+            testimonio: testimonial,
+            imagenPortada: currentCoverBase64 || "",
+            imagenOrientacion: currentCoverOrientation || ""
+          });
+          showToast('¡Artículo actualizado correctamente!');
+          cancelEdit();
+        } else {
+          await addDoc(collection(db, "articulos"), {
+            titulo: title,
+            fecha: date,
+            contenido: content,
+            testimonio: testimonial,
+            imagenPortada: currentCoverBase64 || "",
+            imagenOrientacion: currentCoverOrientation || "",
+            creadoEn: serverTimestamp()
+          });
+          showToast('¡Artículo publicado con éxito!');
+          document.getElementById('article-title').value = '';
+          document.getElementById('article-testimonial').value = '';
+          quill.setContents([]);
+          document.getElementById('article-date').valueAsDate = new Date();
+          removeCoverImage();
+          updateSEOPreview();
+        }
+      } catch (error) {
+        console.error("Error al guardar artículo:", error);
+        showToast("Error al guardar: " + error.message, "error");
+      }
+    }
+
+    function renderAdminArticles() {
+      const container = document.getElementById('admin-articles-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (articles.length === 0) {
+        container.innerHTML = '<p class="text-zinc-500 text-center py-6">No hay reflexiones publicadas todavía.</p>';
+        return;
+      }
+
+      articles.forEach((art) => {
+        const item = document.createElement('div');
+        item.className = "flex flex-col sm:flex-row justify-between items-start sm:items-center bg-brand-black border border-brand-border p-4 rounded-xl gap-4 hover:border-brand-accent/20 transition duration-200";
+        
+        const dateParts = art.fecha.split('-');
+        const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+        const formattedDate = localDate.toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' });
+
+        item.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <h4 class="text-white font-semibold truncate text-sm sm:text-base">${art.titulo}</h4>
+            <p class="text-zinc-500 text-xs mt-0.5">${formattedDate}</p>
+          </div>
+          <div class="flex gap-2 w-full sm:w-auto">
+            <button onclick="editArticle('${art.id}')" class="flex-1 sm:flex-initial bg-zinc-900 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+              ✏️ Editar
+            </button>
+            <button onclick="deleteArticle('${art.id}')" class="flex-1 sm:flex-initial bg-zinc-900 border border-red-955 text-red-400 hover:bg-red-600 hover:text-white font-semibold px-3 py-1.5 rounded-lg text-xs transition flex items-center justify-center gap-1.5">
+              🗑️ Eliminar
+            </button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function editArticle(id) {
+      const art = articles.find(a => a.id === id);
+      if (!art) return;
+
+      editingArticleId = id;
+      document.getElementById('article-title').value = art.titulo;
+      document.getElementById('article-date').value = art.fecha;
+      document.getElementById('article-testimonial').value = art.testimonio || '';
+      quill.root.innerHTML = art.contenido;
+
+      if (art.imagenPortada) {
+        currentCoverBase64 = art.imagenPortada;
+        currentCoverOrientation = art.imagenOrientacion || "horizontal";
+        
+        document.getElementById('cover-preview-img').src = art.imagenPortada;
+        document.getElementById('cover-orientation-badge').innerText = currentCoverOrientation;
+        document.getElementById('cover-preview-container').classList.remove('hidden');
+        document.getElementById('cover-file-info').innerText = 'Imagen cargada';
+      } else {
+        removeCoverImage();
+      }
+
+      updateSEOPreview();
+
+      document.getElementById('btn-cancel-edit').classList.remove('hidden');
+      const submitBtn = document.getElementById('btn-submit-article');
+      submitBtn.innerHTML = '💾 Guardar Cambios';
+      submitBtn.className = "bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-lg hover:bg-emerald-700 transition shadow-lg";
+
+      document.getElementById('article-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('Artículo cargado en el editor.');
+    }
+
+    function cancelEdit() {
+      editingArticleId = null;
+      document.getElementById('article-title').value = '';
+      document.getElementById('article-testimonial').value = '';
+      quill.setContents([]);
+      document.getElementById('article-date').valueAsDate = new Date();
+      removeCoverImage();
+      updateSEOPreview();
+
+      document.getElementById('btn-cancel-edit').classList.add('hidden');
+      const submitBtn = document.getElementById('btn-submit-article');
+      submitBtn.innerHTML = '🚀 Publicar Artículo';
+      submitBtn.className = "bg-brand-accent text-brand-black font-bold px-6 py-2.5 rounded-lg hover:bg-brand-accentHover transition shadow-lg";
+    }
+
+    let articleIdToDelete = null;
+    function deleteArticle(id) {
+      articleIdToDelete = id;
+      const modal = document.getElementById('delete-confirm-modal');
+      modal.classList.remove('hidden');
+      modal.firstElementChild.classList.remove('scale-95');
+      modal.firstElementChild.classList.add('scale-100');
+    }
+
+    function closeDeleteModal() {
+      const modal = document.getElementById('delete-confirm-modal');
+      modal.firstElementChild.classList.remove('scale-100');
+      modal.firstElementChild.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 100);
+      articleIdToDelete = null;
+    }
+
+    async function confirmDelete() {
+      if (!articleIdToDelete) return;
+      try {
+        await deleteDoc(doc(db, "articulos", articleIdToDelete));
+        showToast('Artículo eliminado definitivamente.');
+        closeDeleteModal();
+      } catch (error) {
+        console.error("Error al eliminar artículo:", error);
+        showToast("Error al eliminar: " + error.message, "error");
+        closeDeleteModal();
+      }
+    }
+
+    function extractSelectedText() {
+      const range = quill.getSelection();
+      if (range && range.length > 0) {
+        const text = quill.getText(range.index, range.length).trim();
+        if (text) {
+          document.getElementById('article-testimonial').value = text;
+          showToast('Texto copiado al cuadro de testimonio.');
+        } else {
+          showToast('Por favor, seleccioná texto válido en el editor.', 'error');
+        }
+      } else {
+        showToast('Seleccioná un fragmento de texto en el editor primero.', 'error');
+      }
+    }
+
+    function handleCoverUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const fileInfo = document.getElementById('cover-file-info');
+      fileInfo.innerText = "Procesando imagen...";
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Determinar orientación
+          currentCoverOrientation = (width >= height) ? "horizontal" : "vertical";
+
+          // Redimensionar si sobrepasa un ancho máximo razonable
+          const MAX_WIDTH = 900;
+          if (width > MAX_WIDTH) {
+            height = Math.round((height * MAX_WIDTH) / width);
+            width = MAX_WIDTH;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convertir a JPEG optimizado
+          currentCoverBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+          // Actualizar vista previa
+          document.getElementById('cover-preview-img').src = currentCoverBase64;
+          document.getElementById('cover-orientation-badge').innerText = currentCoverOrientation;
+          document.getElementById('cover-preview-container').classList.remove('hidden');
+          fileInfo.innerText = `Imagen cargada (${currentCoverOrientation})`;
+          showToast('Imagen de portada cargada y optimizada');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeCoverImage() {
+      currentCoverBase64 = null;
+      currentCoverOrientation = null;
+      document.getElementById('article-cover-input').value = '';
+      document.getElementById('cover-preview-img').src = '';
+      document.getElementById('cover-preview-container').classList.add('hidden');
+      document.getElementById('cover-file-info').innerText = 'Ninguna imagen seleccionada';
+    }
+
+    function renderAdminTestimonials() {
+      const container = document.getElementById('admin-testimonials-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (testimonials.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-6">
+            <p class="text-zinc-500 text-xs">No hay testimonios personalizados guardados.</p>
+          </div>
+        `;
+        return;
+      }
+
+      testimonials.forEach((test) => {
+        const item = document.createElement('div');
+        item.className = "flex flex-col justify-between bg-brand-black border border-brand-border p-3.5 rounded-xl gap-3 hover:border-brand-accent/20 transition duration-200";
+        item.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <p class="text-zinc-300 italic text-xs leading-relaxed font-sans">"${test.cita}"</p>
+            <p class="text-brand-accent font-mono text-[10px] mt-1.5">— ${test.autor || 'Anónimo'}</p>
+          </div>
+          <div class="flex gap-2 justify-end border-t border-brand-border/40 pt-2">
+            <button onclick="editTestimonial('${test.id}')" class="bg-zinc-900 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black font-semibold px-2 py-1 rounded-md text-[10px] transition flex items-center gap-1">
+              ✏️ Editar
+            </button>
+            <button onclick="deleteTestimonial('${test.id}')" class="bg-zinc-900 border border-red-955 text-red-400 hover:bg-red-600 hover:text-white font-semibold px-2 py-1 rounded-md text-[10px] transition flex items-center gap-1">
+              🗑️ Eliminar
+            </button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    async function handleSaveTestimonial() {
+      const cita = document.getElementById('testimonial-cita').value.trim();
+      const autor = document.getElementById('testimonial-autor').value.trim();
+
+      if (!cita) {
+        showToast('Por favor, ingresá el texto del testimonio.', 'error');
+        return;
+      }
+
+      try {
+        const docData = {
+          cita: cita,
+          autor: autor || 'Paciente anónimo',
+          creadoEn: serverTimestamp()
+        };
+
+        if (editingTestimonialId) {
+          await updateDoc(doc(db, "testimonios", editingTestimonialId), {
+            cita: cita,
+            autor: autor || 'Paciente anónimo'
+          });
+          showToast('Testimonio actualizado con éxito.');
+          cancelTestimonialEdit();
+        } else {
+          await addDoc(collection(db, "testimonios"), docData);
+          showToast('Testimonio publicado con éxito.');
+          document.getElementById('testimonial-cita').value = '';
+          document.getElementById('testimonial-autor').value = '';
+        }
+      } catch (error) {
+        console.error("Error al guardar testimonio:", error);
+        showToast("Error al guardar: " + error.message, "error");
+      }
+    }
+
+    function editTestimonial(id) {
+      const test = testimonials.find(t => t.id === id);
+      if (!test) return;
+
+      editingTestimonialId = id;
+      document.getElementById('testimonial-cita').value = test.cita;
+      document.getElementById('testimonial-autor').value = test.autor || '';
+
+      document.getElementById('testimonial-form-title').innerText = 'Editar Testimonio';
+      document.getElementById('btn-cancel-testimonial-edit').classList.remove('hidden');
+      const submitBtn = document.getElementById('btn-submit-testimonial');
+      submitBtn.innerHTML = '💾 Guardar Cambios';
+      submitBtn.className = "bg-emerald-600 text-white font-bold px-4 py-2 rounded-lg hover:bg-emerald-700 transition shadow-lg text-xs";
+    }
+
+    function cancelTestimonialEdit() {
+      editingTestimonialId = null;
+      document.getElementById('testimonial-cita').value = '';
+      document.getElementById('testimonial-autor').value = '';
+
+      document.getElementById('testimonial-form-title').innerText = 'Crear Nuevo Testimonio';
+      document.getElementById('btn-cancel-testimonial-edit').classList.add('hidden');
+      const submitBtn = document.getElementById('btn-submit-testimonial');
+      submitBtn.innerHTML = '🚀 Guardar Testimonio';
+      submitBtn.className = "bg-brand-accent text-brand-black font-bold px-4 py-2 rounded-lg hover:bg-brand-accentHover transition shadow-lg text-xs";
+    }
+
+    let testimonialIdToDelete = null;
+    function deleteTestimonial(id) {
+      testimonialIdToDelete = id;
+      const modal = document.getElementById('delete-testimonial-confirm-modal');
+      modal.classList.remove('hidden');
+      modal.firstElementChild.classList.remove('scale-95');
+      modal.firstElementChild.classList.add('scale-100');
+    }
+
+    function closeTestimonialDeleteModal() {
+      const modal = document.getElementById('delete-testimonial-confirm-modal');
+      modal.firstElementChild.classList.remove('scale-100');
+      modal.firstElementChild.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 100);
+      testimonialIdToDelete = null;
+    }
+
+    async function confirmTestimonialDelete() {
+      if (!testimonialIdToDelete) return;
+      try {
+        await deleteDoc(doc(db, "testimonios", testimonialIdToDelete));
+        showToast('Testimonio eliminado definitivamente.');
+        closeTestimonialDeleteModal();
+      } catch (error) {
+        console.error("Error al eliminar testimonio:", error);
+        showToast("Error al eliminar: " + error.message, "error");
+        closeTestimonialDeleteModal();
+      }
+    }
+
+    // FAQs predeterminadas estándar de respaldo
+    const defaultFaqs = [
+      {
+        pregunta: "¿Qué servicios puedo solicitar y en qué consisten?",
+        respuesta: "Ofrecemos tres servicios especializados:<br><strong>1. Acompañamiento psicoterapéutico individual:</strong> Sesiones continuas (online para toda Argentina y presencial en Entre Ríos) adaptadas a la vivencia ética del veganismo y al choque con el entorno especista.<br><strong>2. Consulta única de orientación:</strong> Sesión práctica para ordenar tu situación, realizar un primer diagnóstico de tu salud mental y brindarte pautas concretas frente al malestar.<br><strong>3. Certificado de animal de apoyo emocional:</strong> Evaluación profesional y emisión del certificado correspondiente para viajar y convivir legalmente con tu animal de apoyo.",
+        orden: 1
+      },
+      {
+        pregunta: "¿Cómo puedo agendar una consulta o solicitar orientación?",
+        respuesta: "Podés iniciar tu consulta de forma simple haciendo clic en el botón flotante de WhatsApp que se encuentra en la esquina inferior derecha de la pantalla, o completando el enlace de WhatsApp en cualquiera de los botones de contacto de la página. Te responderemos a la brevedad para coordinar días, horarios y enviarte la información administrativa.",
+        orden: 2
+      },
+      {
+        pregunta: "¿Es necesario ser vegano o vegetariano para atenderse?",
+        respuesta: "No es un requisito excluyente, pero el espacio terapéutico está diseñado con especial sensibilidad y conocimiento de la fatiga por compasión, la ansiedad social y el sufrimiento asociados a la violencia hacia los animales. Si estás en transición, sos activista o sentís que tu sensibilidad ética afecta tu bienestar y tus vínculos, aquí encontrarás un espacio seguro y libre de juicios.",
+        orden: 3
+      },
+      {
+        pregunta: "¿Cómo se realizan las sesiones online y cuáles son los medios de pago?",
+        respuesta: "Las sesiones virtuales se realizan por videollamadas seguras (Google Meet o Zoom). Los honorarios dentro de Argentina se abonan de forma práctica a través de transferencia bancaria (Mercado Pago o CBU). Si te encontrás en el exterior, consultanos para coordinar medios de pago alternativos.",
+        orden: 4
+      }
+    ];
+
+    // Sembrar FAQs predeterminadas en Firestore
+    async function seedDefaultFaqs() {
+      try {
+        for (const item of defaultFaqs) {
+          await addDoc(collection(db, "faqs"), {
+            pregunta: item.pregunta,
+            respuesta: item.respuesta,
+            orden: item.orden,
+            creadoEn: serverTimestamp()
+          });
+        }
+        showToast("¡Preguntas frecuentes predeterminadas cargadas con éxito!");
+      } catch (error) {
+        console.error("Error al sembrar FAQs:", error);
+        showToast("Error al cargar las FAQs: " + error.message, "error");
+      }
+    }
+
+    // Renderizar listado de FAQs en la consola administrativa
+    function renderAdminFaqs() {
+      const container = document.getElementById('admin-faqs-list');
+      const seedBtn = document.getElementById('btn-seed-faqs');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (faqs.length === 0) {
+        container.innerHTML = '<p class="text-zinc-500 text-center py-6">No hay preguntas frecuentes creadas.</p>';
+        if (seedBtn) seedBtn.classList.remove('hidden');
+        return;
+      }
+
+      if (seedBtn) seedBtn.classList.add('hidden');
+
+      faqs.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = "flex flex-col justify-between bg-brand-black border border-brand-border p-3.5 rounded-xl gap-3 hover:border-brand-accent/20 transition duration-200";
+        div.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <span class="text-[10px] bg-brand-accent/10 border border-brand-accent/20 text-brand-accent font-semibold px-2 py-0.5 rounded-md font-mono">Orden: ${item.orden}</span>
+            <h4 class="text-white font-semibold text-sm mt-1.5">${item.pregunta}</h4>
+            <p class="text-zinc-400 text-xs mt-1 leading-relaxed line-clamp-2">${item.respuesta.replace(/<[^>]*>/g, '')}</p>
+          </div>
+          <div class="flex gap-2 justify-end border-t border-brand-border/40 pt-2">
+            <button onclick="editFaq('${item.id}')" class="bg-zinc-900 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black font-semibold px-2 py-1 rounded-md text-[10px] transition flex items-center gap-1">
+              ✏️ Editar
+            </button>
+            <button onclick="deleteFaq('${item.id}')" class="bg-zinc-900 border border-red-955 text-red-400 hover:bg-red-600 hover:text-white font-semibold px-2 py-1 rounded-md text-[10px] transition flex items-center gap-1">
+              🗑️ Eliminar
+            </button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Guardar / Actualizar FAQ
+    async function handleSaveFaq() {
+      const pregunta = document.getElementById('faq-pregunta').value.trim();
+      const respuesta = document.getElementById('faq-respuesta').value.trim();
+      const ordenVal = parseInt(document.getElementById('faq-orden').value);
+
+      if (!pregunta || !respuesta || isNaN(ordenVal)) {
+        showToast("Completá todos los campos de la FAQ antes de guardar.", "error");
+        return;
+      }
+
+      try {
+        if (editingFaqId) {
+          await updateDoc(doc(db, "faqs", editingFaqId), {
+            pregunta: pregunta,
+            respuesta: respuesta,
+            orden: ordenVal
+          });
+          showToast("¡FAQ actualizada correctamente!");
+          cancelFaqEdit();
+        } else {
+          await addDoc(collection(db, "faqs"), {
+            pregunta: pregunta,
+            respuesta: respuesta,
+            orden: ordenVal,
+            creadoEn: serverTimestamp()
+          });
+          showToast("¡FAQ guardada correctamente!");
+          document.getElementById('faq-pregunta').value = '';
+          document.getElementById('faq-respuesta').value = '';
+          document.getElementById('faq-orden').value = (faqs.length + 1);
+        }
+      } catch (error) {
+        console.error("Error al guardar FAQ:", error);
+        showToast("Error al guardar: " + error.message, "error");
+      }
+    }
+
+    // Cargar FAQ en formulario para editar
+    function editFaq(id) {
+      const item = faqs.find(f => f.id === id);
+      if (!item) return;
+
+      editingFaqId = id;
+      document.getElementById('faq-pregunta').value = item.pregunta;
+      document.getElementById('faq-respuesta').value = item.respuesta;
+      document.getElementById('faq-orden').value = item.orden;
+
+      document.getElementById('faq-form-title').innerText = 'Editar FAQ';
+      document.getElementById('btn-cancel-faq-edit').classList.remove('hidden');
+      const submitBtn = document.getElementById('btn-submit-faq');
+      submitBtn.innerHTML = '💾 Guardar Cambios';
+      submitBtn.className = "bg-emerald-600 text-white font-bold px-4 py-2 rounded-lg hover:bg-emerald-700 transition shadow-lg text-xs";
+    }
+
+    // Cancelar edición de FAQ
+    function cancelFaqEdit() {
+      editingFaqId = null;
+      document.getElementById('faq-pregunta').value = '';
+      document.getElementById('faq-respuesta').value = '';
+      document.getElementById('faq-orden').value = (faqs.length + 1);
+
+      document.getElementById('faq-form-title').innerText = 'Crear Nueva FAQ';
+      document.getElementById('btn-cancel-faq-edit').classList.add('hidden');
+      const submitBtn = document.getElementById('btn-submit-faq');
+      submitBtn.innerHTML = '🚀 Guardar FAQ';
+      submitBtn.className = "bg-brand-accent text-brand-black font-bold px-4 py-2 rounded-lg hover:bg-brand-accentHover transition shadow-lg text-xs";
+    }
+
+    // Eliminar FAQ modal
+    let faqIdToDelete = null;
+    function deleteFaq(id) {
+      faqIdToDelete = id;
+      const modal = document.getElementById('delete-faq-confirm-modal');
+      modal.classList.remove('hidden');
+      modal.firstElementChild.classList.remove('scale-95');
+      modal.firstElementChild.classList.add('scale-100');
+    }
+
+    function closeFaqDeleteModal() {
+      const modal = document.getElementById('delete-faq-confirm-modal');
+      modal.firstElementChild.classList.remove('scale-100');
+      modal.firstElementChild.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 100);
+      faqIdToDelete = null;
+    }
+
+    async function confirmFaqDelete() {
+      if (!faqIdToDelete) return;
+      try {
+        await deleteDoc(doc(db, "faqs", faqIdToDelete));
+        showToast("FAQ eliminada definitivamente.");
+        closeFaqDeleteModal();
+      } catch (error) {
+        console.error("Error al eliminar FAQ:", error);
+        showToast("Error al eliminar: " + error.message, "error");
+        closeFaqDeleteModal();
+      }
+    }
+
+    // Exportar Backup Completo en formato JSON
+    function exportBackup() {
+      try {
+        const backupData = {
+          exportadoEn: new Date().toISOString(),
+          articulos: articles,
+          testimonios: testimonials,
+          faqs: faqs
+        };
+
+        const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(backupData, null, 2))}`;
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", jsonString);
+        
+        const dateStr = new Date().toISOString().split('T')[0];
+        downloadAnchor.setAttribute("download", `copia_seguridad_psicologia_vegana_${dateStr}.json`);
+        
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+
+        showToast("Copia de seguridad descargada correctamente.");
+      } catch (error) {
+        console.error("Error al exportar copia de seguridad:", error);
+        showToast("Error al exportar datos.", "error");
+      }
+    }
+
+    // Importar y Restaurar Backup JSON en Firestore
+    async function handleImportBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(event) {
+        try {
+          const importedData = JSON.parse(event.target.result);
+          
+          if (!importedData.articulos || !importedData.testimonios || !importedData.faqs) {
+            showToast("El archivo JSON no tiene la estructura de copia de seguridad válida.", "error");
+            return;
+          }
+
+          const confirmImport = confirm(`ATENCIÓN: Se importarán:\n- ${importedData.articulos.length} artículos\n- ${importedData.testimonios.length} testimonios\n- ${importedData.faqs.length} FAQs\n\n¿Deseás proceder con la restauración? Los elementos con el mismo ID serán sobreescritos.`);
+          
+          if (!confirmImport) {
+            e.target.value = '';
+            return;
+          }
+
+          showToast("Procesando restauración de copia de seguridad...");
+
+          // 1. Restaurar Artículos
+          for (const art of importedData.articulos) {
+            const docRef = doc(db, "articulos", art.id);
+            const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+            await setDoc(docRef, {
+              titulo: art.titulo,
+              fecha: art.fecha,
+              contenido: art.contenido,
+              testimonio: art.testimonio || '',
+              creadoEn: serverTimestamp()
+            });
+          }
+
+          // 2. Restaurar Testimonios
+          for (const test of importedData.testimonios) {
+            const docRef = doc(db, "testimonios", test.id);
+            const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+            await setDoc(docRef, {
+              cita: test.cita,
+              autor: test.autor || 'Paciente anónimo',
+              creadoEn: serverTimestamp()
+            });
+          }
+
+          // 3. Restaurar FAQs
+          for (const faqItem of importedData.faqs) {
+            const docRef = doc(db, "faqs", faqItem.id);
+            const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+            await setDoc(docRef, {
+              pregunta: faqItem.pregunta,
+              respuesta: faqItem.respuesta,
+              orden: faqItem.orden || 0,
+              creadoEn: serverTimestamp()
+            });
+          }
+
+          showToast("¡Base de datos restaurada correctamente desde el archivo de backup!");
+        } catch (err) {
+          console.error("Error al procesar el JSON de importación:", err);
+          showToast("Error al importar el archivo JSON.", "error");
+        } finally {
+          e.target.value = '';
+        }
+      };
+
+      reader.readAsText(file);
+    }
+
+    window.handleLogin = handleLogin;
+    window.handleLogout = handleLogout;
+    window.handleSaveArticle = handleSaveArticle;
+    window.updateSEOPreview = updateSEOPreview;
+    window.showToast = showToast;
+    // Cambiar de pestaña en el dashboard de administración
+    function switchTab(tabId) {
+      document.getElementById('section-content').classList.add('hidden');
+      document.getElementById('section-analytics').classList.add('hidden');
+      document.getElementById('section-maintenance').classList.add('hidden');
+
+      document.getElementById('section-' + tabId.replace('tab-', '')).classList.remove('hidden');
+
+      const tabs = ['content', 'analytics', 'maintenance'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('btn-tab-' + t);
+        if (t === tabId.replace('tab-', '')) {
+          btn.className = "px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-brand-accent text-brand-accent bg-brand-card/30 transition";
+        } else {
+          btn.className = "px-5 py-2.5 font-semibold text-sm rounded-t-lg border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 transition";
+        }
+      });
+
+      // Redimensionar y actualizar gráficos al cambiar a la pestaña de Analytics
+      if (tabId === 'tab-analytics') {
+        setTimeout(() => {
+          updateAnalytics();
+          if (visitsChart) visitsChart.resize();
+          if (sourcesChart) sourcesChart.resize();
+        }, 50);
+      }
+    }
+
+    // Procesar y renderizar estadísticas del sitio
+    function updateAnalytics() {
+      if (visits.length === 0) {
+        document.getElementById('analytics-total-views').innerText = '0';
+        document.getElementById('analytics-unique-visitors').innerText = '0';
+        document.getElementById('analytics-article-reads').innerText = '0';
+        document.getElementById('analytics-top-source').innerText = 'Ninguno';
+        document.getElementById('analytics-articles-ranking').innerHTML = '<p class="text-zinc-500 text-center py-6 text-xs">No hay datos de visitas registrados.</p>';
+        document.getElementById('analytics-live-traffic').innerHTML = '<p class="text-zinc-500 text-center py-6 text-xs">No hay tráfico registrado en tiempo real.</p>';
+        return;
+      }
+
+      // KPIs generales
+      const totalViews = visits.length;
+      const uniqueSessions = new Set(visits.map(v => v.session)).size;
+      const articleReads = visits.filter(v => v.articulo || v.path.includes('/articulos/')).length;
+
+      document.getElementById('analytics-total-views').innerText = totalViews;
+      document.getElementById('analytics-unique-visitors').innerText = uniqueSessions;
+      document.getElementById('analytics-article-reads').innerText = articleReads;
+
+      // Procesar orígenes de tráfico (Referrers)
+      const sourcesMap = {};
+      visits.forEach(v => {
+        const src = v.referrer || 'Acceso Directo';
+        sourcesMap[src] = (sourcesMap[src] || 0) + 1;
+      });
+
+      // Determinar origen principal
+      let topSource = 'Acceso Directo';
+      let maxSourceCount = 0;
+      Object.entries(sourcesMap).forEach(([src, count]) => {
+        if (count > maxSourceCount) {
+          maxSourceCount = count;
+          topSource = src;
+        }
+      });
+      document.getElementById('analytics-top-source').innerText = topSource;
+
+      // Agrupar visitas de los últimos 15 días
+      const visitsByDay = {};
+      const uniqueByDay = {};
+      
+      // Inicializar los últimos 15 días con ceros para que se muestren completos
+      for (let i = 14; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`;
+        visitsByDay[dateStr] = 0;
+        uniqueByDay[dateStr] = new Set();
+      }
+
+      visits.forEach(v => {
+        if (v.fecha && visitsByDay[v.fecha] !== undefined) {
+          visitsByDay[v.fecha] += 1;
+          uniqueByDay[v.fecha].add(v.session);
+        }
+      });
+
+      const chartLabels = Object.keys(visitsByDay).map(f => {
+        const parts = f.split('-');
+        return `${parts[2]}/${parts[1]}`; // DD/MM
+      });
+      const chartViewsData = Object.values(visitsByDay);
+      const chartUniqueData = Object.keys(uniqueByDay).map(k => uniqueByDay[k].size);
+
+      // Renderizar gráficos
+      renderAnalyticsCharts(
+        { labels: chartLabels, views: chartViewsData, unique: chartUniqueData },
+        { labels: Object.keys(sourcesMap), data: Object.values(sourcesMap) }
+      );
+
+      // Ranking de Notas Leídas
+      const articleCounts = {};
+      visits.forEach(v => {
+        if (v.articulo) {
+          articleCounts[v.articulo] = (articleCounts[v.articulo] || 0) + 1;
+        }
+      });
+      renderArticlesRanking(articleCounts);
+
+      // Agrupar visitas por secciones/páginas del sitio (filtrando para mostrar solo inicio y artículos)
+      const pageCounts = {};
+      visits.forEach(v => {
+        let path = v.path || '/';
+        let pageName = null;
+        if (path === '/' || path === '/index.html' || path === '') {
+          pageName = '🏡 Página de Inicio';
+        } else if (path.includes('/articulos/') || v.articulo) {
+          pageName = `📖 Artículo: ${v.articulo || path.replace('/articulos/', '')}`;
+        }
+        
+        if (pageName) {
+          pageCounts[pageName] = (pageCounts[pageName] || 0) + 1;
+        }
+      });
+      renderPageVisits(pageCounts);
+    }
+
+    // Dibujar los gráficos visuales usando Chart.js
+    function renderAnalyticsCharts(visitsData, sourcesData) {
+      // 1. Gráfico de líneas de evolución
+      const ctxVisits = document.getElementById('chart-visits').getContext('2d');
+      if (visitsChart) {
+        visitsChart.destroy();
+      }
+      
+      visitsChart = new Chart(ctxVisits, {
+        type: 'line',
+        data: {
+          labels: visitsData.labels,
+          datasets: [
+            {
+              label: 'Vistas de Página',
+              data: visitsData.views,
+              borderColor: '#8EB486',
+              backgroundColor: 'rgba(142, 180, 134, 0.15)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Visitantes Únicos',
+              data: visitsData.unique,
+              borderColor: '#60a5fa',
+              backgroundColor: 'transparent',
+              borderWidth: 1.5,
+              borderDash: [4, 4],
+              tension: 0.3,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#E2E8F0',
+                font: { family: 'Inter', size: 11 }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(31, 41, 55, 0.4)' },
+              ticks: { color: '#9CA3AF', font: { size: 10 } }
+            },
+            y: {
+              grid: { color: 'rgba(31, 41, 55, 0.4)' },
+              ticks: { color: '#9CA3AF', font: { size: 10 } },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // 2. Gráfico circular de canales de tráfico
+      const ctxSources = document.getElementById('chart-sources').getContext('2d');
+      if (sourcesChart) {
+        sourcesChart.destroy();
+      }
+
+      const colors = [
+        '#8EB486', // Accent
+        '#60a5fa', // Blue (Google)
+        '#c084fc', // Purple (Instagram)
+        '#f87171', // Red
+        '#fbbf24', // Amber
+        '#34d399', // Emerald
+        '#9ca3af'  // Gray
+      ];
+
+      sourcesChart = new Chart(ctxSources, {
+        type: 'doughnut',
+        data: {
+          labels: sourcesData.labels,
+          datasets: [{
+            data: sourcesData.data,
+            backgroundColor: colors.slice(0, sourcesData.labels.length),
+            borderColor: '#121712',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: '#E2E8F0',
+                font: { family: 'Inter', size: 10 }
+              }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+    }
+
+    // Renderizar listado de artículos populares
+    function renderArticlesRanking(articleCounts) {
+      const container = document.getElementById('analytics-articles-ranking');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const sorted = Object.entries(articleCounts)
+        .sort((a, b) => b[1] - a[1]);
+
+      if (sorted.length === 0) {
+        container.innerHTML = '<p class="text-zinc-500 text-center py-6 text-xs">Aún no se registraron lecturas de notas específicas.</p>';
+        return;
+      }
+
+      sorted.forEach(([title, count], index) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-2.5 bg-brand-black border border-brand-border/40 rounded-xl hover:border-brand-accent/20 transition text-xs";
+        
+        let medal = `<span class="font-mono text-zinc-500 w-5">${index + 1}.</span>`;
+        if (index === 0) medal = `<span class="text-base w-5">🥇</span>`;
+        else if (index === 1) medal = `<span class="text-base w-5">🥈</span>`;
+        else if (index === 2) medal = `<span class="text-base w-5">🥉</span>`;
+
+        item.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            ${medal}
+            <span class="text-white font-medium truncate">${title}</span>
+          </div>
+          <span class="font-mono font-bold text-brand-accent ml-4 shrink-0 bg-brand-accent/10 px-2 py-0.5 rounded border border-brand-accent/20">${count} ${count === 1 ? 'vista' : 'vistas'}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Renderizar visitas acumuladas por secciones/páginas
+    function renderPageVisits(pageCounts) {
+      const container = document.getElementById('analytics-live-traffic');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const sorted = Object.entries(pageCounts)
+        .sort((a, b) => b[1] - a[1]);
+
+      if (sorted.length === 0) {
+        container.innerHTML = '<p class="text-zinc-500 text-center py-6 text-xs">Aún no se registraron visitas.</p>';
+        return;
+      }
+
+      sorted.forEach(([pageName, count]) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-2.5 bg-brand-black border border-brand-border/40 rounded-xl hover:border-brand-accent/20 transition text-xs";
+        
+        item.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <span class="text-white font-medium truncate">${pageName}</span>
+          </div>
+          <span class="font-mono font-bold text-brand-accent ml-4 shrink-0 bg-brand-accent/10 px-2 py-0.5 rounded border border-brand-accent/20">${count} ${count === 1 ? 'visita' : 'visitas'}</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    window.switchTab = switchTab;
+    window.updateAnalytics = updateAnalytics;
+    window.editArticle = editArticle;
+    window.deleteArticle = deleteArticle;
+    window.cancelEdit = cancelEdit;
+    window.closeDeleteModal = closeDeleteModal;
+    window.confirmDelete = confirmDelete;
+    window.extractSelectedText = extractSelectedText;
+    window.handleCoverUpload = handleCoverUpload;
+    window.removeCoverImage = removeCoverImage;
+    window.renderAdminTestimonials = renderAdminTestimonials;
+    window.handleSaveTestimonial = handleSaveTestimonial;
+    window.editTestimonial = editTestimonial;
+    window.cancelTestimonialEdit = cancelTestimonialEdit;
+    window.deleteTestimonial = deleteTestimonial;
+    window.closeTestimonialDeleteModal = closeTestimonialDeleteModal;
+    window.confirmTestimonialDelete = confirmTestimonialDelete;
+    window.seedDefaultFaqs = seedDefaultFaqs;
+    window.editFaq = editFaq;
+    window.cancelFaqEdit = cancelFaqEdit;
+    window.handleSaveFaq = handleSaveFaq;
+    window.deleteFaq = deleteFaq;
+    window.closeFaqDeleteModal = closeFaqDeleteModal;
+    window.confirmFaqDelete = confirmFaqDelete;
+    window.exportBackup = exportBackup;
+    window.handleImportBackup = handleImportBackup;
+  </script>
+</body>
+</html>

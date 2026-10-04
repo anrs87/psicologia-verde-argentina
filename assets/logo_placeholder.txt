@@ -1,0 +1,1 @@
+Coloca tu archivo de logo aquí con el nombre 'logo.png'. El diseño del sitio web cargará este archivo y, en caso de fallar o no existir, usará la versión SVG vectorizada que diseñamos de respaldo.

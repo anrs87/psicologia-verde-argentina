@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflexión | Psicólogo Vegano</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              black: '#0A0D0A',
+              card: '#121712',
+              light: '#E2E8F0',
+              accent: '#8EB486',
+              accentHover: '#7CA074',
+              border: '#1F2937'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-brand-black text-brand-light font-sans min-h-screen selection:bg-brand-accent selection:text-brand-black flex flex-col">
+
+  <!-- CABECERA FLOTANTE / NAVEGACIÓN -->
+  <header class="sticky top-0 z-40 bg-brand-black/80 backdrop-blur border-b border-brand-border/60">
+    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 text-xs font-semibold text-zinc-400 hover:text-brand-accent transition">
+        <span>← Volver al inicio</span>
+      </a>
+      <span class="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">Lectura de Reflexión</span>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL DE LECTURA -->
+  <main class="flex-grow max-w-3xl mx-auto px-6 py-8 md:py-12 space-y-8 w-full">
+    
+    <!-- Loader de Carga -->
+    <div id="loader" class="text-center py-20">
+      <div class="inline-block w-8 h-8 border-4 border-brand-accent/30 border-t-brand-accent rounded-full animate-spin"></div>
+      <p class="text-xs text-zinc-500 mt-4 font-mono">Cargando reflexión...</p>
+    </div>
+
+    <!-- Contenido del Artículo (Oculto inicialmente) -->
+    <div id="article-container" class="hidden space-y-8">
+      <!-- Meta-información y Título -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3 text-xs font-mono text-brand-accent uppercase tracking-wider">
+          <span id="article-date">Fecha</span>
+          <span class="w-1 h-1 bg-brand-accent rounded-full"></span>
+          <span>Lic. Mauro García</span>
+        </div>
+        <h1 id="article-title" class="font-serif text-3xl md:text-5xl text-white leading-tight">
+          Título de la reflexión
+        </h1>
+        <div class="w-16 h-1 bg-brand-accent/40 rounded"></div>
+      </div>
+
+      <!-- Imagen Portada Adaptativa -->
+      <div id="cover-image-wrapper"></div>
+
+      <!-- Contenido del Artículo -->
+      <article id="article-content" class="font-serif text-zinc-300 text-lg leading-relaxed space-y-6 select-text">
+        <!-- Cuerpo del artículo -->
+      </article>
+
+      <!-- ACCIONES DE CIERRE / FOOTER DEL ARTÍCULO -->
+      <div class="border-t border-brand-border/60 pt-8 mt-12 space-y-6">
+        
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <a href="/" class="text-xs font-semibold text-zinc-400 hover:text-brand-accent transition flex items-center gap-1.5 py-2">
+            <span>← Volver al listado de reflexiones</span>
+          </a>
+          <button id="share-btn" class="w-full sm:w-auto bg-zinc-900 border border-brand-border hover:border-brand-accent/40 text-xs font-bold px-6 py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-zinc-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 10.742l5.632-3.072m0 8.66l-5.632-3.072M18 6a3 3 0 11-6 0 3 3 0 016 0zm-12 6a3 3 0 11-6 0 3 3 0 016 0zm12 6a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <span id="share-btn-text">Compartir reflexión</span>
+          </button>
+        </div>
+
+        <!-- Tarjeta CTA: Invitación a consulta -->
+        <div class="bg-gradient-to-b from-brand-card to-zinc-950 border border-brand-border rounded-2xl p-6 md:p-8 text-center space-y-4 shadow-xl">
+          <span class="text-brand-accent text-[10px] font-mono uppercase tracking-widest block">Espacio terapéutico seguro</span>
+          <h3 class="font-serif text-xl md:text-2xl text-white">¿Te sentís identificado con esta lectura?</h3>
+          <p class="text-zinc-400 text-xs md:text-sm max-w-xl mx-auto leading-relaxed">
+            No tenés que transitar la fatiga por compasión o la soledad en un entorno especista de forma solitaria. Te ofrezco un espacio de escucha clínica alineado con tus valores éticos.
+          </p>
+          <div class="pt-2">
+            <a id="whatsapp-cta" href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20coordinar%2520una%2520sesi%C3%B3n." target="_blank" rel="noopener noreferrer" class="inline-block bg-brand-accent text-brand-black hover:bg-brand-accentHover font-bold px-6 py-3 rounded-xl transition text-xs uppercase tracking-wider shadow-lg">
+              Quiero coordinar una sesión de orientación
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- PIE DE PÁGINA SIMPLE -->
+  <footer class="border-t border-brand-border bg-zinc-950 py-8 text-center text-xs text-zinc-500 mt-12">
+    <p>© Psicólogo Vegano - Lic. Mauro García Rodriguez. Todos los derechos reservados.</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, query, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdbqrN9hRhSKiBTUVjTcuGcgsBXMedjNY",
+      authDomain: "psicologiaveganaarg.firebaseapp.com",
+      projectId: "psicologiaveganaarg",
+      storageBucket: "psicologiaveganaarg.firebasestorage.app",
+      messagingSenderId: "42654132231",
+      appId: "1:42654132231:web:132953d04f7da6bf64e2a2",
+      measurementId: "G-DHKJW1Y4Y7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let currentArticle = null;
+
+    async function trackVisit(path, articuloTitulo = '') {
+      try {
+        let sessionID = localStorage.getItem('pva_analytics_session');
+        const sessionTime = localStorage.getItem('pva_analytics_session_time');
+        const now = Date.now();
+        
+        if (!sessionID || !sessionTime || (now - parseInt(sessionTime)) > 24 * 60 * 60 * 1000) {
+          sessionID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          localStorage.setItem('pva_analytics_session', sessionID);
+          localStorage.setItem('pva_analytics_session_time', now.toString());
+        }
+
+        let rawReferrer = document.referrer || '';
+        let referrer = 'Acceso Directo';
+        
+        if (rawReferrer) {
+          try {
+            const url = new URL(rawReferrer);
+            if (url.hostname !== window.location.hostname) {
+              const host = url.hostname.toLowerCase();
+              if (host.includes('instagram.com')) {
+                referrer = 'Instagram';
+              } else if (host.includes('facebook.com')) {
+                referrer = 'Facebook';
+              } else if (host.includes('t.co') || host.includes('twitter.com')) {
+                referrer = 'Twitter/X';
+              } else if (host.includes('google.com')) {
+                referrer = 'Búsqueda de Google';
+              } else if (host.includes('linkedin.com')) {
+                referrer = 'LinkedIn';
+              } else {
+                referrer = url.hostname.replace('www.', '');
+              }
+            }
+          } catch (e) {
+            console.error("Error parseando referrer:", e);
+          }
+        }
+
+        const d = new Date();
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const fechaStr = `${yyyy}-${mm}-${dd}`;
+
+        await addDoc(collection(db, "registro_visitas"), {
+          path: path,
+          articulo: articuloTitulo || '',
+          referrer: referrer,
+          fecha: fechaStr,
+          session: sessionID,
+          timestamp: serverTimestamp()
+        });
+      } catch (err) {
+        console.warn("Error enviando telemetría de analíticas:", err);
+      }
+    }
+
+    function getSlug(title) {
+      return title.toLowerCase()
+        .replace(/[^a-z0-9 -]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
+    async function loadArticle() {
+      // 1. Obtener el slug de los parámetros de búsqueda (?slug=...) o del path
+      const urlParams = new URLSearchParams(window.location.search);
+      let slug = urlParams.get('slug');
+
+      if (!slug) {
+        const pathParts = window.location.pathname.split('/articulos/');
+        if (pathParts.length > 1) {
+          slug = pathParts[1].split('?')[0].split('#')[0];
+        }
+      }
+
+      if (!slug) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        // 2. Traer los artículos desde Firestore
+        const q = query(collection(db, "articulos"));
+        const querySnapshot = await getDocs(q);
+        
+        let foundArt = null;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (getSlug(data.titulo) === slug) {
+            foundArt = { id: doc.id, ...data };
+          }
+        });
+
+        if (!foundArt) {
+          console.warn("Artículo no encontrado para el slug:", slug);
+          window.location.href = '/';
+          return;
+        }
+
+        currentArticle = foundArt;
+
+        // Registrar visita al artículo en la telemetría
+        trackVisit(`/articulos/${slug}`, foundArt.titulo);
+
+        // 3. Renderizar metadatos y contenido
+        const dateParts = foundArt.fecha.split('-');
+        const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+        const formattedDate = localDate.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        document.title = `${foundArt.titulo} | Psicólogo Vegano`;
+        
+        let canonicalLink = document.querySelector('link[rel="canonical"]');
+        if (!canonicalLink) {
+          canonicalLink = document.createElement('link');
+          canonicalLink.setAttribute('rel', 'canonical');
+          document.head.appendChild(canonicalLink);
+        }
+        canonicalLink.setAttribute('href', `${window.location.origin}/articulos/${getSlug(foundArt.titulo)}`);
+
+        document.getElementById('article-date').innerText = formattedDate;
+        document.getElementById('article-title').innerText = foundArt.titulo;
+        document.getElementById('article-content').innerHTML = foundArt.contenido;
+
+        // 4. Renderizar imagen de portada adaptativa
+        const coverWrapper = document.getElementById('cover-image-wrapper');
+        if (foundArt.imagenPortada) {
+          if (foundArt.imagenOrientacion === 'vertical') {
+            // Layout adaptativo vertical: En móviles arriba, en PC flota a la derecha
+            coverWrapper.innerHTML = `
+              <div class="block md:hidden w-full aspect-[3/4] rounded-2xl overflow-hidden mb-6 shadow-xl border border-brand-border/40">
+                <img src="${foundArt.imagenPortada}" alt="${foundArt.titulo}" class="w-full h-full object-cover">
+              </div>
+              <div class="hidden md:block float-right w-80 aspect-[3/4] rounded-2xl overflow-hidden ml-6 mb-6 shadow-xl border border-brand-border/40">
+                <img src="${foundArt.imagenPortada}" alt="${foundArt.titulo}" class="w-full h-full object-cover">
+              </div>
+            `;
+          } else {
+            // Horizontal: Banner arriba ancho completo
+            coverWrapper.innerHTML = `
+              <div class="w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden mb-6 shadow-xl border border-brand-border/40 relative">
+                <img src="${foundArt.imagenPortada}" alt="${foundArt.titulo}" class="w-full h-full object-cover">
+              </div>
+            `;
+          }
+        } else {
+          coverWrapper.innerHTML = ''; // Limpiar si no hay
+        }
+
+        // 5. Configurar link personalizado de WhatsApp
+        const whatsappCTA = document.getElementById('whatsapp-cta');
+        const customMessage = encodeURIComponent(`Hola Mauro, leí tu artículo sobre "${foundArt.titulo}" y me gustaría coordinar una sesión de orientación.`);
+        whatsappCTA.href = `https://wa.me/5491133791108?text=${customMessage}`;
+
+        // Mostrar contenedor y ocultar loader
+        document.getElementById('loader').classList.add('hidden');
+        document.getElementById('article-container').classList.remove('hidden');
+
+      } catch (err) {
+        console.error("Error cargando el artículo:", err);
+        window.location.href = '/';
+      }
+    }
+
+    async function shareArticle() {
+      if (!currentArticle) return;
+      const shareUrl = `${window.location.origin}/articulos/${getSlug(currentArticle.titulo)}`;
+      const shareTitle = `${currentArticle.titulo} | Psicólogo Vegano`;
+      const shareText = "Te comparto esta reflexión de Psicólogo Vegano:";
+
+      const shareBtnText = document.getElementById('share-btn-text');
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: shareTitle,
+            text: shareText,
+            url: shareUrl
+          });
+        } catch (err) {
+          console.log("Compartido cancelado:", err);
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          if (shareBtnText) {
+            const originalText = shareBtnText.innerText;
+            shareBtnText.innerText = "¡Enlace copiado! ✔";
+            setTimeout(() => {
+              shareBtnText.innerText = originalText;
+            }, 2500);
+          }
+        } catch (err) {
+          console.error("No se pudo copiar el enlace:", err);
+        }
+      }
+    }
+
+    document.getElementById('share-btn').addEventListener('click', shareArticle);
+    loadArticle();
+  </script>
+</body>
+</html>
