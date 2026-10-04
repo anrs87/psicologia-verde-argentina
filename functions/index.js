@@ -1,11 +1,16 @@
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { getAuth } = require('firebase-admin/auth');
+const { getStorage } = require('firebase-admin/storage');
 const express = require('express');
 const cors = require('cors')({ origin: true });
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
 
 admin.initializeApp();
-const db = admin.firestore();
+const db = getFirestore();
+const auth = getAuth();
+const storage = getStorage();
 const app = express();
 
 const botUserAgents = [
@@ -173,7 +178,7 @@ async function verifyAuthToken(req) {
   }
   const token = authHeader.split('Bearer ')[1];
   try {
-    return await admin.auth().verifyIdToken(token);
+    return await auth.verifyIdToken(token);
   } catch (err) {
     console.error('Error al verificar token Firebase Auth:', err);
     return null;
@@ -248,7 +253,7 @@ exports.createCheckoutPreference = functions.https.onRequest((req, res) => {
         id_producto: productId,
         monto: Number(product.precio),
         estado: 'pendiente',
-        fecha_creacion: admin.firestore.FieldValue.serverTimestamp()
+        fecha_creacion: FieldValue.serverTimestamp()
       }, { merge: true });
 
       return res.status(200).json({
@@ -311,13 +316,13 @@ exports.mercadopagoWebhook = functions.https.onRequest(async (req, res) => {
         monto: transaction_amount,
         estado: 'aprobado',
         metodo_pago: payment.payment_type_id || 'mercadopago',
-        fecha_aprobacion: admin.firestore.FieldValue.serverTimestamp()
+        fecha_aprobacion: FieldValue.serverTimestamp()
       }, { merge: true });
 
       // Inyección atómica del producto en la colección del usuario
       batch.set(userRef, {
-        productos_adquiridos: admin.firestore.FieldValue.arrayUnion(id_producto),
-        fecha_ultima_compra: admin.firestore.FieldValue.serverTimestamp()
+        productos_adquiridos: FieldValue.arrayUnion(id_producto),
+        fecha_ultima_compra: FieldValue.serverTimestamp()
       }, { merge: true });
 
       await batch.commit();
@@ -329,7 +334,7 @@ exports.mercadopagoWebhook = functions.https.onRequest(async (req, res) => {
         id_producto: id_producto,
         monto: transaction_amount,
         estado: 'rechazado',
-        fecha_actualizacion: admin.firestore.FieldValue.serverTimestamp()
+        fecha_actualizacion: FieldValue.serverTimestamp()
       }, { merge: true });
     } else if (status === 'refunded' || status === 'charged_back') {
       await transactionRef.set({
@@ -338,7 +343,7 @@ exports.mercadopagoWebhook = functions.https.onRequest(async (req, res) => {
         id_producto: id_producto,
         monto: transaction_amount,
         estado: 'devuelto',
-        fecha_actualizacion: admin.firestore.FieldValue.serverTimestamp()
+        fecha_actualizacion: FieldValue.serverTimestamp()
       }, { merge: true });
     }
 
@@ -388,7 +393,7 @@ exports.getSignedResourceUrl = functions.https.onRequest((req, res) => {
         return res.status(400).json({ error: 'El producto no tiene archivo asociado configurado' });
       }
 
-      const bucket = admin.storage().bucket();
+      const bucket = storage.bucket();
       const file = bucket.file(product.storage_path);
 
       const [exists] = await file.exists();
