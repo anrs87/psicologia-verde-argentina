@@ -194,9 +194,10 @@ export default function App() {
         throw new Error(errJson.error || 'No se pudo crear la orden de compra');
       }
 
-      const { init_point } = await res.json();
-      if (init_point) {
-        window.location.href = init_point;
+      const data = await res.json();
+      const checkoutUrl = data.sandbox_init_point || data.init_point;
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
       }
     } catch (err) {
       console.error(err);
