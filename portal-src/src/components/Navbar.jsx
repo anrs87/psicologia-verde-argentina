@@ -2,7 +2,7 @@ import React from 'react';
 import { signOut, auth } from '../firebase';
 import { LogOut, ArrowLeft, User, Library, Compass } from 'lucide-react';
 
-export default function Navbar({ user, activeTab, setActiveTab }) {
+export default function Navbar({ user, activeTab, setActiveTab, onOpenAuthModal }) {
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -40,35 +40,33 @@ export default function Navbar({ user, activeTab, setActiveTab }) {
           </div>
         </div>
 
-        {/* Tabs de Navegación */}
-        {user && (
-          <div className="flex items-center bg-[#141a14] p-1 rounded-xl border border-[#232f23]">
-            <button
-              onClick={() => setActiveTab('biblioteca')}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
-                activeTab === 'biblioteca'
-                  ? 'bg-[#8EB486] text-[#0A0D0A] font-semibold shadow'
-                  : 'text-[#8F9B8D] hover:text-[#E2E8F0]'
-              }`}
-            >
-              <Library className="w-3.5 h-3.5" />
-              <span>Mi biblioteca</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('explorar')}
-              className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
-                activeTab === 'explorar'
-                  ? 'bg-[#8EB486] text-[#0A0D0A] font-semibold shadow'
-                  : 'text-[#8F9B8D] hover:text-[#E2E8F0]'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>Explorar recursos</span>
-            </button>
-          </div>
-        )}
+        {/* Tabs de Navegación (Visibles siempre para permitir explorar libremente) */}
+        <div className="flex items-center bg-[#141a14] p-1 rounded-xl border border-[#232f23]">
+          <button
+            onClick={() => setActiveTab('biblioteca')}
+            className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+              activeTab === 'biblioteca'
+                ? 'bg-[#8EB486] text-[#0A0D0A] font-semibold shadow'
+                : 'text-[#8F9B8D] hover:text-[#E2E8F0]'
+            }`}
+          >
+            <Library className="w-3.5 h-3.5" />
+            <span>Mi biblioteca</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('explorar')}
+            className={`flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+              activeTab === 'explorar'
+                ? 'bg-[#8EB486] text-[#0A0D0A] font-semibold shadow'
+                : 'text-[#8F9B8D] hover:text-[#E2E8F0]'
+            }`}
+          >
+            <Compass className="w-3.5 h-3.5" />
+            <span>Explorar recursos</span>
+          </button>
+        </div>
 
-        {/* Perfil & Logout */}
+        {/* Perfil & Logout o Iniciar Sesión */}
         {user ? (
           <div className="flex items-center gap-3">
             <div className="hidden md:flex flex-col text-right">
@@ -89,7 +87,13 @@ export default function Navbar({ user, activeTab, setActiveTab }) {
             </button>
           </div>
         ) : (
-          <span className="text-xs text-[#8F9B8D]">Espacio Pacientes</span>
+          <button
+            onClick={onOpenAuthModal}
+            className="px-3.5 py-1.5 rounded-xl bg-[#8EB486]/15 hover:bg-[#8EB486]/25 border border-[#8EB486]/30 text-[#8EB486] text-xs font-semibold transition cursor-pointer flex items-center gap-1.5"
+          >
+            <User className="w-3.5 h-3.5" />
+            <span>Iniciar sesión</span>
+          </button>
         )}
       </div>
     </header>

@@ -27,14 +27,30 @@ import {
   Play,
   Layers,
   X,
-  ListOrdered
+  ListOrdered,
+  User,
+  Tag,
+  Check,
+  Trash2
 } from 'lucide-react';
+import { DEFAULT_PRODUCTS } from './data/defaultProducts';
+
+function formatProductDescription(raw) {
+  if (!raw) return '';
+  if (raw.includes('<p>') || raw.includes('<br>')) return raw;
+  const paras = raw.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  if (paras.length > 1) {
+    return paras.map(p => `<p class="mb-2.5 leading-relaxed">${p.replace(/\n/g, '<br>')}</p>`).join('');
+  }
+  return `<p class="leading-relaxed">${raw.replace(/\n/g, '<br>')}</p>`;
+}
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('biblioteca');
-  const [products, setProducts] = useState([]);
+  const [activeTab, setActiveTab] = useState('explorar');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [products, setProducts] = useState(DEFAULT_PRODUCTS);
   const [purchasedIds, setPurchasedIds] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
 
@@ -46,6 +62,14 @@ export default function App() {
   const [checkoutLoadingId, setCheckoutLoadingId] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
 
+  // Estados de Checkout y Cupones Promocionales
+  const [checkoutModalProduct, setCheckoutModalProduct] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('mercadopago'); // 'mercadopago' | 'paypal'
+  const [couponInput, setCouponInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [couponError, setCouponError] = useState(null);
+
   // Escuchar estado de autenticación
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -55,21 +79,62 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Notificaciones según URL params de retorno de Mercado Pago
+  // Notificaciones según URL params de retorno de Mercado Pago o PayPal
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
-    if (status === 'success') {
+    const targetProduct = params.get('producto');
+    const targetTab = params.get('tab');
+    const paypalOrderId = params.get('token') || params.get('order_id');
+
+    if (status === 'success' && !paypalOrderId) {
       setAlertMessage({
         type: 'success',
         text: '¡Pago aprobado con éxito! Tu recurso ya está habilitado en tu biblioteca.'
       });
       setActiveTab('biblioteca');
       window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (status === 'failure') {
+    } else if (status === 'paypal_success' || (status === 'success' && paypalOrderId)) {
+      if (paypalOrderId && user) {
+        const capturedKey = `paypal_captured_${paypalOrderId}`;
+        if (!sessionStorage.getItem(capturedKey)) {
+          sessionStorage.setItem(capturedKey, 'true');
+          (async () => {
+            try {
+              const userToken = await user.getIdToken();
+              const captureEndpoint = 'https://us-central1-psicologiaveganaarg.cloudfunctions.net/capturePaypalOrder';
+              const captureRes = await fetch(captureEndpoint, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${userToken}`
+                },
+                body: JSON.stringify({ orderId: paypalOrderId })
+              });
+              if (captureRes.ok) {
+                setAlertMessage({
+                  type: 'success',
+                  text: '¡Pago internacional con PayPal aprobado con éxito! Tu recurso ya está habilitado en tu biblioteca.'
+                });
+                setActiveTab('biblioteca');
+                window.history.replaceState({}, document.title, window.location.pathname);
+              }
+            } catch (e) {
+              console.warn('Error capturando PayPal tras redirección:', e);
+            }
+          })();
+        }
+      } else {
+        setAlertMessage({
+          type: 'success',
+          text: '¡Pago internacional procesado! Tu recurso se habilitará en breve en tu biblioteca.'
+        });
+        setActiveTab('biblioteca');
+      }
+    } else if (status === 'failure' || status === 'cancel') {
       setAlertMessage({
         type: 'error',
-        text: 'El pago no pudo completarse. Por favor, intentá nuevamente.'
+        text: 'La operación de pago no se completó. Por favor, intentá nuevamente.'
       });
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (status === 'pending') {
@@ -78,8 +143,18 @@ export default function App() {
         text: 'Tu pago está pendiente de acreditación. Apenas se confirme, se activará en tu biblioteca.'
       });
       window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (targetTab) {
+      setActiveTab(targetTab);
     }
-  }, []);
+
+    if (targetProduct) {
+      setActiveTab('explorar');
+      const found = DEFAULT_PRODUCTS.find((p) => p.id === targetProduct);
+      if (found) {
+        setActiveResourceModal(found);
+      }
+    }
+  }, [user]);
 
   // Cargar catálogo de productos publicados
   useEffect(() => {
@@ -89,9 +164,19 @@ export default function App() {
         const q = query(collection(db, 'products'), where('estado', '==', 'publicado'));
         const snapshot = await getDocs(q);
         const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-        setProducts(list);
+        if (list.length > 0) {
+          // Fusionar con DEFAULT_PRODUCTS para preservar las guías oficiales, portadas HD y módulos
+          const merged = DEFAULT_PRODUCTS.map((def) => {
+            const found = list.find((p) => p.id === def.id || (p.titulo && p.titulo.toLowerCase().trim() === def.titulo.toLowerCase().trim()));
+            return found ? { ...def, ...found, url_portada: def.url_portada, items: (def.items || found.items) } : def;
+          });
+          setProducts(merged);
+        } else {
+          setProducts(DEFAULT_PRODUCTS);
+        }
       } catch (err) {
-        console.error('Error al cargar productos:', err);
+        console.error('Nota: usando catálogo local:', err);
+        setProducts(DEFAULT_PRODUCTS);
       } finally {
         setLoadingData(false);
       }
@@ -123,11 +208,27 @@ export default function App() {
 
   // Manejar consumo de recurso protegido con Signed URL (soporta módulos individuales)
   const handleOpenResource = async (product, item = null) => {
-    if (!user) return;
-
     // Si el producto tiene múltiples módulos secuenciales y no se clickeó uno puntual, abrir índice
     if (Array.isArray(product.items) && product.items.length > 1 && !item) {
       setActiveResourceModal(product);
+      return;
+    }
+
+    if (!user) {
+      setShowAuthModal(true);
+      setAlertMessage({
+        type: 'warning',
+        text: 'Iniciá sesión o creá tu cuenta de paciente para reproducir y descargar tus recursos.'
+      });
+      return;
+    }
+
+    const isPurchased = purchasedIds.includes(product.id) || (Array.isArray(product.bundled_products) && product.bundled_products.length > 0 && product.bundled_products.every(bid => purchasedIds.includes(bid)));
+    if (!isPurchased) {
+      setAlertMessage({
+        type: 'warning',
+        text: 'Este recurso requiere ser adquirido previamente para acceder a las grabaciones y documentos completos.'
+      });
       return;
     }
 
@@ -182,9 +283,59 @@ export default function App() {
     }
   };
 
-  // Manejar checkout con Mercado Pago
-  const handleCheckout = async (product) => {
+  // Abrir modal de checkout con cupones
+  const openCheckoutModal = (product) => {
     if (!user) {
+      setShowAuthModal(true);
+      setAlertMessage({
+        type: 'warning',
+        text: 'Iniciá sesión o creá tu cuenta para continuar con la compra.'
+      });
+      return;
+    }
+    setCheckoutModalProduct(product);
+    setCouponInput('');
+    setAppliedCoupon(null);
+    setCouponError(null);
+  };
+
+  // Validar cupón con el backend
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim() || !checkoutModalProduct) return;
+    setValidatingCoupon(true);
+    setCouponError(null);
+
+    try {
+      const endpoint = 'https://us-central1-psicologiaveganaarg.cloudfunctions.net/validateCoupon';
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          couponCode: couponInput.trim(),
+          productId: checkoutModalProduct.id
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.valid) {
+        setCouponError(data.error || 'El cupón no es válido o ha expirado');
+        setAppliedCoupon(null);
+      } else {
+        setAppliedCoupon(data);
+        setCouponError(null);
+      }
+    } catch (err) {
+      console.error(err);
+      setCouponError('Error al verificar el cupón. Por favor, intentá nuevamente.');
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
+
+  // Manejar checkout con Mercado Pago
+  const handleCheckout = async (product, couponCode = null) => {
+    if (!user) {
+      setShowAuthModal(true);
       setAlertMessage({
         type: 'warning',
         text: 'Inicia sesión o crea tu cuenta para continuar con la compra.'
@@ -203,7 +354,10 @@ export default function App() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ productId: product.id })
+        body: JSON.stringify({
+          productId: product.id,
+          couponCode: couponCode || appliedCoupon?.codigo || undefined
+        })
       });
 
       if (!res.ok) {
@@ -227,6 +381,56 @@ export default function App() {
     }
   };
 
+  // Manejar checkout internacional con PayPal
+  const handlePaypalCheckout = async (product, couponCode = null) => {
+    if (!user) {
+      setShowAuthModal(true);
+      setAlertMessage({
+        type: 'warning',
+        text: 'Inicia sesión o crea tu cuenta para continuar con la compra.'
+      });
+      return;
+    }
+
+    setCheckoutLoadingId(product.id);
+    try {
+      const token = await user.getIdToken();
+      const endpoint = 'https://us-central1-psicologiaveganaarg.cloudfunctions.net/createPaypalOrder';
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          productId: product.id,
+          couponCode: couponCode || appliedCoupon?.codigo || undefined
+        })
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || 'No se pudo generar la orden de PayPal');
+      }
+
+      const data = await res.json();
+      if (data.approveUrl) {
+        window.location.href = data.approveUrl;
+      } else {
+        throw new Error('No se recibió la URL de pago de PayPal');
+      }
+    } catch (err) {
+      console.error(err);
+      setAlertMessage({
+        type: 'error',
+        text: `Error de pago con PayPal: ${err.message}`
+      });
+    } finally {
+      setCheckoutLoadingId(null);
+    }
+  };
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-[#0A0D0A] flex flex-col items-center justify-center text-[#8EB486]">
@@ -236,13 +440,25 @@ export default function App() {
     );
   }
 
-  // Filtrado de colecciones
-  const biblioteca = products.filter((p) => purchasedIds.includes(p.id));
-  const explorar = products.filter((p) => !purchasedIds.includes(p.id));
+  // Filtrado de colecciones (reconoce tanto posesión individual como posesión vía pack integral)
+  const isProductPurchased = (p) => {
+    if (purchasedIds.includes(p.id)) return true;
+    if (Array.isArray(p.bundled_products) && p.bundled_products.length > 0) {
+      return p.bundled_products.every(bid => purchasedIds.includes(bid));
+    }
+    return false;
+  };
+  const biblioteca = products.filter(isProductPurchased);
+  const explorar = products.filter((p) => !isProductPurchased(p));
 
   return (
     <div className="min-h-screen bg-[#0A0D0A] text-[#E2E8F0] pb-32">
-      <Navbar user={user} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navbar
+        user={user}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onOpenAuthModal={() => setShowAuthModal(true)}
+      />
 
       {/* Alertas */}
       {alertMessage && (
@@ -274,24 +490,43 @@ export default function App() {
         </div>
       )}
 
-      {/* Vista no autenticado */}
-      {!user ? (
-        <AuthModal />
-      ) : (
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-          {/* TAB: MI BIBLIOTECA */}
-          {activeTab === 'biblioteca' && (
-            <div>
-              <div className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-serif text-[#E2E8F0] mb-2">
-                  Mi Biblioteca Terapéutica
-                </h1>
-                <p className="text-sm text-[#8F9B8D]">
-                  Tus recursos adquiridos, disponibles para escuchar o leer en cualquier momento.
-                </p>
-              </div>
+      {/* Contenido principal público y privado */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        {/* TAB: MI BIBLIOTECA */}
+        {activeTab === 'biblioteca' && (
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-10 text-center max-w-2xl mx-auto">
+              <span className="inline-block text-[11px] font-mono uppercase tracking-widest text-[#8EB486] px-3.5 py-1 rounded-full bg-[#8EB486]/10 border border-[#8EB486]/25 mb-3">
+                Tu Espacio Personal
+              </span>
+              <h1 className="text-2xl sm:text-4xl font-serif text-[#E2E8F0] mb-2">
+                Mi Biblioteca Terapéutica
+              </h1>
+              <p className="text-sm text-[#8F9B8D] leading-relaxed">
+                Tus recursos adquiridos, disponibles para escuchar o leer en cualquier momento.
+              </p>
+            </div>
 
-              {biblioteca.length === 0 ? (
+            {!user ? (
+              <div className="bg-[#141a14] border border-[#232f23] rounded-2xl p-10 text-center max-w-lg mx-auto shadow-xl">
+                <div className="w-14 h-14 mx-auto mb-4 bg-[#8EB486]/10 rounded-full flex items-center justify-center text-[#8EB486] border border-[#8EB486]/20">
+                  <User className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-serif text-[#E2E8F0] mb-2">
+                  Ingresá a tu cuenta de paciente
+                </h3>
+                <p className="text-xs text-[#8F9B8D] leading-relaxed mb-6">
+                  Iniciá sesión o registrate con el mismo correo electrónico que utilizaste al adquirir tu recurso para desbloquear tus grabaciones y cuadernos clínicos.
+                </p>
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="py-2.5 px-6 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-xl transition inline-flex items-center gap-2 cursor-pointer shadow-lg shadow-[#8EB486]/10"
+                >
+                  <span>Iniciar sesión o Crear cuenta</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            ) : biblioteca.length === 0 ? (
                 <div className="bg-[#141a14] border border-[#232f23] rounded-2xl p-10 text-center max-w-lg mx-auto">
                   <div className="w-14 h-14 mx-auto mb-4 bg-[#8EB486]/10 rounded-full flex items-center justify-center text-[#8EB486]">
                     <ShoppingBag className="w-6 h-6" />
@@ -353,7 +588,7 @@ export default function App() {
                           </h3>
                           <div
                             className="text-xs text-[#8F9B8D] line-clamp-3 mb-4 leading-relaxed"
-                            dangerouslySetInnerHTML={{ __html: prod.descripcion || '' }}
+                            dangerouslySetInnerHTML={{ __html: formatProductDescription(prod.descripcion) }}
                           />
                         </div>
 
@@ -389,12 +624,15 @@ export default function App() {
 
           {/* TAB: EXPLORAR RECURSOS */}
           {activeTab === 'explorar' && (
-            <div>
-              <div className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-serif text-[#E2E8F0] mb-2">
+            <div className="max-w-5xl mx-auto">
+              <div className="mb-10 text-center max-w-2xl mx-auto">
+                <span className="inline-block text-[11px] font-mono uppercase tracking-widest text-[#8EB486] px-3.5 py-1 rounded-full bg-[#8EB486]/10 border border-[#8EB486]/25 mb-3">
+                  Catálogo Clínico
+                </span>
+                <h1 className="text-2xl sm:text-4xl font-serif text-[#E2E8F0] mb-3">
                   Explorar Recursos & Audioguías
                 </h1>
-                <p className="text-sm text-[#8F9B8D]">
+                <p className="text-sm sm:text-base text-[#8F9B8D] leading-relaxed">
                   Herramientas creadas específicamente para personas veganas frente al trauma especista, ansiedad y soledad.
                 </p>
               </div>
@@ -416,18 +654,18 @@ export default function App() {
                       key={prod.id}
                       className="bg-[#141a14] border border-[#232f23] hover:border-[#8EB486]/40 rounded-2xl overflow-hidden flex flex-col transition group shadow-xl"
                     >
-                      <div className="h-44 bg-[#0e130e] relative overflow-hidden flex items-center justify-center">
+                      <div className="h-48 bg-[#0c100c] p-2 relative overflow-hidden flex items-center justify-center">
                         {prod.url_portada ? (
                           <img
                             src={prod.url_portada}
                             alt={prod.titulo}
-                            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                            className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500 rounded-lg"
                           />
                         ) : (
                           <div className="text-4xl text-[#8EB486]/20">🌿</div>
                         )}
-                        <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0A0D0A]/80 backdrop-blur border border-[#8EB486]/30 text-[10px] font-mono text-[#8EB486] rounded-full">
-                          {prod.items && prod.items.length > 1 ? `Pack (${prod.items.length} módulos)` : prod.tipo === 'pdf' ? 'Cuadernillo PDF' : 'Audioguía MP3'}
+                        <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0A0D0A]/85 backdrop-blur border border-[#8EB486]/30 text-[10px] font-mono text-[#8EB486] rounded-full shadow-md">
+                          {prod.items && prod.items.length > 1 ? `Pack (${prod.items.length} módulos)` : prod.tipo === 'pdf' ? 'Capítulo / PDF' : 'Audioguía MP3'}
                         </span>
                       </div>
 
@@ -436,6 +674,9 @@ export default function App() {
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-xs font-mono text-[#8EB486] font-semibold">
                               ${Number(prod.precio || 0).toLocaleString('es-AR')} ARS
+                            </span>
+                            <span className="text-[10px] font-mono text-sky-400">
+                              / ${prod.id === 'mapa_de_transiciones' ? 25 : (prod.id === 'autoestima_verde' ? 18 : 5)} USD
                             </span>
                           </div>
                           <h3 className="font-serif text-lg font-medium text-[#E2E8F0] mb-2 leading-snug">
@@ -447,20 +688,45 @@ export default function App() {
                           />
                         </div>
 
-                        <button
-                          onClick={() => handleCheckout(prod)}
-                          disabled={checkoutLoadingId === prod.id}
-                          className="w-full py-2.5 px-4 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
-                        >
-                          {checkoutLoadingId === prod.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            <>
-                              <ShoppingBag className="w-4 h-4" />
-                              <span>Comprar con Mercado Pago</span>
-                            </>
+                        <div className="space-y-2 mt-4">
+                          {prod.items && prod.items.length > 0 && (
+                            <button
+                              onClick={() => setActiveResourceModal(prod)}
+                              className="w-full py-2 px-4 bg-[#1a231a] hover:bg-[#232f23] text-[#8EB486] hover:text-[#B5CFB0] border border-[#8EB486]/30 font-medium text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                            >
+                              <ListOrdered className="w-3.5 h-3.5" />
+                              <span>{prod.items.length > 1 ? `Ver plan de contenidos (${prod.items.length} módulos)` : 'Ver detalle y material incluido'}</span>
+                            </button>
                           )}
-                        </button>
+
+                          {purchasedIds.includes(prod.id) ? (
+                            <button
+                              onClick={() => {
+                                setActiveTab('biblioteca');
+                                handleOpenResource(prod);
+                              }}
+                              className="w-full py-2.5 px-4 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                            >
+                              <Play className="w-4 h-4 fill-current" />
+                              <span>Acceder desde mi biblioteca</span>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => openCheckoutModal(prod)}
+                              disabled={checkoutLoadingId === prod.id}
+                              className="w-full py-2.5 px-4 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+                            >
+                              {checkoutLoadingId === prod.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <>
+                                  <ShoppingBag className="w-4 h-4" />
+                                  <span>Adquirir Recurso</span>
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -469,7 +735,6 @@ export default function App() {
             </div>
           )}
         </main>
-      )}
 
       {/* Modal de Módulos y Entregables del Recurso */}
       {activeResourceModal && (
@@ -507,7 +772,7 @@ export default function App() {
 
             {/* Modal Body / Lista de Módulos */}
             <div className="p-6 overflow-y-auto space-y-3 flex-1">
-              <div className="text-xs text-[#8F9B8D] leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: activeResourceModal.descripcion || '' }} />
+              <div className="text-xs text-[#8F9B8D] leading-relaxed mb-4 space-y-2.5" dangerouslySetInnerHTML={{ __html: formatProductDescription(activeResourceModal.descripcion) }} />
               
               <h4 className="text-xs font-semibold uppercase tracking-wider text-[#8EB486] mb-3">
                 Plan de Trabajo / Contenidos en Orden:
@@ -552,10 +817,301 @@ export default function App() {
                   </div>
                 ))}
               </div>
+
+              {!purchasedIds.includes(activeResourceModal.id) && (
+                <div className="pt-4 mt-4 border-t border-[#232f23] flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#0e130e]/80 p-4 rounded-xl border">
+                  <div>
+                    <div className="text-sm font-semibold text-[#8EB486]">
+                      ${Number(activeResourceModal.precio || 0).toLocaleString('es-AR')} ARS
+                    </div>
+                    <div className="text-[11px] text-sky-400 font-mono">
+                      Exterior: ${activeResourceModal.id === 'mapa_de_transiciones' ? 25 : (activeResourceModal.id === 'autoestima_verde' ? 18 : 5)} USD (PayPal)
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const prod = activeResourceModal;
+                      setActiveResourceModal(null);
+                      openCheckoutModal(prod);
+                    }}
+                    className="w-full sm:w-auto py-2.5 px-5 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#8EB486]/10"
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    <span>Adquirir recurso ahora</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
+
+      {/* Modal de Checkout / Cupones */}
+      {checkoutModalProduct && (() => {
+        const origPrice = Number(checkoutModalProduct.precio_ars || checkoutModalProduct.precio || 0);
+        let discount = 0;
+        if (appliedCoupon) {
+          if (appliedCoupon.tipo === 'porcentaje') {
+            discount = Math.round((origPrice * (Number(appliedCoupon.descuento) || 0)) / 100);
+          } else {
+            discount = Math.min(origPrice, Number(appliedCoupon.descuento) || 0);
+          }
+        }
+        const finalPrice = Math.max(0, origPrice - discount);
+
+        const origPriceUsd = Number(checkoutModalProduct.precio_usd) || 
+          (checkoutModalProduct.id === 'mapa_de_transiciones' ? 25 : 
+          (checkoutModalProduct.id === 'autoestima_verde' ? 18 : 
+          (checkoutModalProduct.id === 'libro_cuerpos_no_humanos' ? 5 :
+          Math.max(5, Math.round(origPrice / 1000)))));
+        let discountUsd = 0;
+        if (appliedCoupon) {
+          if (appliedCoupon.tipo === 'porcentaje') {
+            discountUsd = Number(((origPriceUsd * (Number(appliedCoupon.descuento) || 0)) / 100).toFixed(2));
+          } else {
+            discountUsd = Number(appliedCoupon.descuento_usd || 5);
+          }
+        }
+        const finalPriceUsd = Math.max(1, Number((origPriceUsd - discountUsd).toFixed(2)));
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="w-full max-w-lg bg-[#141a14] border border-[#232f23] rounded-2xl flex flex-col overflow-hidden shadow-2xl">
+              {/* Header */}
+              <div className="p-5 bg-[#0e130e] border-b border-[#232f23] flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#8EB486]/10 border border-[#8EB486]/20 flex items-center justify-center text-[#8EB486]">
+                    <ShoppingBag className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-serif font-medium text-[#E2E8F0]">Finalizar Adquisición</h3>
+                    <p className="text-[11px] text-[#8F9B8D]">Pago 100% seguro y acceso inmediato</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setCheckoutModalProduct(null)}
+                  className="p-1.5 rounded-lg text-[#8F9B8D] hover:text-[#E2E8F0] hover:bg-[#232f23] transition cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Contenido */}
+              <div className="p-6 space-y-5">
+                {/* Info Producto */}
+                <div className="flex items-center gap-4 p-3.5 bg-[#0e130e] border border-[#232f23] rounded-xl">
+                  <div className="w-14 h-14 rounded-lg bg-zinc-900 border border-[#232f23] overflow-hidden shrink-0 flex items-center justify-center">
+                    {checkoutModalProduct.url_portada ? (
+                      <img src={checkoutModalProduct.url_portada} alt={checkoutModalProduct.titulo} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-xl">🌿</span>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-sm font-semibold text-[#E2E8F0] truncate">{checkoutModalProduct.titulo}</h4>
+                    <p className="text-xs text-[#8F9B8D] line-clamp-1 mt-0.5">{checkoutModalProduct.subtitulo || 'Guía terapéutica clínica'}</p>
+                    <span className="inline-block mt-1 text-[11px] font-mono text-[#8EB486]">
+                      {paymentMethod === 'mercadopago' 
+                        ? `$${origPrice.toLocaleString('es-AR')} ARS`
+                        : `$${origPriceUsd.toFixed(2)} USD`}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Selector de Método de Pago */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-[#8F9B8D] flex items-center justify-between">
+                    <span>Método de pago / Moneda</span>
+                    <span className="text-[11px] text-[#8EB486]">
+                      {paymentMethod === 'mercadopago' ? 'Argentina (ARS)' : 'Exterior (USD)'}
+                    </span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('mercadopago')}
+                      className={`p-2.5 rounded-xl border text-xs font-medium flex items-center justify-center gap-2 transition cursor-pointer ${
+                        paymentMethod === 'mercadopago'
+                          ? 'bg-[#1a291a] border-[#8EB486] text-[#8EB486] shadow-sm font-semibold'
+                          : 'bg-[#0e130e] border-[#232f23] text-zinc-400 hover:text-white hover:border-[#344634]'
+                      }`}
+                    >
+                      <span>🇦🇷 Mercado Pago</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPaymentMethod('paypal')}
+                      className={`p-2.5 rounded-xl border text-xs font-medium flex items-center justify-center gap-2 transition cursor-pointer ${
+                        paymentMethod === 'paypal'
+                          ? 'bg-[#1a291a] border-[#8EB486] text-[#8EB486] shadow-sm font-semibold'
+                          : 'bg-[#0e130e] border-[#232f23] text-zinc-400 hover:text-white hover:border-[#344634]'
+                      }`}
+                    >
+                      <span>🌎 PayPal (Exterior)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Cupón de descuento */}
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-[#8F9B8D] flex items-center gap-1.5">
+                    <Tag className="w-3.5 h-3.5 text-[#8EB486]" />
+                    <span>¿Tenés un cupón de descuento?</span>
+                  </label>
+                  
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between p-3 bg-[#1a291a] border border-[#8EB486]/40 rounded-xl">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-[#8EB486]" />
+                        <div>
+                          <p className="text-xs font-semibold text-[#8EB486]">
+                            Cupón <span className="font-mono tracking-wider">{appliedCoupon.codigo}</span> aplicado
+                          </p>
+                          <p className="text-[10px] text-[#B5CFB0]">
+                            {appliedCoupon.tipo === 'porcentaje' 
+                              ? `${appliedCoupon.descuento}% de descuento` 
+                              : (paymentMethod === 'mercadopago' ? `$${appliedCoupon.descuento} ARS de descuento` : `$${appliedCoupon.descuento_usd || 5} USD de descuento`)}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => { setAppliedCoupon(null); setCouponInput(''); }}
+                        className="p-1 text-[#8F9B8D] hover:text-red-400 hover:bg-[#232f23] rounded transition cursor-pointer"
+                        title="Remover cupón"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Ej: LANZAMIENTO"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleApplyCoupon(); }}
+                        className="flex-1 bg-[#0e130e] border border-[#232f23] focus:border-[#8EB486] text-xs font-mono uppercase px-3 py-2 rounded-xl text-[#E2E8F0] placeholder-[#505a4e] outline-none transition"
+                      />
+                      <button
+                        onClick={handleApplyCoupon}
+                        disabled={validatingCoupon || !couponInput.trim()}
+                        className="px-4 py-2 bg-[#232f23] hover:bg-[#2e3e2e] text-[#8EB486] font-medium text-xs rounded-xl border border-[#8EB486]/30 transition disabled:opacity-40 cursor-pointer flex items-center gap-1.5"
+                      >
+                        {validatingCoupon ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Aplicar'}
+                      </button>
+                    </div>
+                  )}
+
+                  {couponError && (
+                    <p className="text-[11px] text-red-400 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3 shrink-0" />
+                      <span>{couponError}</span>
+                    </p>
+                  )}
+                </div>
+
+                {/* Desglose de Pago */}
+                {paymentMethod === 'mercadopago' ? (
+                  <div className="p-4 bg-[#0e130e] border border-[#232f23] rounded-xl space-y-2 text-xs">
+                    <div className="flex justify-between text-[#8F9B8D]">
+                      <span>Precio original</span>
+                      <span className="font-mono">${origPrice.toLocaleString('es-AR')} ARS</span>
+                    </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-[#8EB486]">
+                        <span>Descuento aplicado</span>
+                        <span className="font-mono">-${discount.toLocaleString('es-AR')} ARS</span>
+                      </div>
+                    )}
+                    <div className="pt-2 border-t border-[#232f23] flex justify-between text-sm font-semibold text-[#E2E8F0]">
+                      <span>Total a abonar</span>
+                      <span className="font-mono text-[#8EB486] text-base">${finalPrice.toLocaleString('es-AR')} ARS</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-4 bg-[#0e130e] border border-[#232f23] rounded-xl space-y-2 text-xs">
+                    <div className="flex justify-between text-[#8F9B8D]">
+                      <span>Precio internacional</span>
+                      <span className="font-mono">${origPriceUsd.toFixed(2)} USD</span>
+                    </div>
+                    {appliedCoupon && (
+                      <div className="flex justify-between text-[#8EB486]">
+                        <span>Descuento aplicado</span>
+                        <span className="font-mono">-${discountUsd.toFixed(2)} USD</span>
+                      </div>
+                    )}
+                    <div className="pt-2 border-t border-[#232f23] flex justify-between text-sm font-semibold text-[#E2E8F0]">
+                      <span>Total a abonar</span>
+                      <span className="font-mono text-[#8EB486] text-base">${finalPriceUsd.toFixed(2)} USD</span>
+                    </div>
+                    <p className="text-[10px] text-zinc-500 pt-1">
+                      Acepta tarjetas internacionales de crédito/débito (Visa, Mastercard, AMEX) o saldo PayPal.
+                    </p>
+                  </div>
+                )}
+
+                {/* Botón de Pago según método */}
+                {paymentMethod === 'mercadopago' ? (
+                  <button
+                    onClick={() => handleCheckout(checkoutModalProduct, appliedCoupon?.codigo)}
+                    disabled={checkoutLoadingId === checkoutModalProduct.id}
+                    className="w-full py-3 px-4 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+                  >
+                    {checkoutLoadingId === checkoutModalProduct.id ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Generando orden de pago...</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>Pagar con Mercado Pago (${finalPrice.toLocaleString('es-AR')} ARS)</span>
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => handlePaypalCheckout(checkoutModalProduct, appliedCoupon?.codigo)}
+                      disabled={checkoutLoadingId === checkoutModalProduct.id}
+                      className="w-full py-3 px-4 bg-[#0070BA] hover:bg-[#005ea6] text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+                    >
+                      {checkoutLoadingId === checkoutModalProduct.id ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Conectando con PayPal...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="font-bold italic text-base">P</span>
+                          <span>Pagar con PayPal / Tarjeta (${finalPriceUsd.toFixed(2)} USD)</span>
+                        </>
+                      )}
+                    </button>
+
+                    {/* Respaldo / Canal Asistido solicitado por Mauro */}
+                    <div className="text-center pt-1 border-t border-[#232f23]/60">
+                      <p className="text-[11px] text-zinc-400">
+                        ¿Estás en el exterior y no tenés tarjeta ni PayPal?{' '}
+                        <a
+                          href={`https://wa.me/5491136940026?text=${encodeURIComponent(
+                            `Hola Mauro, te escribo desde el exterior para coordinar la adquisición de "${checkoutModalProduct.titulo}".`
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#8EB486] hover:underline font-medium"
+                        >
+                          Coordinar por WhatsApp
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Reproductor de Audio Persistente */}
       {activeAudio && (
@@ -565,6 +1121,11 @@ export default function App() {
       {/* Visor de PDF Modal */}
       {activePdf && (
         <PdfViewer resource={activePdf} onClose={() => setActivePdf(null)} />
+      )}
+
+      {/* Modal Flotante de Autenticación */}
+      {showAuthModal && (
+        <AuthModal onClose={() => setShowAuthModal(false)} />
       )}
     </div>
   );

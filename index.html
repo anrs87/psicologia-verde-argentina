@@ -217,447 +217,720 @@
         <!-- Imagen 5: Hero Slider 5 (Mauro de pie de plano entero medio) -->
         <div id="hero-slide-5" class="absolute inset-0 bg-cover transition-opacity duration-1000 opacity-0" style="background-image: url('assets/hero6_optimized.webp'); background-position: center 12%; filter: brightness(0.8);"></div>
         
-        <!-- Sombreado por encima (Degradé de abajo hacia arriba para integrarlo al negro de fondo sin oscurecer de más) -->
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/20 to-transparent"></div>
+        <!-- Sombreado fotográfico transparente (mantiene vivas las fotos sin oscurecer de más) -->
+        <div class="absolute inset-0 bg-brand-black/25"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/15 to-brand-black/35"></div>
       </div>
 
       <!-- Contenido en primer plano (z-10) -->
       <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        <h1 class="text-5xl sm:text-7xl text-white tracking-tight leading-none mb-8 drop-shadow-lg" style="font-family: 'Bahnschrift', sans-serif;">
-          Psicólogo Vegano
-        </h1>
-        <!-- Logo de Símbolo Solo (Marca de agua en primer plano) centrado debajo del texto
-             Opciones de Sombra Silueta (Modificar filtro drop-shadow en la clase img abajo):
-             - Halo Verde (Opción B - Activo): drop-shadow-[0_0_15px_rgba(142,180,134,0.4)]
-             - Clásica Oscura (Opción A): drop-shadow-[0_10px_10px_rgba(0,0,0,0.9)]
-             - 3D Doble Sombra (Opción C): drop-shadow-[0_2px_3px_rgba(0,0,0,0.95)] drop-shadow-[0_10px_20px_rgba(0,0,0,0.75)]
-             - Sin Sombra (Original): Remover 'filter' y 'drop-shadow-...' de la clase img
-         -->
-        <div class="mx-auto w-[130px] h-[130px] sm:w-[170px] sm:h-[170px] pointer-events-none opacity-85">
-          <img src="assets/logo_transparente4_optimized.webp" alt="Símbolo Psicólogo Vegano" class="w-full h-full object-contain select-none filter drop-shadow-[0_0_15px_rgba(142,180,134,0.4)]">
+        <div class="mb-6 flex flex-col items-center">
+          <span class="font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.3em] text-zinc-300/90 mb-3 [text-shadow:_0_2px_10px_rgba(0,0,0,0.9)]">
+            Bienvenidx a
+          </span>
+          <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl text-white tracking-tight leading-none font-bold [text-shadow:_0_4px_30px_rgba(0,0,0,0.95),_0_2px_8px_rgba(0,0,0,0.9)]">
+            Psicólogo <span class="text-brand-accent italic font-normal">Vegano</span>
+          </h1>
+        </div>
+        <!-- Logo de Símbolo Solo centrado debajo del texto -->
+        <div class="mx-auto w-[90px] h-[90px] sm:w-[110px] sm:h-[110px] pointer-events-none opacity-90 mt-1 mb-2">
+          <img src="assets/logo_simbolo_centrado.webp" alt="Símbolo Psicólogo Vegano" class="w-full h-full object-contain select-none filter drop-shadow-[0_0_20px_rgba(142,180,134,0.45)]">
+        </div>
+
+        <!-- Cápsulas de Navegación Rápida a los 3 Bloques -->
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto mt-6 sm:mt-8 pb-3">
+          <a href="#experiencias-section" class="px-4 py-2 sm:px-6 sm:py-2.5 rounded-full bg-[#0D130E]/85 hover:bg-brand-accent/20 border border-brand-accent/35 hover:border-brand-accent text-zinc-200 hover:text-white text-xs sm:text-sm font-semibold tracking-wider transition-all duration-300 backdrop-blur-md shadow-xl hover:shadow-brand-accent/20 hover:scale-105 flex items-center gap-2">
+            <span class="text-sm sm:text-base">📖</span>
+            <span>Lecturas y Artículos</span>
+          </a>
+          <a href="#tienda-section" class="px-4 py-2 sm:px-6 sm:py-2.5 rounded-full bg-[#0D130E]/85 hover:bg-brand-accent/20 border border-brand-accent/35 hover:border-brand-accent text-zinc-200 hover:text-white text-xs sm:text-sm font-semibold tracking-wider transition-all duration-300 backdrop-blur-md shadow-xl hover:shadow-brand-accent/20 hover:scale-105 flex items-center gap-2">
+            <span class="text-sm sm:text-base">🌿</span>
+            <span>Recursos Psicológicos</span>
+          </a>
+          <a href="#servicios-section" class="px-4 py-2 sm:px-6 sm:py-2.5 rounded-full bg-[#0D130E]/85 hover:bg-brand-accent/20 border border-brand-accent/35 hover:border-brand-accent text-zinc-200 hover:text-white text-xs sm:text-sm font-semibold tracking-wider transition-all duration-300 backdrop-blur-md shadow-xl hover:shadow-brand-accent/20 hover:scale-105 flex items-center gap-2">
+            <span class="text-sm sm:text-base">🤝</span>
+            <span>Servicios Terapéuticos</span>
+          </a>
         </div>
       </div>
     </header>
 
     <!-- CONTENEDOR PRINCIPAL -->
-    <div class="max-w-4xl mx-auto px-6 py-16">
+    <div class="max-w-4xl mx-auto px-6 py-12">
       
-      <!-- 1. IDENTIFICACIÓN DEL DOLOR (Sección Inicial) -->
-      <section class="mb-24 scroll-mt-24">
-        <div class="flex flex-col items-center mb-16 text-center">
-          <p class="text-brand-accent text-sm font-mono uppercase tracking-widest mb-6">
-            Psicologo clinico especialista en veganismo
+      <!-- 1. PRESENTACIÓN DE MAURO (FOTO CIRCULAR + FRASE + MISIÓN) -->
+      <section id="presentacion-mauro" class="mb-14 scroll-mt-24 text-center">
+        <div class="flex flex-col items-center">
+          <p class="text-brand-accent text-xs sm:text-sm font-mono uppercase tracking-[0.2em] mb-4">
+            Psicólogo clínico
           </p>
-          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-brand-border bg-zinc-950 shadow-2xl mb-6 relative group">
-            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-full blur opacity-25 group-hover:opacity-45 transition duration-300"></div>
+          <!-- Foto Circular con Halo Verde -->
+          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-brand-border bg-zinc-950 shadow-2xl mb-5 relative group">
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-full blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             <img src="assets/fotoperfil_v2.webp" alt="Lic. Mauro García" class="relative w-full h-full object-cover object-center select-none rounded-full">
           </div>
-          <p class="max-w-2xl mx-auto text-zinc-300 text-lg sm:text-xl italic leading-relaxed px-4">
-            “Pocos psicólogos comprenden lo que implica vivir sintiendo el sufrimiento animal en un mundo que lo normaliza.”
+          <!-- Presentación Directa y Teledirigida -->
+          <p class="max-w-2xl mx-auto font-serif text-lg sm:text-xl md:text-2xl text-zinc-200 leading-relaxed px-4">
+            Hola, soy <span class="text-white font-semibold">Mauro García</span>, psicólogo especializado en salud mental vegana. Acompaño a <span class="text-brand-accent italic font-normal">personas veganas y sensibles al sufrimiento animal</span> en el desafío de habitar un mundo especista.
+          </p>
+        </div>
+
+        <!-- 2. BOTONERA DIAGNÓSTICA INTERACTIVA -->
+        <div class="w-full bg-gradient-to-b from-[#0F1410] to-brand-black border border-brand-border/70 rounded-3xl p-5 sm:p-9 shadow-2xl relative overflow-hidden mt-8 text-left">
+          <div class="max-w-xl mx-auto space-y-2 text-center mb-7">
+            <span class="inline-block text-[11px] font-mono uppercase tracking-widest text-brand-accent/90 px-3.5 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/25">
+              Te ayudo a sentirte mejor
+            </span>
+            <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl text-white font-bold leading-tight">
+              ¿Qué es lo que más te afecta de habitar entornos no veganos?
+            </h2>
+            <p class="text-zinc-400 text-xs sm:text-sm">
+              Descubrí lecturas y herramientas para tu bienestar.
+            </p>
+          </div>
+
+          <!-- Botonera de Dolencias en 1ra Persona -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-3xl mx-auto">
+            
+            <!-- Botón 1: Aislamiento -->
+            <button onclick="handleDiagnosticClick('aislamiento')" class="w-full flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-zinc-950/70 hover:bg-zinc-900 border border-brand-border/70 hover:border-brand-accent/60 text-left transition-all duration-300 group shadow-md cursor-pointer">
+              <div class="w-11 h-11 shrink-0 rounded-xl overflow-hidden bg-zinc-900 border border-brand-border/50 p-1 group-hover:scale-105 transition-transform">
+                <img src="assets/isolated_person_sad_night.png" alt="Aislamiento" class="w-full h-full object-cover rounded-lg">
+              </div>
+              <div class="min-w-0 flex-grow">
+                <span class="block text-white text-xs sm:text-sm font-semibold group-hover:text-brand-accent transition-colors leading-snug">
+                  “Me siento solo o incomprendido”
+                </span>
+                <span class="block text-zinc-400 text-[11px] leading-tight mt-0.5 truncate">
+                  Aislamiento y falta de espacios seguros
+                </span>
+              </div>
+              <span class="text-zinc-500 group-hover:text-brand-accent group-hover:translate-x-1 transition-all text-sm shrink-0">→</span>
+            </button>
+
+            <!-- Botón 2: Sobrecarga -->
+            <button onclick="handleDiagnosticClick('sobrecarga')" class="w-full flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-zinc-950/70 hover:bg-zinc-900 border border-brand-border/70 hover:border-brand-accent/60 text-left transition-all duration-300 group shadow-md cursor-pointer">
+              <div class="w-11 h-11 shrink-0 rounded-xl overflow-hidden bg-zinc-900 border border-brand-border/50 p-1 group-hover:scale-105 transition-transform">
+                <img src="assets/emotional_overload_tangle.png" alt="Sobrecarga" class="w-full h-full object-cover rounded-lg">
+              </div>
+              <div class="min-w-0 flex-grow">
+                <span class="block text-white text-xs sm:text-sm font-semibold group-hover:text-brand-accent transition-colors leading-snug">
+                  “Sobrecarga y rumiación”
+                </span>
+                <span class="block text-zinc-400 text-[11px] leading-tight mt-0.5 truncate">
+                  Impotencia y fatiga por empatía
+                </span>
+              </div>
+              <span class="text-zinc-500 group-hover:text-brand-accent group-hover:translate-x-1 transition-all text-sm shrink-0">→</span>
+            </button>
+
+            <!-- Botón 3: Culpa -->
+            <button onclick="handleDiagnosticClick('culpa')" class="w-full flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-zinc-950/70 hover:bg-zinc-900 border border-brand-border/70 hover:border-brand-accent/60 text-left transition-all duration-300 group shadow-md cursor-pointer">
+              <div class="w-11 h-11 shrink-0 rounded-xl overflow-hidden bg-zinc-900 border border-brand-border/50 p-1 group-hover:scale-105 transition-transform">
+                <img src="assets/guilt_silhouete_sprout.png" alt="Culpa" class="w-full h-full object-cover rounded-lg">
+              </div>
+              <div class="min-w-0 flex-grow">
+                <span class="block text-white text-xs sm:text-sm font-semibold group-hover:text-brand-accent transition-colors leading-snug">
+                  “Culpa y autoexigencia”
+                </span>
+                <span class="block text-zinc-400 text-[11px] leading-tight mt-0.5 truncate">
+                  Presión por una coherencia absoluta
+                </span>
+              </div>
+              <span class="text-zinc-500 group-hover:text-brand-accent group-hover:translate-x-1 transition-all text-sm shrink-0">→</span>
+            </button>
+
+            <!-- Botón 4: Vínculos -->
+            <button onclick="handleDiagnosticClick('relaciones')" class="w-full flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-zinc-950/70 hover:bg-zinc-900 border border-brand-border/70 hover:border-brand-accent/60 text-left transition-all duration-300 group shadow-md cursor-pointer">
+              <div class="w-11 h-11 shrink-0 rounded-xl overflow-hidden bg-zinc-900 border border-brand-border/50 p-1 group-hover:scale-105 transition-transform">
+                <img src="assets/relationship_conflict_profiles.png" alt="Relaciones" class="w-full h-full object-cover rounded-lg">
+              </div>
+              <div class="min-w-0 flex-grow">
+                <span class="block text-white text-xs sm:text-sm font-semibold group-hover:text-brand-accent transition-colors leading-snug">
+                  “Fricción en mis relaciones”
+                </span>
+                <span class="block text-zinc-400 text-[11px] leading-tight mt-0.5 truncate">
+                  Tensión con familia, pareja o amigos
+                </span>
+              </div>
+              <span class="text-zinc-500 group-hover:text-brand-accent group-hover:translate-x-1 transition-all text-sm shrink-0">→</span>
+            </button>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="experiencias-section" class="mb-24 border-t border-brand-border pt-16 scroll-mt-24">
+        <!-- Encabezado Editorial de Artículos (Estilo Mauro García) -->
+        <div class="mb-10 text-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-brand-accent/10 border border-brand-accent/25 text-brand-accent mb-3">
+            <svg class="w-3.5 h-3.5 text-brand-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <span>Artículos & Ensayos</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl text-white font-bold tracking-tight mb-2">
+            Lecturas para un mundo más consciente
+          </h2>
+          <p class="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+            Reflexiones, análisis y herramientas para pensar el veganismo, la salud mental y la vida en coherencia.
           </p>
         </div>
         
-        <!-- PROPUESTA INTEGRADA: QUÉ NOS PASA PSÍQUICAMENTE -->
-        <div class="w-full bg-gradient-to-b from-[#0F1410] to-brand-black border border-brand-border/60 rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden mt-8">
-          <!-- Logotipo de Marca de Agua con Halo Verde (alineado arriba junto al encabezado) -->
-          <div class="absolute right-10 top-24 -translate-y-1/2 w-48 h-48 opacity-20 pointer-events-none filter drop-shadow-[0_0_15px_rgba(142,180,134,0.3)]">
-            <img src="assets/logo_transparente4_optimized.webp" alt="Símbolo Psicólogo Vegano" class="w-full h-full object-contain select-none">
-          </div>
-
-          <div class="relative z-10 space-y-10">
-            <div class="max-w-xl mx-auto space-y-4 text-center">
-              <h2 class="font-serif text-2xl sm:text-3xl md:text-5xl text-white leading-tight text-center">
-                Qué nos pasa psíquicamente <br>
-                al ser veganos <br>
-                <span class="block mt-1 text-white">en un mundo <span class="italic text-[#C4D7B2]">que no lo es</span></span>
-              </h2>
-              <div class="w-16 h-0.5 bg-brand-accent/60 rounded mx-auto"></div>
-              <p class="text-zinc-400 text-sm md:text-base leading-relaxed font-sans text-center">
-                Elegir no participar de la explotación transforma tu forma de vivir, sentir y vincularte. <br>
-                <span class="text-zinc-200 font-medium">Y eso tiene un impacto emocional real.</span>
-              </p>
-            </div>
-
-            <!-- Tarjetas de los 4 Pilares -->
-            <div class="grid grid-cols-1 gap-4 max-w-3xl">
-              
-              <!-- Pilar 1: Aislamiento y desconexión -->
-              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
-                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                  <img src="assets/isolated_person_sad_night.png" alt="Icono Aislamiento" class="w-full h-full object-cover select-none">
-                </div>
-                <div class="space-y-1 my-auto text-left">
-                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Aislamiento y desconexión</h4>
-                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
-                    Sentís que tus valores te separan de los demás. Te cuesta encontrar lugares donde encajar.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Pilar 2: Sobrecarga emocional -->
-              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
-                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                  <img src="assets/emotional_overload_tangle.png" alt="Icono Sobrecarga" class="w-full h-full object-cover select-none">
-                </div>
-                <div class="space-y-1 my-auto text-left">
-                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Sobrecarga emocional</h4>
-                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
-                    La exposición constante a la violencia y al especismo genera tristeza, enojo, impotencia y agotamiento.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Pilar 3: Culpa y exigencia permanente -->
-              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
-                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                  <img src="assets/guilt_silhouete_sprout.png" alt="Icono Culpa" class="w-full h-full object-cover select-none">
-                </div>
-                <div class="space-y-1 my-auto text-left">
-                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Culpa y exigencia permanente</h4>
-                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
-                    La búsqueda de coherencia absoluta puede volverse una carga pesada de sostener.
-                  </p>
-                </div>
-              </div>
-
-              <!-- Pilar 4: Conflictos vinculares -->
-              <div class="flex gap-4 md:gap-6 bg-zinc-950/40 border border-brand-border/40 hover:border-brand-accent/20 rounded-2xl p-5 md:p-6 transition duration-300">
-                <div class="w-20 h-20 shrink-0 overflow-hidden bg-zinc-950 rounded-2xl border border-brand-border/60 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                  <img src="assets/relationship_conflict_profiles.png" alt="Icono Conflictos" class="w-full h-full object-cover select-none">
-                </div>
-                <div class="space-y-1 my-auto text-left">
-                  <h4 class="text-white text-base md:text-lg font-semibold font-sans">Conflictos vinculares</h4>
-                  <p class="text-zinc-400 text-xs md:text-sm leading-relaxed">
-                    Diferencias de valores que generan tensión en la familia, en la pareja, en el trabajo y en las amistades.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Cierre y CTA -->
-            <div class="pt-6 border-t border-brand-border/60 max-w-3xl flex flex-col md:flex-row justify-between items-center gap-6">
-              <div class="flex items-center gap-3 text-center md:text-left">
-                <div class="w-8 h-8 shrink-0 flex items-center justify-center text-brand-accent">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9" />
-                  </svg>
-                </div>
-                <p class="text-brand-accent text-xs md:text-sm italic text-left">
-                  Tu sensibilidad no es un problema, es tu brújula. <span class="text-zinc-300 not-italic font-sans block md:inline">Podemos trabajar juntxs para que deje de doler tanto.</span>
-                </p>
-              </div>
-              <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20hacerte%20una%20consulta%20terapéutica." target="_blank" rel="noopener noreferrer" class="w-full md:w-auto px-6 py-3 bg-brand-accent text-brand-black hover:bg-brand-accentHover font-bold text-xs uppercase tracking-wider rounded-xl transition duration-200 shadow-lg text-center shrink-0">
-                Iniciar consulta terapéutica
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. PRESENTACIÓN DE MAURO -->
-      <section class="mb-24 border-t border-brand-border pt-16">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div class="md:col-span-5 relative group">
-            <div class="absolute -inset-1.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-2xl blur opacity-30 group-hover:opacity-55 transition duration-300"></div>
-            <div class="relative rounded-2xl overflow-hidden border border-brand-border/60 bg-zinc-950 shadow-2xl h-[420px] w-full">
-              <img id="slideshow-img-1" src="assets/confe5_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-100">
-              <img id="slideshow-img-2" src="assets/confe_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0">
-              <img id="slideshow-img-3" src="assets/confe6_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0">
-              <img id="slideshow-img-4" src="assets/mauroverde_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0">
-              <img id="slideshow-img-5" src="assets/confe4_optimized.webp" alt="Lic. Mauro García en Vegan Fest" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 opacity-0" style="object-position: 8% center;">
-            </div>
-          </div>
-          <div class="md:col-span-7 space-y-4">
-            <p class="text-brand-accent text-xs font-mono uppercase tracking-widest">Acompañamiento especializado</p>
-            <h2 class="font-serif text-3xl text-white">Lic. Mauro García Rodriguez</h2>
-            <div class="text-zinc-300 text-base leading-relaxed space-y-4">
-              <p>
-                Soy psicólogo clínico especializado en acompañar a personas veganas y sensibles al sufrimiento animal.
-                Trabajo con quienes eligen no anestesiarse, para que puedan sostener su sensibilidad sin que eso se convierta en angustia, bronca o agotamiento.
-              </p>
-              <p>
-                Mi camino no es solo teórico. Después de años en la ciudad, elegí salir de esa lógica y radicarme en Entre Ríos, donde desarrollo un espacio de encuentros terapéuticos en la naturaleza que acompañan y profundizan el proceso clínico.
-              </p>
-            </div>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-brand-card/40 border border-brand-border/50 p-4 rounded-xl">
-              <div class="flex items-center gap-4">
-                <div class="w-16 h-20 flex-shrink-0 overflow-hidden rounded-lg border border-brand-border bg-zinc-900">
-                  <img src="/assets/libro_corporalidad.webp" alt="Portada del Libro" class="w-full h-full object-cover" loading="lazy">
-                </div>
-                <div>
-                  <p class="text-[10px] text-brand-accent font-semibold tracking-widest uppercase">Coautor de "Acerca de la corporalidad"</p>
-                  <p class="text-white font-serif text-sm font-semibold mt-0.5">Capítulo: Cuerpos no humanos</p>
-                  <p class="text-zinc-400 text-xs mt-1 leading-relaxed">
-                    Un análisis sobre el narcisismo, la empatía y el antropocentrismo en el vínculo con los animales.
-                  </p>
-                </div>
-              </div>
-              <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20pedirte%20el%20cap%C3%ADtulo%20de%20regalo%20del%20libro%20en%20el%20que%20participaste." target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-zinc-800 border border-brand-border text-brand-accent hover:bg-brand-accent hover:text-brand-black text-xs font-bold rounded-lg transition duration-200 shrink-0 mt-2 sm:mt-0 sm:ml-auto">
-                Pedirme el capítulo de regalo
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. LLAMADO A LA ACCIÓN PRINCIPAL (Sesión de orientación) -->
-      <section class="bg-gradient-to-b from-brand-card to-brand-black border border-brand-border rounded-2xl p-8 sm:p-12 text-center relative overflow-hidden mb-8">
-        <div class="absolute -top-12 -left-12 w-24 h-24 bg-brand-accent/10 rounded-full blur-2xl"></div>
-        <div class="relative z-10 max-w-2xl mx-auto">
-          <span class="text-brand-accent text-xs font-mono uppercase tracking-widest block mb-2">Punto de inicio terapéutico</span>
-          <h2 class="font-serif text-3xl text-white mb-4">Sesión de orientación</h2>
-          <p class="text-zinc-400 mb-8 text-sm sm:text-base">
-            Una entrevista psicologica para ordenar lo que te está pasando y encontrar herramientas concretas frente al malestar derivado de habitar nuestra realidad actual desde el veganismo.
-          </p>
-          <div class="inline-block relative group">
-            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
-            <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20coordinar%20una%20sesión%20de%20orientación." target="_blank" rel="noopener noreferrer" class="relative block bg-brand-accent text-brand-black font-bold px-8 py-4 rounded-lg hover:bg-brand-accentHover transition duration-300 shadow-xl flex items-center gap-2">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.031 2c-5.514 0-9.99 4.477-9.99 9.99 0 1.761.459 3.479 1.332 5.006L2 22l5.185-1.359c1.472.802 3.13 1.226 4.82 1.229h.004c5.513 0 9.99-4.477 9.99-9.99 0-2.673-1.042-5.184-2.934-7.078C17.168 2.909 14.671 2.001 12.031 2zm6.368 14.26c-.279.782-1.393 1.433-1.921 1.527-.478.084-1.1.157-3.197-.714-2.683-1.114-4.412-3.83-4.545-4.009-.133-.178-1.077-1.432-1.077-2.733 0-1.3.679-1.936.921-2.203.242-.267.53-.332.707-.332.178 0 .356.009.51.018.161.01.378-.063.593.454.223.534.76 1.852.825 1.986.066.134.11.29.02.47-.09.18-.135.292-.269.45-.134.156-.282.348-.402.467-.134.133-.274.28-.117.55.157.27.697 1.15 1.493 1.862.977.873 1.794 1.144 2.052 1.272.258.127.41.107.561-.067.151-.178.647-.751.821-1.006.174-.255.348-.214.587-.125.24.09 1.517.714 1.776.843.258.128.43.192.493.302.064.11.064.637-.216 1.42z"/>
-              </svg>
-              Quiero coordinar mi orientación
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- PROPUESTAS TERAPÉUTICAS INTERACTIVAS -->
-      <section class="mb-24 border-t border-brand-border pt-16">
-        <div class="max-w-xl mx-auto bg-brand-card border border-brand-border rounded-3xl p-6 shadow-2xl space-y-6">
+        <!-- Carrusel Horizontal con Flechas y Soporte Touch/Drag -->
+        <div class="relative group/carousel mb-3">
+          <!-- Flecha Izquierda -->
+          <button id="btn-articles-prev" onclick="scrollArticles(-1)" aria-label="Anterior" class="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-zinc-950/90 border border-brand-border/80 text-zinc-300 hover:text-brand-accent hover:border-brand-accent items-center justify-center backdrop-blur-md shadow-2xl transition opacity-80 hover:opacity-100 cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
           
-          <!-- Encabezado de la sección -->
-          <div class="text-center">
-            <span class="text-brand-accent text-xs font-mono uppercase tracking-widest block mb-1">Modalidades de Consulta</span>
-            <h2 class="font-serif text-3xl text-white font-semibold">Propuestas terapéuticas</h2>
+          <!-- Contenedor Deslizable de Artículos -->
+          <div id="articles-feed" class="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory scrollbar-none px-1 select-none">
+            <!-- Renderizado dinámico de tarjetas -->
           </div>
 
-          <!-- Mosaico de Fotos (Arriba) -->
-          <div class="grid grid-cols-2 gap-4">
-            <!-- Tarjeta Foto 1: Mauro Online -->
-            <div id="photo-online" onclick="selectModalidad('online')" class="rounded-2xl overflow-hidden border border-brand-border shadow-lg relative aspect-[4/5] cursor-pointer transition-all duration-500 transform hover:scale-[1.02]">
-              <img src="assets/mauro_notebook_nature.webp" alt="Sesión Online" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-3 text-left">
-                <div>
-                  <span class="text-[9px] text-brand-accent font-mono uppercase tracking-wider block">Sesiones</span>
-                  <span class="text-[11px] text-white font-semibold">Online / Remoto</span>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Tarjeta Foto 2: Refugio / Frontera -->
-            <div id="photo-refugio" onclick="selectModalidad('refugio')" class="rounded-2xl overflow-hidden border border-brand-border shadow-lg relative aspect-[4/5] cursor-pointer transition-all duration-500 transform hover:scale-[1.02]">
-              <img src="assets/frontera_original.jpg" alt="Refugio Vegano" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-3 text-left">
-                <div>
-                  <span class="text-[9px] text-brand-accent font-mono uppercase tracking-wider block">Naturaleza</span>
-                  <span class="text-[11px] text-white font-semibold">Refugio Vegano</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Flecha Derecha -->
+          <button id="btn-articles-next" onclick="scrollArticles(1)" aria-label="Siguiente" class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-zinc-950/90 border border-brand-border/80 text-zinc-300 hover:text-brand-accent hover:border-brand-accent items-center justify-center backdrop-blur-md shadow-2xl transition opacity-80 hover:opacity-100 cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
 
-          <!-- Botones de Acción (Emojis/Pestañas) -->
-          <div class="grid grid-cols-2 gap-3 text-center">
-            <!-- Botón Online -->
-            <button id="btn-online" onclick="selectModalidad('online')" class="p-3 rounded-xl border font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1">
-              <span class="text-2xl">💻</span>
-              <span class="text-[11px] font-medium tracking-wide">Online</span>
-            </button>
-            
-            <!-- Botón Refugio -->
-            <button id="btn-refugio" onclick="selectModalidad('refugio')" class="p-3 rounded-xl border font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1">
-              <span class="text-2xl">🏡</span>
-              <span class="text-[11px] font-medium tracking-wide">Refugio Vegano</span>
-            </button>
+          <!-- Paginador de Dots Dinámico -->
+          <div id="articles-dots" class="flex justify-center items-center gap-2 mt-4">
+            <!-- Generado dinámicamente -->
           </div>
-
-          <!-- Texto Descriptivo Dinámico -->
-          <div class="min-h-[110px] flex items-center justify-center bg-zinc-950/30 border border-brand-border/60 p-4 rounded-2xl text-center">
-            <p id="dynamic-text" class="text-zinc-300 text-xs sm:text-sm leading-relaxed transition-all duration-300 opacity-100 transform translate-y-0"></p>
-          </div>
-
-          <!-- Botón de Acción de WhatsApp dinámico -->
-          <div>
-            <a id="btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-brand-accent text-brand-black hover:bg-brand-accentHover font-bold py-3.5 rounded-xl transition duration-300 shadow-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.031 2c-5.514 0-9.99 4.477-9.99 9.99 0 1.761.459 3.479 1.332 5.006L2 22l5.185-1.359c1.472.802 3.13 1.226 4.82 1.229h.004c5.513 0 9.99-4.477 9.99-9.99 0-2.673-1.042-5.184-2.934-7.078C17.168 2.909 14.671 2.001 12.031 2zm6.368 14.26c-.279.782-1.393 1.433-1.921 1.527-.478.084-1.1.157-3.197-.714-2.683-1.114-4.412-3.83-4.545-4.009-.133-.178-1.077-1.432-1.077-2.733 0-1.3.679-1.936.921-2.203.242-.267.53-.332.707-.332.178 0 .356.009.51.018.161.01.378-.063.593.454.223.534.76 1.852.825 1.986.066.134.11.29.02.47-.09.18-.135.292-.269.45-.134.156-.282.348-.402.467-.134.133-.274.28-.117.55.157.27.697 1.15 1.493 1.862.977.873 1.794 1.144 2.052 1.272.258.127.41.107.561-.067.151-.178.647-.751.821-1.006.174-.255.348-.214.587-.125.24.09 1.517.714 1.776.843.258.128.43.192.493.302.064.11.064.637-.216 1.42z"/>
-              </svg>
-              <span id="btn-whatsapp-text">Consultar</span>
-            </a>
-          </div>
-
         </div>
 
-        <script>
-          const data = {
-            online: {
-              text: "Sesiones profesionales por videollamada para personas veganas de toda Argentina. Un espacio clínico seguro y empático donde abordar la ansiedad, el aislamiento, la culpa y la fatiga por compasión ante el especismo, sin moverte de tu casa.",
-              whatsappUrl: "https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20coordinar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20Online.",
-              buttonText: "Pedir orientación Online 💻"
-            },
-            refugio: {
-              text: "Encuentros intensivos y alojamiento terapéutico en el Refugio Vegano en Entre Ríos. Una propuesta presencial inmersiva diseñada para profundizar procesos clínicos en pleno contacto con la naturaleza, el silencio y la desconexión.",
-              whatsappUrl: "https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20consultar%20sobre%20el%20alojamiento%20terap%C3%A9utico%20en%20el%20Refugio%20Vegano.",
-              buttonText: "Consultar por el Refugio 🏡"
-            }
-          };
-
-          function selectModalidad(type) {
-            const textElement = document.getElementById('dynamic-text');
-            const btnWhatsapp = document.getElementById('btn-whatsapp');
-            const btnWhatsappText = document.getElementById('btn-whatsapp-text');
-
-            const photoOnline = document.getElementById('photo-online');
-            const photoRefugio = document.getElementById('photo-refugio');
-            const btnOnline = document.getElementById('btn-online');
-            const btnRefugio = document.getElementById('btn-refugio');
-
-            // Animación de salida del texto
-            textElement.style.opacity = '0';
-            textElement.style.transform = 'translateY(4px)';
-
-            setTimeout(() => {
-              // Actualizar textos y enlaces
-              textElement.innerHTML = data[type].text;
-              btnWhatsapp.href = data[type].whatsappUrl;
-              btnWhatsappText.innerText = data[type].buttonText;
-
-              // Animación de entrada
-              textElement.style.opacity = '1';
-              textElement.style.transform = 'translateY(0)';
-            }, 200);
-
-            // Estilo de fotos y botones activos
-            if (type === 'online') {
-              // Destacar Online
-              photoOnline.className = "rounded-2xl overflow-hidden border-2 border-brand-accent shadow-2xl relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[1.02] opacity-100";
-              photoRefugio.className = "rounded-2xl overflow-hidden border border-brand-border/40 shadow-sm relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[0.98] opacity-40 hover:opacity-60";
-              
-              btnOnline.className = "p-3 rounded-xl border-2 border-brand-accent bg-brand-accent/10 text-brand-accent font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1 shadow-md";
-              btnRefugio.className = "p-3 rounded-xl border border-brand-border/60 bg-transparent text-zinc-400 hover:text-zinc-200 font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1";
-            } else {
-              // Destacar Refugio
-              photoOnline.className = "rounded-2xl overflow-hidden border border-brand-border/40 shadow-sm relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[0.98] opacity-40 hover:opacity-60";
-              photoRefugio.className = "rounded-2xl overflow-hidden border-2 border-brand-accent shadow-2xl relative aspect-[4/5] cursor-pointer transition-all duration-500 transform scale-[1.02] opacity-100";
-              
-              btnOnline.className = "p-3 rounded-xl border border-brand-border/60 bg-transparent text-zinc-400 hover:text-zinc-200 font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1";
-              btnRefugio.className = "p-3 rounded-xl border-2 border-brand-accent bg-brand-accent/10 text-brand-accent font-semibold text-xs transition duration-300 flex flex-col items-center justify-center gap-1 shadow-md";
-            }
-          }
-
-          // Inicializar con la modalidad online activa
-          document.addEventListener("DOMContentLoaded", () => {
-            selectModalidad('online');
-          });
-        </script>
+        <!-- Botón Elegante para Ver Todas / Desplegar Cuadrícula -->
+        <div id="articles-expand-wrapper" class="flex justify-center mt-3">
+          <button id="btn-toggle-articles" onclick="toggleArticlesView()" class="px-6 py-2.5 rounded-full border border-brand-border/70 hover:border-brand-accent/50 bg-brand-card/60 hover:bg-zinc-900 text-zinc-300 hover:text-brand-accent text-xs font-semibold tracking-wider transition-all duration-300 flex items-center gap-2 group cursor-pointer shadow-md">
+            <span id="btn-toggle-articles-text">Ver todas las reflexiones</span>
+            <span id="btn-toggle-articles-icon" class="text-brand-accent group-hover:translate-y-0.5 transition-transform text-sm">↓</span>
+          </button>
+        </div>
       </section>
 
-      <!-- 4. DESTACADO DEL CERTIFICADO DE ANIMAL DE APOYO -->
-      <section class="mb-24 max-w-3xl mx-auto px-4 sm:px-0">
-        <div class="bg-gradient-to-b from-brand-card to-zinc-950 border border-brand-border rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden group hover:border-brand-accent/20 transition-all duration-300">
-          <div class="flex flex-col md:flex-row items-center gap-8">
+      <!-- NUEVA SECCIÓN TIENDA -->
+
+
+      <!-- 2. RECURSOS TERAPÉUTICOS (BLOQUE 2: 3 PRODUCTOS EN CARRUSEL HORIZONTAL) -->
+      <section id="tienda-section" class="mb-24 border-t border-brand-border pt-16 scroll-mt-24">
+        <!-- Encabezado Editorial de Recursos Terapéuticos -->
+        <div class="mb-10 text-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-brand-accent/10 border border-brand-accent/25 text-brand-accent mb-3">
+            <span>🌿 Recursos & Herramientas</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl text-white font-bold tracking-tight mb-2">
+            Recursos Terapéuticos
+          </h2>
+          <p class="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+            Materiales estructurados en audio y cuadernillos de ejercicios prácticos para transitar tu proceso de forma autónoma.
+          </p>
+        </div>
+
+        <!-- Contenedor del Carrusel de Recursos -->
+        <div class="relative group/recursos">
+          <!-- Botones de Navegación del Carrusel (Móvil y Escritorio) -->
+          <button id="btn-recursos-prev" onclick="scrollRecursos(-1)" aria-label="Recurso anterior" class="flex absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-zinc-950/90 border border-brand-border/80 text-zinc-300 hover:text-brand-accent hover:border-brand-accent items-center justify-center backdrop-blur-md shadow-2xl transition opacity-90 sm:opacity-80 sm:hover:opacity-100 cursor-pointer">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button id="btn-recursos-next" onclick="scrollRecursos(1)" aria-label="Recurso siguiente" class="flex absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-zinc-950/90 border border-brand-border/80 text-zinc-300 hover:text-brand-accent hover:border-brand-accent items-center justify-center backdrop-blur-md shadow-2xl transition opacity-90 sm:opacity-80 sm:hover:opacity-100 cursor-pointer">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+          <!-- Feed de los 3 Recursos -->
+          <div id="recursos-feed" class="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory scrollbar-none px-1 select-none">
             
-            <!-- Logo del Certificado y Badge Visual -->
-            <div class="flex flex-col items-center gap-3 shrink-0">
-              <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center p-2 bg-zinc-950/40 rounded-2xl border border-brand-border/80 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                <img src="assets/logocertificado_optimized.webp" alt="Logotipo Certificado Animal de Apoyo Emocional" class="w-full h-full object-contain select-none">
-              </div>
-              <span class="text-[10px] font-mono uppercase tracking-widest text-brand-accent bg-brand-accent/5 border border-brand-accent/15 px-2 py-0.5 rounded-full">
-                Validez Nacional
-              </span>
-            </div>
-            
-            <!-- Contenido Principal -->
-            <div class="flex-grow space-y-4 text-center md:text-left w-full">
-              <div class="space-y-1">
-                <span class="text-brand-accent text-[10px] font-mono uppercase tracking-widest font-semibold flex items-center justify-center md:justify-start gap-1.5">
-                  <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>Familia Multiespecie
-                </span>
-                <h3 class="text-white font-serif text-xl sm:text-2xl font-semibold leading-snug">
-                  ¿Tenés familia multiespecie?
-                </h3>
-                <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-xl">
-                  Cuidar el vínculo con los animales de nuestra familia también implica proteger sus derechos y nuestra tranquilidad. Un <strong>Certificado de Apoyo Emocional</strong> les permite convivir y trasladarse juntos sin barreras.
+            <!-- Recurso 1: Cuerpos no-humanos (Capítulo de Libro & Ensayo Clínico) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 h-60 sm:h-64 w-full rounded-xl overflow-hidden border border-brand-border/60 bg-gradient-to-b from-[#141d15] to-[#0a0f0b] p-3 flex items-center justify-center shadow-inner relative group/cover cursor-pointer" onclick="openProductModal('libro')">
+                  <img id="card-libro-img" src="assets/portada_cuerpos_extraida.jpeg" alt="Cuerpos no-humanos" class="max-h-full max-w-full object-contain rounded-md shadow-2xl drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] group-hover/cover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Capítulo de Libro
+                  </span>
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Obra Editorial · Cuadernos Tópica</span>
+                  <h3 id="card-libro-title" class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Cuerpos no-humanos
+                  </h3>
+                </header>
+                <p id="card-libro-desc" class="text-zinc-300 text-sm leading-relaxed mb-4">
+                  Un abordaje psicoanalítico sobre el narcisismo residual, la empatía y la emancipación ética más allá de nuestra especie. Incluye lectura digital y PDF.
                 </p>
               </div>
+              <div class="pt-3 border-t border-brand-border/40 flex items-center justify-between gap-3">
+                <div>
+                  <div id="card-libro-price" class="text-white font-serif font-bold text-base">$5.000 ARS</div>
+                  <div id="card-libro-price-usd" class="text-[10px] text-sky-400 font-mono">/ $5 USD (Exterior)</div>
+                </div>
+                <button onclick="openProductModal('libro')" class="py-2 px-3.5 bg-brand-accent/15 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/35 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+                  <span>Conocer más</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </article>
 
-              <!-- Beneficios estructurados en tags/badges -->
-              <div class="space-y-2">
-                <p class="text-zinc-300 text-xs font-semibold">Podés obtener un certificado profesional para facilitar:</p>
-                <div class="flex flex-wrap justify-center md:justify-start gap-2">
-                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
-                    ✈️ Viajes
+            <!-- Recurso 2: Mapa de Transiciones Vitales (Audioguía + Cuadernillos) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 h-60 sm:h-64 w-full rounded-xl overflow-hidden border border-brand-border/60 bg-gradient-to-b from-[#141d15] to-[#0a0f0b] p-3 flex items-center justify-center shadow-inner relative group/cover cursor-pointer" onclick="openProductModal('mapa')">
+                  <img id="card-mapa-img" src="assets/portada_mapa_focused.png" alt="Mapa de Transiciones Vitales" class="max-h-full max-w-full object-contain rounded-md shadow-2xl drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] group-hover/cover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Audioguía + PDFs
                   </span>
-                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
-                    🏨 Hospedajes
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Ecosistema Terapéutico</span>
+                  <h3 id="card-mapa-title" class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Mapa de Transiciones
+                  </h3>
+                </header>
+                <p id="card-mapa-desc" class="text-zinc-300 text-sm leading-relaxed mb-4">
+                  Una guía para comprender y habitar los procesos de cambio. Herramienta de exploración psicológica para reconocer lo que nos sucede y transitar nuestro propio recorrido. <button type="button" onclick="openProductModal('mapa')" class="text-brand-accent hover:underline text-xs font-semibold inline-flex items-center gap-0.5 cursor-pointer ml-1">Leer más →</button>
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40 flex items-center justify-between gap-3">
+                <div>
+                  <div id="card-mapa-price" class="text-white font-serif font-bold text-base">$25.000 ARS</div>
+                  <div id="card-mapa-price-usd" class="text-[10px] text-sky-400 font-mono">/ $25 USD (Exterior)</div>
+                </div>
+                <button onclick="openProductModal('mapa')" class="py-2 px-3.5 bg-brand-accent/15 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/35 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+                  <span>Conocer más</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Recurso 3: Autoestima Verde (Microterapia & Autoanálisis) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 h-60 sm:h-64 w-full rounded-xl overflow-hidden border border-brand-border/60 bg-gradient-to-b from-[#141d15] to-[#0a0f0b] p-3 flex items-center justify-center shadow-inner relative group/cover cursor-pointer" onclick="openProductModal('autoestima')">
+                  <img id="card-autoestima-img" src="assets/portada_autoestima_focused.png" alt="Autoestima Verde" class="max-h-full max-w-full object-contain rounded-md shadow-2xl drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] group-hover/cover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Microterapia + PDF
                   </span>
-                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
-                    🍽️ Restaurantes
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Taller de Autoanálisis</span>
+                  <h3 id="card-autoestima-title" class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Autoestima Verde
+                  </h3>
+                </header>
+                <p id="card-autoestima-desc" class="text-zinc-300 text-sm leading-relaxed mb-4">
+                  Microterapias guiadas en audio para sanar la autoimagen y fortalecer el valor personal frente a la incomprensión de los vínculos cotidianos.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40 flex items-center justify-between gap-3">
+                <div>
+                  <div id="card-autoestima-price" class="text-white font-serif font-bold text-base">$18.000 ARS</div>
+                  <div id="card-autoestima-price-usd" class="text-[10px] text-sky-400 font-mono">/ $18 USD (Exterior)</div>
+                </div>
+                <button onclick="openProductModal('autoestima')" class="py-2 px-3.5 bg-brand-accent/15 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/35 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+                  <span>Conocer más</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Recurso 4: Pack Integral Trilogía de Bienestar Vegano (Combo Lanzamiento) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border-2 border-brand-accent/50 hover:border-brand-accent rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-2xl relative">
+              <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-accent text-brand-black text-[10px] font-bold uppercase tracking-widest px-3 py-0.5 rounded-full shadow-lg z-10 flex items-center gap-1 whitespace-nowrap">
+                <span>⚡</span>
+                <span>Promo Lanzamiento · Ahorro 27%</span>
+              </span>
+              <div>
+                <div class="block mb-4 h-60 sm:h-64 w-full rounded-xl overflow-hidden border border-brand-accent/30 bg-gradient-to-b from-[#182319] to-[#0a0f0b] p-3 flex items-center justify-center shadow-inner relative group/cover cursor-pointer" onclick="openProductModal('combo')">
+                  <img id="card-combo-img" src="assets/portada_combo_trilogia.jpg" alt="Pack Integral: Trilogía de Bienestar Vegano" class="max-h-full max-w-full object-contain rounded-md shadow-2xl drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] group-hover/cover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    3 Obras en 1
                   </span>
-                  <span class="text-xs bg-zinc-900 border border-brand-border text-zinc-300 px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium">
-                    📍 Lugares públicos
-                  </span>
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Ecosistema Completo · 21 Piezas</span>
+                  <h3 id="card-combo-title" class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Pack Integral: Trilogía Vegana
+                  </h3>
+                </header>
+                <p id="card-combo-desc" class="text-zinc-300 text-sm leading-relaxed mb-4">
+                  Acceso total: Libro <em>Cuerpos no-humanos</em> + Audioguía <em>Mapa de Transiciones</em> (9 audios, 6 PDFs) + <em>Autoestima Verde</em>. La experiencia clínica definitiva.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40 flex items-center justify-between gap-3">
+                <div>
+                  <div class="flex items-baseline gap-2">
+                    <span id="card-combo-price" class="text-white font-serif font-bold text-base">$35.000 ARS</span>
+                    <span class="text-[11px] text-zinc-500 line-through">$48.000</span>
+                  </div>
+                  <div id="card-combo-price-usd" class="text-[10px] text-sky-400 font-mono">/ $35 USD (Exterior)</div>
+                </div>
+                <button onclick="openProductModal('combo')" class="py-2 px-3.5 bg-brand-accent hover:bg-brand-accentHover text-brand-black rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-brand-accent/20 cursor-pointer">
+                  <span>Conocer más</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </article>
+
+          </div>
+
+          <!-- Indicador de Páginas / Dots Interactivo -->
+          <div id="recursos-dots" class="flex justify-center items-center gap-2 mt-4"></div>
+        </div>
+      </section>
+
+      <!-- MODAL DETALLE DE PRODUCTO (Interactivo al hacer clic en 'CONOCER MÁS') -->
+      <div id="modal-product-details" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto hidden transition-opacity duration-300" onclick="if(event.target === this) closeProductModal()">
+        <div class="relative w-full max-w-4xl bg-gradient-to-b from-[#111912] to-[#0A0D0A] border border-brand-accent/30 rounded-3xl p-6 sm:p-8 shadow-2xl text-white my-auto max-h-[90vh] overflow-y-auto">
+          <!-- Botón de Cerrar -->
+          <button onclick="closeProductModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-zinc-900 border border-brand-border text-zinc-400 hover:text-white flex items-center justify-center transition-colors">
+            ✕
+          </button>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <!-- Columna Izquierda: Portada y Acción de Compra -->
+            <div class="md:col-span-5 flex flex-col items-center text-center">
+              <div class="w-full max-w-[260px] flex items-center justify-center mb-3">
+                <img id="modal-prod-cover" src="assets/mockup_tablet_mapa_hd.png" alt="Mockup del producto" class="w-full h-auto max-h-[300px] object-contain filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)]">
+              </div>
+              <div class="w-full bg-brand-card/70 border border-brand-border/80 rounded-2xl p-4 text-center mb-4">
+                <span id="modal-prod-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase bg-brand-accent/15 text-brand-accent border border-brand-accent/30 inline-block mb-1.5">
+                  AUDIOGUÍA TERAPÉUTICA
+                </span>
+                <div class="font-serif text-3xl font-bold text-white" id="modal-prod-price">$25.000 ARS</div>
+                <div id="modal-prod-price-usd" class="text-xs font-mono font-semibold text-sky-400 mt-1">Exterior: $25 USD (PayPal)</div>
+                <p class="text-xs text-zinc-400 mt-1">Acceso permanente · Sin suscripción</p>
+              </div>
+              <a id="modal-prod-buy-btn" href="/portal/?producto=mapa_de_transiciones" class="w-full py-3.5 px-6 rounded-full bg-brand-accent hover:bg-brand-accentHover text-brand-black font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-xl shadow-brand-accent/20 flex items-center justify-center gap-2">
+                <span>Ingresar al Portal / Adquirir</span>
+                <span>→</span>
+              </a>
+              <span class="text-[11px] text-zinc-500 mt-2">Acreditación automática · Mercado Pago (ARS) o PayPal (USD)</span>
+            </div>
+
+            <!-- Columna Derecha: Temario Clínico, Audios y Cuadernillos -->
+            <div class="md:col-span-7 space-y-5 text-left">
+              <div>
+                <span id="modal-prod-category" class="text-xs font-mono uppercase tracking-widest text-brand-accent block mb-1">
+                  Ecosistema Terapéutico
+                </span>
+                <h3 id="modal-prod-title" class="font-serif text-2xl sm:text-3xl font-bold text-white">
+                  Mapa de Transiciones
+                </h3>
+                <div id="modal-prod-desc" class="text-zinc-200 text-sm sm:text-base leading-relaxed mt-2.5 font-serif space-y-3">
+                  Un mapa sonoro y clínico para navegar la transición al veganismo sin culpas ni desgaste emocional.
                 </div>
               </div>
 
-              <!-- CTA Directo -->
-              <div class="pt-2">
-                <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quer%C3%ADa%20consultarte%20sobre%20el%20certificado%20de%20animal%20de%20apoyo%20emocional%20para%20mi%20familia%20multiespecie." 
-                   target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-accent text-brand-black hover:bg-brand-accentHover text-xs font-bold rounded-xl transition duration-200 shadow-md">
-                  <span>Solicitar evaluación profesional</span>
+              <!-- Bloque Audios -->
+              <div id="modal-block-audios">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-2.5 flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-brand-accent inline-block"></span>
+                  Pistas de Audio Guiadas
+                </h4>
+                <div id="modal-prod-audios" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+                  <!-- Llenado dinámicamente -->
+                </div>
+              </div>
+
+              <!-- Bloque Cuadernillos -->
+              <div id="modal-block-pdfs">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-2.5 flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                  Material Clínico & Cuadernillos PDF
+                </h4>
+                <div id="modal-prod-pdfs" class="space-y-2">
+                  <!-- Llenado dinámicamente -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- 3. SERVICIOS TERAPÉUTICOS (BLOQUE 3: 4 SERVICIOS EN CARRUSEL HORIZONTAL) -->
+      <section id="servicios-section" class="mb-24 border-t border-brand-border pt-16 scroll-mt-24">
+        <!-- Encabezado Editorial de Servicios -->
+        <div class="mb-10 text-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-brand-accent/10 border border-brand-accent/25 text-brand-accent mb-3">
+            <span>🤝 Acompañamiento Clínico</span>
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl text-white font-bold tracking-tight mb-2">
+            Servicios Terapéuticos
+          </h2>
+          <p class="text-zinc-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+            Propuestas clínicas personalizadas y espacios de encuentro para transitar el bienestar y la salud mental con perspectiva antiespecista.
+          </p>
+        </div>
+
+        <!-- Contenedor del Carrusel / Cuadrícula de Servicios -->
+        <div class="relative group/servicios">
+          <!-- Botones de Navegación del Carrusel (Móvil y Escritorio) -->
+          <button id="btn-services-prev" onclick="scrollServices(-1)" aria-label="Servicio anterior" class="flex absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-zinc-950/90 border border-brand-border/80 text-zinc-300 hover:text-brand-accent hover:border-brand-accent items-center justify-center backdrop-blur-md shadow-2xl transition opacity-90 sm:opacity-80 sm:hover:opacity-100 cursor-pointer">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button id="btn-services-next" onclick="scrollServices(1)" aria-label="Servicio siguiente" class="flex absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-zinc-950/90 border border-brand-border/80 text-zinc-300 hover:text-brand-accent hover:border-brand-accent items-center justify-center backdrop-blur-md shadow-2xl transition opacity-90 sm:opacity-80 sm:hover:opacity-100 cursor-pointer">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+          <!-- Feed de 4 Servicios -->
+          <div id="services-feed" class="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory scrollbar-none px-1 select-none">
+            
+            <!-- Servicio 1: Sesión de Orientación Clínica (Online) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 rounded-xl overflow-hidden aspect-[16/11] border border-brand-border/60 bg-zinc-950 shadow-md relative">
+                  <img src="assets/mauro_notebook_nature.webp" alt="Sesión de Orientación Online" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/80 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Online
+                  </span>
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Entrevista Individual</span>
+                  <h3 class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Sesión de orientación
+                  </h3>
+                </header>
+                <p class="text-zinc-400 text-xs leading-relaxed mb-4">
+                  Un espacio clínico personalizado seguro donde ayudarte, brindarte orientación y definir estrategias de abordaje para tu bienestar.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40">
+                <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quiero%20coordinar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n." target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/30 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                  <span>Coordinar sesión</span>
                   <span>→</span>
                 </a>
               </div>
-            </div>
-            
+            </article>
+
+            <!-- Servicio 2: Certificado Animal de Apoyo Emocional (Familia Multiespecie) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 rounded-xl overflow-hidden aspect-[16/11] border border-brand-border/60 bg-zinc-950 shadow-md relative">
+                  <img src="assets/servicio_certificado_familia.jpg" alt="Certificado Animal de Apoyo Emocional" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/80 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Validez Nacional
+                  </span>
+                </div>
+                <header class="mb-2 flex items-start justify-between gap-2.5">
+                  <div>
+                    <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Familia Multiespecie</span>
+                    <h3 class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                      Certificado de apoyo
+                    </h3>
+                  </div>
+                  <!-- Sellito vial oficial al costado del texto -->
+                  <div class="shrink-0 w-9 h-9 p-0.5 rounded-lg bg-black/50 border border-brand-border/60 flex items-center justify-center shadow-md">
+                    <img src="assets/cartel_certificado_transparente.png" alt="Sello Animal de Apoyo" class="w-full h-full object-contain" title="Sello Oficial Animal de Apoyo">
+                  </div>
+                </header>
+                <p class="text-zinc-400 text-xs leading-relaxed mb-4">
+                  Evaluación psicológica y certificación profesional para proteger el vínculo y facilitar viajes, mudanzas, hospedajes y convivencia sin trabas.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40">
+                <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20quer%C3%ADa%20consultarte%20sobre%20el%20certificado%20de%20animal%20de%20apoyo%20emocional%20para%20mi%20familia%20multiespecie." target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/30 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                  <span>Solicitar certificado</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Servicio 3: Grupo de Apoyo Terapéutico (Comunitario) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 rounded-xl overflow-hidden aspect-[16/11] border border-brand-border/60 bg-[#0B150E] shadow-md relative">
+                  <img src="assets/grupo_apoyo_2.png" alt="Grupo de Apoyo - Bienestar Vegano" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/80 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Comunitario
+                  </span>
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Espacio de Encuentro</span>
+                  <h3 class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Grupo de apoyo
+                  </h3>
+                </header>
+                <p class="text-zinc-400 text-xs leading-relaxed mb-4">
+                  Compartir, sentir y sostener. Encuentros grupales coordinados para personas veganas donde dialogar y construir red también es una forma de cuidarse.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40">
+                <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20sumarme%20o%20conocer%20m%C3%A1s%20sobre%20el%20Grupo%20de%20Apoyo%20de%20bienestar%20vegano." target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/30 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                  <span>Sumarme al grupo</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </article>
+
+            <!-- Servicio 4: Refugio Vegano en Entre Ríos (Inmersivo) -->
+            <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
+              <div>
+                <div class="block mb-4 rounded-xl overflow-hidden aspect-[16/11] border border-brand-border/60 bg-zinc-950 shadow-md relative">
+                  <img src="assets/refugio_entre_rios_graded.jpg" alt="Refugio Vegano en Entre Ríos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                  <span class="absolute top-2.5 right-2.5 bg-black/80 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                    Presencial
+                  </span>
+                </div>
+                <header class="mb-2">
+                  <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">Naturaleza & Retiros</span>
+                  <h3 class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                    Refugio en Entre Ríos
+                  </h3>
+                </header>
+                <p class="text-zinc-400 text-xs leading-relaxed mb-4">
+                  Alojamiento terapéutico y encuentros intensivos diseñados para profundizar procesos clínicos en pleno contacto con la naturaleza y el silencio.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-brand-border/40">
+                <a href="https://wa.me/5491133791108?text=Hola%20Mauro,%20me%20gustar%C3%ADa%20consultar%20sobre%20el%20alojamiento%20terap%C3%A9utico%20en%20el%20Refugio%20Vegano." target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/30 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                  <span>Consultar por el refugio</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </article>
+
           </div>
+
+          <!-- Indicador de Páginas / Dots Interactivo -->
+          <div id="services-dots" class="flex justify-center items-center gap-2 mt-4"></div>
         </div>
+
+        <script>
+          // Controlador de Carruseles: Scroll con Navegación Táctil, Dots Dinámicos y Autoplay
+          (function() {
+            function setupCarousel(feedId, dotsId, autoplayDelay) {
+              const feed = document.getElementById(feedId);
+              const dotsContainer = document.getElementById(dotsId);
+              if (!feed) return null;
+
+              const cards = feed.querySelectorAll('article');
+              const totalCards = cards.length;
+              if (totalCards <= 1) return null;
+
+              let currentIndex = 0;
+              let isInteracting = false;
+              let autoplayTimer = null;
+
+              // Renderizar Dots
+              if (dotsContainer) {
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < totalCards; i++) {
+                  const dot = document.createElement('button');
+                  dot.setAttribute('aria-label', `Ir a la tarjeta ${i + 1}`);
+                  dot.className = `h-1.5 transition-all duration-300 rounded-full cursor-pointer ${i === 0 ? 'w-6 bg-brand-accent shadow-sm shadow-brand-accent/40' : 'w-2 bg-zinc-700/60 hover:bg-zinc-500'}`;
+                  dot.addEventListener('click', () => {
+                    scrollToCard(i);
+                    resetAutoplay();
+                  });
+                  dotsContainer.appendChild(dot);
+                }
+              }
+
+              function updateDots(index) {
+                currentIndex = index;
+                if (!dotsContainer) return;
+                const dots = dotsContainer.children;
+                for (let i = 0; i < dots.length; i++) {
+                  if (i === index) {
+                    dots[i].className = 'h-1.5 w-6 bg-brand-accent rounded-full transition-all duration-300 shadow-sm shadow-brand-accent/40';
+                  } else {
+                    dots[i].className = 'h-1.5 w-2 bg-zinc-700/60 hover:bg-zinc-500 rounded-full transition-all duration-300 cursor-pointer';
+                  }
+                }
+              }
+
+              function scrollToCard(index) {
+                if (index < 0) index = 0;
+                if (index >= totalCards) index = totalCards - 1;
+                const targetCard = cards[index];
+                if (targetCard) {
+                  const leftPos = targetCard.offsetLeft - feed.offsetLeft;
+                  feed.scrollTo({ left: leftPos, behavior: 'smooth' });
+                  updateDots(index);
+                }
+              }
+
+              // Sincronizar dots al deslizar manualmente
+              let scrollTimeout = null;
+              feed.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                  let closestIndex = 0;
+                  let minDistance = Infinity;
+                  const feedCenter = feed.scrollLeft + feed.offsetWidth / 2;
+                  cards.forEach((card, idx) => {
+                    const cardCenter = card.offsetLeft - feed.offsetLeft + card.offsetWidth / 2;
+                    const dist = Math.abs(feedCenter - cardCenter);
+                    if (dist < minDistance) {
+                      minDistance = dist;
+                      closestIndex = idx;
+                    }
+                  });
+                  updateDots(closestIndex);
+                }, 80);
+              }, { passive: true });
+
+              // Autoplay inteligente
+              function advanceSlide() {
+                if (isInteracting) return;
+                const modal = document.getElementById('modal-product-details');
+                if (modal && !modal.classList.contains('hidden')) return; // Pausar si el modal de producto está abierto
+                let nextIndex = (currentIndex + 1) % totalCards;
+                scrollToCard(nextIndex);
+              }
+
+              function startAutoplay() {
+                if (autoplayTimer) clearInterval(autoplayTimer);
+                autoplayTimer = setInterval(advanceSlide, autoplayDelay);
+              }
+
+              function stopAutoplay() {
+                if (autoplayTimer) clearInterval(autoplayTimer);
+              }
+
+              function resetAutoplay() {
+                stopAutoplay();
+                startAutoplay();
+              }
+
+              // Pausar con interacción táctil / mouse
+              feed.addEventListener('mouseenter', () => { isInteracting = true; stopAutoplay(); });
+              feed.addEventListener('mouseleave', () => { isInteracting = false; startAutoplay(); });
+              feed.addEventListener('touchstart', () => { isInteracting = true; stopAutoplay(); }, { passive: true });
+              feed.addEventListener('touchend', () => {
+                isInteracting = false;
+                setTimeout(startAutoplay, 3000);
+              }, { passive: true });
+
+              startAutoplay();
+
+              return {
+                scroll: function(dir) {
+                  stopAutoplay();
+                  let nextIdx = currentIndex + dir;
+                  if (nextIdx < 0) nextIdx = totalCards - 1;
+                  if (nextIdx >= totalCards) nextIdx = 0;
+                  scrollToCard(nextIdx);
+                  setTimeout(startAutoplay, 4000);
+                }
+              };
+            }
+
+            const recursosCtrl = setupCarousel('recursos-feed', 'recursos-dots', 4800);
+            const servicesCtrl = setupCarousel('services-feed', 'services-dots', 5200);
+
+            window.scrollRecursos = function(dir) {
+              if (recursosCtrl) recursosCtrl.scroll(dir);
+            };
+
+            window.scrollServices = function(dir) {
+              if (servicesCtrl) servicesCtrl.scroll(dir);
+            };
+          })();
+        </script>
       </section>
 
-      <!-- 5. CASOS CLÍNICOS / CONSULTAS -->
-      <section id="experiencias-section" class="mb-24 border-t border-brand-border pt-16 scroll-mt-24">
-        <!-- Encabezado Unificado -->
-        <div class="mb-10 text-center sm:text-left">
-          <h2 class="font-serif text-3xl text-white">Casos clínicos / consultas</h2>
-          <p class="text-zinc-500 text-sm mt-1">Encuentros, testimonios y lecturas del espacio clínico de forma integrada.</p>
-        </div>
-        
-        <div class="space-y-12">
-          <!-- Bloque de Artículos (Listado vertical de ancho completo) -->
-          <div class="space-y-6">
-            <h3 class="text-xs font-mono uppercase tracking-widest text-brand-accent mb-1 flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>Reflexiones escritas
-            </h3>
-            <div id="articles-feed" class="space-y-6">
-              <!-- Renderizado dinámico de artículos -->
-            </div>
-
-            <!-- Botón para ver reflexiones históricas -->
-            <div id="historical-btn-container" class="text-center mt-6 hidden">
-              <button onclick="toggleAllArticles()" id="btn-toggle-articles" class="w-full sm:w-auto px-6 py-2.5 bg-zinc-900 border border-brand-border text-zinc-300 hover:border-brand-accent hover:text-white rounded-lg text-xs font-bold transition duration-200">
-                📖 Ver todas las reflexiones anteriores
-              </button>
-            </div>
-          </div>
-
-          <!-- Bloque de Testimonios (Carrusel horizontal deslizable en todas las pantallas) -->
-          <div id="testimonials-block" class="space-y-4">
-            <h3 class="text-xs font-mono uppercase tracking-widest text-brand-accent mb-1 flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 bg-brand-accent rounded-full"></span>Voces del espacio
-            </h3>
-            <!-- Contenedor con scroll horizontal en todas las pantallas -->
-            <div id="testimonials-feed" class="flex gap-4 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory">
-              <!-- Renderizado dinámico de testimonios -->
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- SERVICIO INTERNACIONAL -->
+<!-- SERVICIO INTERNACIONAL -->
       <div class="border-t border-brand-border pt-12 text-center max-w-2xl mx-auto space-y-3">
         <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-brand-accent/5 border border-brand-accent/15 text-brand-accent text-xs font-mono uppercase tracking-wider rounded-full">
           🌎 Servicio Internacional
@@ -725,7 +998,7 @@
   <script type="module">
     // Importar SDK de Firebase v10 (solo lectura pública de Firestore)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // Configuración de Firebase
     const firebaseConfig = {
@@ -857,7 +1130,13 @@
             contenido: data.contenido,
             testimonio: data.testimonio || '',
             imagenPortada: data.imagenPortada || '',
-            imagenOrientacion: data.imagenOrientacion || ''
+            imagenOrientacion: data.imagenOrientacion || '',
+            tematica: data.tematica || '',
+            destacado: !!data.destacado,
+            esPremium: data.esPremium || false,
+            precio: data.precio || 0,
+            ctaRecurso: data.ctaRecurso || '',
+            ctaOrientacion: data.ctaOrientacion !== false
           });
         });
         renderArticles();
@@ -919,6 +1198,13 @@
         renderFAQs();
       });
 
+      // Suscribirse a la configuración de la botonera diagnóstica
+      onSnapshot(doc(db, "configuracion", "diagnostico"), (docSnap) => {
+        if (docSnap.exists()) {
+          window.diagnosticConfig = docSnap.data();
+        }
+      }, (err) => console.warn("Diagnostico config fallback:", err));
+
       // Registrar visita general
       trackVisit(window.location.pathname);
 
@@ -962,6 +1248,21 @@
           presentationSlides[nextPresIndex].classList.replace('opacity-0', 'opacity-100');
           currentPresIndex = nextPresIndex;
         }, 5000);
+      }
+
+      // Sincronizar dots del slider móvil de pilares psíquicos
+      const pilaresContainer = document.getElementById('pilares-container');
+      const pilaresDots = document.getElementById('pilares-dots');
+      if (pilaresContainer && pilaresDots) {
+        pilaresContainer.addEventListener('scroll', () => {
+          const cardWidth = (pilaresContainer.firstElementChild ? pilaresContainer.firstElementChild.offsetWidth : 300) + 16;
+          const activeIndex = Math.min(3, Math.max(0, Math.round(pilaresContainer.scrollLeft / cardWidth)));
+          Array.from(pilaresDots.children).forEach((dot, idx) => {
+            dot.className = idx === activeIndex 
+              ? "w-5 h-1.5 rounded-full bg-brand-accent transition-all duration-300" 
+              : "w-1.5 h-1.5 rounded-full bg-zinc-700 transition-all duration-300";
+          });
+        }, { passive: true });
       }
     });
 
@@ -1008,78 +1309,679 @@
 
     // (Lógica administrativa delegada a admin.html)
 
-    // Renderizado en la Landing Page Pública
+    // Renderizado en la Landing Page Pública con Slider Interactivo y Cuadrícula
+    let isArticlesGridMode = false;
+    let articlesDragBound = false;
+
     function renderArticles() {
       const container = document.getElementById('articles-feed');
-      const histContainer = document.getElementById('historical-btn-container');
-      const toggleBtn = document.getElementById('btn-toggle-articles');
-      
+      const dotsContainer = document.getElementById('articles-dots');
+      const prevBtn = document.getElementById('btn-articles-prev');
+      const nextBtn = document.getElementById('btn-articles-next');
+      const expandWrapper = document.getElementById('articles-expand-wrapper');
+      const toggleText = document.getElementById('btn-toggle-articles-text');
+      const toggleIcon = document.getElementById('btn-toggle-articles-icon');
+
       if (!container) return;
       container.innerHTML = '';
+      if (dotsContainer) dotsContainer.innerHTML = '';
 
       if (articles.length === 0) {
-        container.innerHTML = '<p class="text-zinc-500 text-center py-10">No hay reflexiones publicadas todavía.</p>';
-        if (histContainer) histContainer.classList.add('hidden');
+        container.innerHTML = '<p class="text-zinc-500 text-center py-10 w-full">No hay reflexiones publicadas todavía.</p>';
+        if (expandWrapper) expandWrapper.classList.add('hidden');
+        if (prevBtn) prevBtn.classList.add('hidden');
+        if (nextBtn) nextBtn.classList.add('hidden');
         return;
       }
 
-      // Filtrar según estado expandido
-      const articlesToShow = showAllArticles ? articles : articles.slice(0, 3);
+      // Configurar clases del contenedor según el modo activo
+      if (isArticlesGridMode) {
+        container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-2";
+        if (prevBtn) prevBtn.classList.add('hidden');
+        if (nextBtn) nextBtn.classList.add('hidden');
+        if (dotsContainer) dotsContainer.classList.add('hidden');
+        if (toggleText) toggleText.innerText = "Ver en carrusel deslizante";
+        if (toggleIcon) toggleIcon.innerText = "↑";
+      } else {
+        container.className = "flex gap-4 sm:gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory scrollbar-none px-1 select-none cursor-grab";
+        if (prevBtn) prevBtn.classList.remove('hidden');
+        if (nextBtn) nextBtn.classList.remove('hidden');
+        if (dotsContainer) dotsContainer.classList.remove('hidden');
+        if (toggleText) toggleText.innerText = `Ver todas las reflexiones (${articles.length})`;
+        if (toggleIcon) toggleIcon.innerText = "↓";
+      }
 
-      articlesToShow.forEach((art) => {
-        // Formatear fecha legible local
-        const dateParts = art.fecha.split('-');
-        const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-        const formattedDate = localDate.toLocaleDateString('es-AR', dateOptions);
+      // Ocultar botón de expandir si hay 3 o menos notas
+      if (expandWrapper) {
+        if (articles.length <= 3) {
+          expandWrapper.classList.add('hidden');
+        } else {
+          expandWrapper.classList.remove('hidden');
+        }
+      }
 
-        // Generar extracto de texto
+      // Ordenar: Primero destacados / premium, luego por fecha descendente
+      const sortedArticles = [...articles].sort((a, b) => {
+        const aPriority = (a.destacado ? 2 : (a.esPremium ? 1 : 0));
+        const bPriority = (b.destacado ? 2 : (b.esPremium ? 1 : 0));
+        if (aPriority !== bPriority) return bPriority - aPriority;
+        return (b.fecha || '').localeCompare(a.fecha || '');
+      });
+
+      sortedArticles.forEach((art, idx) => {
+        let formattedDate = art.fecha || '';
+        try {
+          if (art.fecha && typeof art.fecha === 'string' && art.fecha.includes('-')) {
+            const dateParts = art.fecha.split('-');
+            const localDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            formattedDate = localDate.toLocaleDateString('es-AR', dateOptions);
+          }
+        } catch (e) {
+          formattedDate = art.fecha;
+        }
+
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = art.contenido;
         const textExcerpt = tempDiv.textContent || tempDiv.innerText || "";
-        const shortExcerpt = textExcerpt.length > 180 ? textExcerpt.substring(0, 180) + "..." : textExcerpt;
+        const shortExcerpt = textExcerpt.length > 120 ? textExcerpt.substring(0, 120) + "..." : textExcerpt;
 
-        // Calcular tiempo estimado de lectura (200 palabras/min promedio en español)
         const wordCount = textExcerpt.split(/\s+/).filter(w => w.length > 0).length;
         const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
+        const isPrem = !!art.esPremium;
         const artElement = document.createElement('article');
-        artElement.className = "bg-brand-card/30 border border-brand-border/60 rounded-2xl p-6 sm:p-8 hover:border-brand-accent/20 transition-all duration-300 flex flex-col justify-between";
+        
+        // Estilo Dorado / Ámbar para artículos Premium vs Estilo sobrio para artículos Libres
+        const premiumCardClasses = "bg-gradient-to-b from-[#18150D] to-[#0D0F0D] border-amber-500/50 hover:border-amber-400 shadow-[0_4px_25px_rgba(245,158,11,0.18)] ring-1 ring-amber-500/20";
+        const standardCardClasses = "bg-[#0D130E] border-brand-border/60 hover:border-brand-accent/70 shadow-xl";
+
+        artElement.className = isArticlesGridMode
+          ? `w-full ${isPrem ? premiumCardClasses : standardCardClasses} rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group relative`
+          : `w-[82vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-start ${isPrem ? premiumCardClasses : standardCardClasses} rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group relative`;
+
+        const artSlug = getSlug(art.titulo);
+        const artUrl = `/articulos/${artSlug}`;
+
         artElement.innerHTML = `
           <div>
-            <header class="mb-3">
-              <div class="flex items-center justify-between mb-1">
-                <time class="text-xs text-brand-accent font-semibold tracking-wider uppercase">${formattedDate}</time>
-                <span class="text-[11px] text-zinc-500 font-medium">☕ ${readingTime} min de lectura</span>
+            ${art.imagenPortada ? `
+              <a href="${artUrl}" class="block mb-4 rounded-xl overflow-hidden aspect-[16/10] border ${isPrem ? 'border-amber-500/40' : 'border-brand-border/60'} bg-zinc-950 shadow-md cursor-pointer group/img relative">
+                <img src="${art.imagenPortada}" alt="${art.titulo}" class="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" loading="lazy">
+                ${isPrem ? `
+                  <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-amber-400/80 text-amber-300 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg flex items-center gap-1.5">
+                    <span>✨</span> Obra Destacada
+                  </span>
+                ` : ''}
+              </a>
+            ` : `
+              <a href="${artUrl}" class="block mb-4 rounded-xl overflow-hidden aspect-[16/10] border ${isPrem ? 'border-amber-500/40' : 'border-brand-border/60'} bg-zinc-950 flex items-center justify-center text-zinc-600 hover:text-brand-accent cursor-pointer transition-colors relative">
+                <svg class="w-8 h-8 opacity-40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                ${isPrem ? `
+                  <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-amber-400/80 text-amber-300 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg flex items-center gap-1.5">
+                    <span>✨</span> Obra Destacada
+                  </span>
+                ` : ''}
+              </a>
+            `}
+            <header class="mb-2">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <time class="text-[10px] font-mono ${isPrem ? 'text-amber-400/90' : 'text-brand-accent'} uppercase tracking-wider">${formattedDate}</time>
+                ${isPrem 
+                  ? `<span class="text-[10px] font-mono text-amber-300 font-bold bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-full">Contribución $${Number(art.precio || 5000).toLocaleString('es-AR')}</span>` 
+                  : `<span class="text-[9px] font-mono text-zinc-400 uppercase tracking-widest bg-zinc-900 px-2 py-0.5 rounded">Libre</span>`}
               </div>
-              <h3 class="font-serif text-xl sm:text-2xl text-white tracking-tight leading-snug">${art.titulo}</h3>
+              <h3 class="font-serif text-base sm:text-lg text-white font-bold tracking-tight leading-snug line-clamp-2 ${isPrem ? 'group-hover:text-amber-300' : 'group-hover:text-brand-accent'} transition-colors">
+                <a href="${artUrl}" class="${isPrem ? 'hover:text-amber-300' : 'hover:text-brand-accent'} transition-colors">${art.titulo}</a>
+              </h3>
             </header>
-            <p class="text-zinc-400 text-sm leading-relaxed mb-6">${shortExcerpt}</p>
+            <p class="text-zinc-400 text-xs line-clamp-2 leading-relaxed mb-4">${shortExcerpt}</p>
           </div>
-          <div>
-            <a href="/articulos/${getSlug(art.titulo)}" class="text-brand-accent hover:text-white text-xs font-bold transition flex items-center gap-1">
-              <span>Leer reflexión completa</span>
-              <span>→</span>
+          <div class="pt-3 border-t ${isPrem ? 'border-amber-500/25' : 'border-brand-border/40'} flex items-center justify-between">
+            <a href="${artUrl}" class="${isPrem ? 'text-amber-300 hover:text-white font-bold' : 'text-brand-accent hover:text-white font-semibold'} text-xs transition flex items-center gap-1.5 cursor-pointer">
+              <span>${isPrem ? 'Leer capítulo (muestra)' : 'Leer artículo'}</span>
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
             </a>
+            <span class="text-[10px] ${isPrem ? 'text-amber-400/70' : 'text-zinc-500'} font-mono">☕ ${readingTime} min</span>
           </div>
         `;
         container.appendChild(artElement);
+
+        // Generar dot indicador en modo slider
+        if (dotsContainer && !isArticlesGridMode) {
+          const dot = document.createElement('button');
+          dot.ariaLabel = "Ir a artículo " + (idx + 1);
+          dot.className = "w-2 h-2 rounded-full transition-all duration-300 cursor-pointer " + (idx === 0 ? "bg-brand-accent w-5" : "bg-zinc-700 hover:bg-zinc-500");
+          dot.onclick = () => {
+            const cardWidth = artElement.offsetWidth + 24;
+            container.scrollTo({ left: idx * cardWidth, behavior: 'smooth' });
+          };
+          dotsContainer.appendChild(dot);
+        }
       });
 
-      // Controlar botón ver todas
-      if (articles.length > 3) {
-        if (histContainer) histContainer.classList.remove('hidden');
-        if (toggleBtn) {
-          toggleBtn.innerText = showAllArticles 
-            ? "📖 Contraer listado e ir al inicio" 
-            : `📖 Ver todas las reflexiones anteriores (${articles.length - 3} más)`;
-        }
-      } else {
-        if (histContainer) histContainer.classList.add('hidden');
+      // Escuchar scroll para actualizar dots
+      if (dotsContainer && !isArticlesGridMode && dotsContainer.children.length > 0) {
+        container.onscroll = () => {
+          const cardWidth = (container.firstElementChild ? container.firstElementChild.offsetWidth : 300) + 24;
+          const activeIndex = Math.min(
+            dotsContainer.children.length - 1,
+            Math.max(0, Math.round(container.scrollLeft / cardWidth))
+          );
+          Array.from(dotsContainer.children).forEach((d, i) => {
+            if (i === activeIndex) {
+              d.className = "w-5 h-2 rounded-full bg-brand-accent transition-all duration-300 cursor-pointer";
+            } else {
+              d.className = "w-2 h-2 rounded-full bg-zinc-700 hover:bg-zinc-500 transition-all duration-300 cursor-pointer";
+            }
+          });
+        };
+      }
+
+      // Configurar Drag con mouse para PC una sola vez
+      if (!articlesDragBound && container) {
+        articlesDragBound = true;
+        let isDown = false;
+        let startXVal = 0;
+        let scrollStart = 0;
+        let hasMoved = false;
+
+        container.addEventListener('mousedown', (e) => {
+          if (isArticlesGridMode) return;
+          isDown = true;
+          hasMoved = false;
+          startXVal = e.pageX - container.offsetLeft;
+          scrollStart = container.scrollLeft;
+          container.style.scrollBehavior = 'auto';
+          container.style.scrollSnapType = 'none';
+          container.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (!isDown || isArticlesGridMode) return;
+          const x = e.pageX - container.offsetLeft;
+          const walk = (x - startXVal) * 1.3;
+          if (Math.abs(walk) > 6) hasMoved = true;
+          container.scrollLeft = scrollStart - walk;
+        });
+
+        window.addEventListener('mouseup', () => {
+          if (!isDown) return;
+          isDown = false;
+          container.style.scrollBehavior = 'smooth';
+          container.style.scrollSnapType = 'x mandatory';
+          container.style.cursor = 'grab';
+        });
+
+        // Prevenir click accidental si se arrastró
+        container.addEventListener('click', (e) => {
+          if (hasMoved) {
+            e.preventDefault();
+            e.stopPropagation();
+            hasMoved = false;
+          }
+        }, true);
       }
     }
 
-    // Función auxiliar para extraer texto plano sin HTML agregando espacios entre bloques
+    function toggleArticlesView() {
+      isArticlesGridMode = !isArticlesGridMode;
+      renderArticles();
+      if (!isArticlesGridMode) {
+        const sec = document.getElementById('experiencias-section');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function scrollArticles(direction) {
+      const feed = document.getElementById('articles-feed');
+      if (!feed) return;
+      const card = feed.querySelector('article');
+      const cardWidth = card ? card.offsetWidth + 24 : 320;
+      feed.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+    }
+
+    // Manejador inteligente de la Botonera Diagnóstica
+    function handleDiagnosticClick(tematica) {
+      if (window.diagnosticConfig && window.diagnosticConfig[tematica]) {
+        const conf = window.diagnosticConfig[tematica];
+        if (conf.tipo === 'recurso') {
+          if (conf.destino && productsData[conf.destino]) {
+            openProductModal(conf.destino);
+            return;
+          }
+          window.location.href = `/portal/?producto=${conf.destino || 'pack_integral_vegano'}`;
+          return;
+        } else if (conf.tipo === 'orientacion') {
+          const msg = encodeURIComponent(conf.mensaje || `Hola Mauro, quisiera consultar por una sesión de orientación clínica sobre el desafío de: ${tematica}.`);
+          window.open(`https://wa.me/5491133791108?text=${msg}`, '_blank');
+          return;
+        } else if (conf.tipo === 'articulo' && conf.destino) {
+          const art = articles.find(a => a.id === conf.destino || getSlug(a.titulo) === conf.destino);
+          if (art) {
+            const artSlug = getSlug(art.titulo);
+            window.location.href = `/articulo.html?slug=${artSlug}&origen=${tematica}`;
+            return;
+          }
+        }
+      }
+
+      // Palabras clave según la dolencia seleccionada
+      const keywordsMap = {
+        aislamiento: ['aislamiento', 'solo', 'soledad', 'desconexión', 'desconexion', 'encajar', 'entorno'],
+        sobrecarga: ['sobrecarga', 'pensar', 'impotencia', 'tristeza', 'fatiga', 'ansiedad', 'agotamiento', 'emocional'],
+        culpa: ['culpa', 'autoexigencia', 'exigencia', 'coherencia', 'perfección', 'carga'],
+        relaciones: ['relaciones', 'vínculos', 'vinculos', 'familia', 'pareja', 'amistades', 'conflicto']
+      };
+
+      const keywords = keywordsMap[tematica] || [];
+
+      // 1. Buscar si hay algún artículo que coincida por temática explícita o por keywords
+      let targetArticle = articles.find(a => (a.tematica && a.tematica.toLowerCase() === tematica.toLowerCase()));
+      if (!targetArticle) {
+        targetArticle = articles.find(a => {
+          const t = (a.titulo || '').toLowerCase();
+          const c = (a.contenido || '').toLowerCase();
+          return keywords.some(k => t.includes(k) || c.includes(k));
+        });
+      }
+
+      if (targetArticle) {
+        // Encontró artículo específico: redirigir a la lectura directa
+        const artSlug = getSlug(targetArticle.titulo);
+        window.location.href = `/articulo.html?slug=${artSlug}&origen=${tematica}`;
+      } else {
+        // Fallback: scrollear suavemente al carrusel de reflexiones
+        const sec = document.getElementById('experiencias-section');
+        if (sec) {
+          sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+    window.handleDiagnosticClick = handleDiagnosticClick;
+
+    window.toggleArticlesView = toggleArticlesView;
+
+    // Datos y Switcher para el bloque de Tienda
+    let currentProductKey = 'libro';
+    const productsData = {
+      libro: {
+        id: 'libro',
+        badge: "CAPÍTULO DE LIBRO & ENSAYO CLÍNICO",
+        category: "OBRA EDITORIAL · CUADERNOS TÓPICA Nº 29",
+        title: 'Cuerpos <span class="text-brand-accent">no-humanos</span>',
+        desc: "Capítulo completo del Lic. Mauro García Rodríguez en la compilación de Graciela Piperno. Un abordaje psicoanalítico sobre el narcisismo residual, la empatía y la emancipación ética más allá de nuestra especie.",
+        f1Title: "Capítulo de libro completo y transcripción fiel",
+        f1Desc: "Lectura digital interactiva y documento PDF original para descarga.",
+        f2Title: "La relación entre los cuerpos como conciencia de época",
+        f2Desc: "Dime qué haces con el cuerpo del otro y te diré quién eres.",
+        f3Title: "Acceso permanente en tu biblioteca personal",
+        f3Desc: "Podés leerlo desde cualquier dispositivo o imprimir el cuadernillo.",
+        price: "$5.000 ARS",
+        priceUsd: "/ $5 USD (Exterior)",
+        ctaUrl: "/portal/?producto=libro_cuerpos_no_humanos",
+        mockupImg: "assets/portada_cuerpos_extraida.jpeg",
+        coverImg: "assets/portada_cuerpos_extraida.jpeg",
+        activeTabClass: "bg-brand-accent text-brand-black shadow-lg",
+        inactiveTabClass: "bg-brand-card border border-brand-border text-zinc-400 hover:text-white hover:border-brand-accent/50",
+        audios: [],
+        pdfs: [
+          { num: "01", title: "Cuerpos no-humanos (Edición completa)", desc: "Acerca de la relación entre narcisismo, empatía y antropocentrismo" }
+        ]
+      },
+      mapa: {
+        id: 'mapa',
+        badge: "PRODUCTO DESTACADO",
+        category: "AUDIOGUÍA TERAPÉUTICA + CUADERNILLOS",
+        title: 'Mapa de transiciones <span class="text-brand-accent">vitales</span>',
+        desc: "Mapa de Transiciones\nUna guía para comprender y habitar los procesos de cambio.\n\nEmpezar a cambiar no siempre significa saber hacia dónde vamos. A veces, una transformación comienza con una incomodidad, una pregunta, una intuición o el descubrimiento de algo que ya no podemos ignorar.\n\nCuando comenzamos a transformar nuestra manera de vivir, también se transforma nuestra relación con nosotros mismos, con los demás y con el mundo que habitamos.\n\n¿Qué nos sucede psicológicamente cuando empezamos a cambiar? ¿Por qué aparecen dudas, resistencias, contradicciones o sentimientos de soledad? ¿Cómo atravesar la distancia entre aquello que ya no queremos sostener y aquello que todavía estamos aprendiendo a construir?\n\nEl Mapa de Transiciones es una herramienta de exploración psicológica para comprender los procesos de cambio, reconocer lo que nos sucede y encontrar recursos para transitar nuestro propio recorrido.\n\nA través de audioguías, videos y ejercicios, propone un camino de reflexión y aprendizaje para acompañar.",
+        f1Title: "7 pistas de audio guiadas + 2 Bonus (9 audios)",
+        f1Desc: "Desde el diagnóstico inicial hasta recalibrar y los 2 puntos de inflexión.",
+        f2Title: "6 cuadernillos PDF imprimibles (15 piezas en total)",
+        f2Desc: "Dinámicas de auto-revisión, PPIP y tendencias defensivas.",
+        f3Title: "Reproductor privado online + modo offline",
+        f3Desc: "Para escuchar en tu celular o PC sin gastar datos.",
+        price: "$25.000 ARS",
+        priceUsd: "/ $25 USD (Exterior)",
+        ctaUrl: "/portal/?producto=mapa_de_transiciones",
+        mockupImg: "assets/portada_mapa_focused.png",
+        coverImg: "assets/portada_mapa_focused.png",
+        activeTabClass: "bg-brand-accent text-brand-black shadow-lg",
+        inactiveTabClass: "bg-brand-card border border-brand-border text-zinc-400 hover:text-white hover:border-brand-accent/50",
+        audios: [
+          { num: "01", title: "Usted está aquí", desc: "Diagnóstico inicial de la transición" },
+          { num: "02", title: "Mi curso de vida esperable", desc: "Línea de tiempo y mandatos previos" },
+          { num: "03", title: "Transiciones inesperadas", desc: "El shock con el entorno social" },
+          { num: "04", title: "La Crisis", desc: "Desarticulación del duelo y la angustia" },
+          { num: "05", title: "La Exploración", desc: "Nuevas formas de habitar el vínculo" },
+          { num: "06", title: "Capacidad Creativa", desc: "Reinvención y sensibilidad activa" },
+          { num: "07", title: "Recalcular", desc: "Ajuste de límites y asertividad" },
+          { num: "08", title: "Bonus #1 - Punto de inflexión", desc: "Momento bisagra del cambio" },
+          { num: "09", title: "Bonus #2 - No desconocerse", desc: "Fidelidad con la propia ética" }
+        ],
+        pdfs: [
+          { num: "01", title: "Usted está aquí", desc: "Dinámica clínica diagnóstica" },
+          { num: "02", title: "Curso de vida esperable", desc: "Mapeo biográfico de mandatos" },
+          { num: "03", title: "PPIP", desc: "Plan personal de integración psicológica" },
+          { num: "04", title: "Tendencias defensivas", desc: "Revisión de respuestas emocionales" },
+          { num: "05", title: "Revisión Personal", desc: "Ejercicios de integración profunda" },
+          { num: "06", title: "Las imágenes que me habitan", desc: "Simbolismo y reconstrucción" }
+        ]
+      },
+      autoestima: {
+        id: 'autoestima',
+        badge: "MICROTERAPIAS & AUTOANÁLISIS",
+        category: "AUDIOGUÍA CLÍNICA + CUADERNILLO DEFINITIVO",
+        title: 'Autoestima <span class="text-brand-accent">Verde</span>',
+        desc: "Microterapias sonoras para reconectar con el amor propio y la autoestima en un mundo especista. Un proceso guiado para sanar la autoimagen y habitarte sin culpas.",
+        f1Title: "4 microterapias completas en audio",
+        f1Desc: "Introducción (Partes 1 y 2), Amor propio vs autoestima y Autoestima Verde.",
+        f2Title: "Cuadernillo 'El YO que habito' (32 págs)",
+        f2Desc: "Guía práctica de autoanálisis con ejercicios y láminas clínicas.",
+        f3Title: "Reproductor privado online + modo offline",
+        f3Desc: "Acceso permanente en tu celular o PC sin gastar datos.",
+        price: "$18.000 ARS",
+        priceUsd: "/ $18 USD (Exterior)",
+        ctaUrl: "/portal/?producto=autoestima_verde",
+        mockupImg: "assets/portada_autoestima_focused.png",
+        coverImg: "assets/portada_autoestima_focused.png",
+        activeTabClass: "bg-brand-accent text-brand-black shadow-lg",
+        inactiveTabClass: "bg-brand-card border border-brand-border text-zinc-400 hover:text-white hover:border-brand-accent/50",
+        audios: [
+          { num: "01", title: "Introducción a la autoestima (Parte 1)", desc: "Deconstruir la mirada ajena" },
+          { num: "02", title: "Introducción a la autoestima (Parte 2)", desc: "Validación interna del sentir" },
+          { num: "03", title: "Amor propio o autoestima", desc: "Diferenciación clínica y autocuidado" },
+          { num: "04", title: "Autoestima Verde", desc: "Sostener la sensibilidad en un mundo hostil" }
+        ],
+        pdfs: [
+          { num: "01", title: "El YO que habito (32 páginas)", desc: "Guía práctica de autoanálisis enfocado en autoestima y amor propio" }
+        ]
+      },
+      combo: {
+        id: 'combo',
+        badge: "⚡ PROMO LANZAMIENTO · TIEMPO LIMITADO",
+        category: "ECOSISTEMA INTEGRAL · 3 OBRAS COMPLETAS",
+        title: 'Pack Integral: Trilogía <span class="text-brand-accent">Vegana</span>',
+        desc: "La experiencia terapéutica definitiva. Adquirí con precio promocional el acceso total e inmediato a los 3 recursos de Mauro García: el Libro 'Cuerpos no-humanos', la Audioguía 'Mapa de Transiciones' y 'Autoestima Verde' (13 audios clínicos + 7 cuadernillos = 21 piezas en total).",
+        price: "$35.000 ARS",
+        priceUsd: "/ $35 USD (Exterior)",
+        ctaUrl: "/portal/?producto=pack_integral_vegano",
+        mockupImg: "assets/portada_combo_trilogia.jpg",
+        coverImg: "assets/portada_combo_trilogia.jpg",
+        activeTabClass: "bg-brand-accent text-brand-black shadow-lg",
+        inactiveTabClass: "bg-brand-card border border-brand-border text-zinc-400 hover:text-white hover:border-brand-accent/50",
+        audios: [
+          { num: "01-09", title: "Audioguía: Mapa de Transiciones (9 pistas)", desc: "Desde el diagnóstico inicial hasta los 2 puntos de inflexión" },
+          { num: "10-13", title: "Microterapias: Autoestima Verde (4 pistas)", desc: "Introducción (Partes 1 y 2), Amor propio y Autoestima Verde" }
+        ],
+        pdfs: [
+          { num: "01", title: "Libro: Cuerpos no-humanos (Edición Digital)", desc: "Capítulo completo en Cuadernos Tópica Nº 29" },
+          { num: "02-07", title: "Mapa de Transiciones: 6 Cuadernillos Clínicos", desc: "Usted está aquí, Curso esperable, PPIP, Tendencias defensivas, etc." },
+          { num: "08", title: "Autoestima Verde: Cuadernillo 'El YO que habito'", desc: "Guía clínica definitiva de 32 páginas para autoanálisis" }
+        ]
+      }
+    };
+
+    // Sincronización en tiempo real desde Firestore para los 4 Recursos Canónicos
+    const CANONICAL_MAP = {
+      'mapa_de_transiciones': 'mapa',
+      'autoestima_verde': 'autoestima',
+      'pack_integral_vegano': 'combo',
+      'libro_cuerpos_no_humanos': 'libro'
+    };
+
+    try {
+      onSnapshot(collection(db, "products"), (querySnapshot) => {
+        querySnapshot.forEach((d) => {
+          const docId = d.id;
+          const key = CANONICAL_MAP[docId] || docId;
+          const p = d.data();
+          if (productsData[key]) {
+            if (p.descripcion) {
+              productsData[key].desc = p.descripcion;
+            }
+            if (p.titulo) {
+              productsData[key].title = p.titulo;
+            }
+            if (p.precio) {
+              productsData[key].price = `$${Number(p.precio).toLocaleString('es-AR')} ARS`;
+            }
+            if (p.precio_usd) {
+              productsData[key].priceUsd = `/ $${p.precio_usd} USD (Exterior)`;
+            }
+            const cover = p.url_portada || p.portada_url;
+            if (cover) {
+              productsData[key].coverImg = cover;
+              productsData[key].mockupImg = cover;
+            }
+            if (Array.isArray(p.items) && p.items.length > 0) {
+              const audios = p.items.filter(it => it.tipo === 'audio').map((it, idx) => ({
+                num: String(idx + 1).padStart(2, '0'),
+                title: it.titulo || `Audio ${idx + 1}`,
+                desc: it.descripcion || 'Pista clínica guiada'
+              }));
+              const pdfs = p.items.filter(it => it.tipo === 'pdf').map((it, idx) => ({
+                num: String(idx + 1).padStart(2, '0'),
+                title: it.titulo || `Cuadernillo ${idx + 1}`,
+                desc: it.descripcion || 'Documento y dinámica clínica'
+              }));
+              if (audios.length > 0) productsData[key].audios = audios;
+              if (pdfs.length > 0) productsData[key].pdfs = pdfs;
+            }
+
+            // Sincronizar dinámicamente las tarjetas del Feed si existen en DOM
+            const cardPrice = document.getElementById(`card-${key}-price`);
+            const cardPriceUsd = document.getElementById(`card-${key}-price-usd`);
+            const cardDesc = document.getElementById(`card-${key}-desc`);
+            const cardTitle = document.getElementById(`card-${key}-title`);
+            const cardImg = document.getElementById(`card-${key}-img`);
+
+            if (cardPrice && p.precio) cardPrice.innerText = `$${Number(p.precio).toLocaleString('es-AR')} ARS`;
+            if (cardPriceUsd && p.precio_usd) cardPriceUsd.innerText = `/ $${p.precio_usd} USD (Exterior)`;
+            if (cardTitle && p.titulo) cardTitle.innerHTML = p.titulo;
+            if (cardImg && cover) cardImg.src = cover;
+            if (cardDesc && p.descripcion) {
+              let cleanText = p.descripcion.trim();
+              const titleClean = (p.titulo || '').toLowerCase();
+              if (cleanText.toLowerCase().startsWith(titleClean)) {
+                cleanText = cleanText.substring(titleClean.length).trim();
+              }
+              const paras = cleanText.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+              let excerpt = paras[0] || cleanText;
+              if (paras.length > 1 && excerpt.length < 90) {
+                excerpt = excerpt + ' ' + paras[1];
+              }
+              if (excerpt.length > 170) {
+                excerpt = excerpt.substring(0, 167) + '...';
+              }
+              cardDesc.innerHTML = `${excerpt} <button type="button" onclick="openProductModal('${key}')" class="text-brand-accent hover:underline text-xs font-semibold inline-flex items-center gap-0.5 cursor-pointer ml-1">Leer más →</button>`;
+            }
+          }
+        });
+
+        // Si el usuario tiene abierto el modal en ese instante, refrescar los datos en pantalla
+        if (window._currentOpenModalKey && productsData[window._currentOpenModalKey]) {
+          const modal = document.getElementById('modal-product-details');
+          if (modal && !modal.classList.contains('hidden')) {
+            openProductModal(window._currentOpenModalKey);
+          }
+        }
+      }, (err) => {
+        console.warn("Firestore live products sync fallback:", err);
+      });
+    } catch (e) {
+      console.warn("Error iniciando listener de productos:", e);
+    }
+
+    function formatDescriptionToHtml(rawText) {
+      if (!rawText) return '';
+      if (rawText.includes('<p>') || rawText.includes('<br>')) {
+        return rawText;
+      }
+      const paragraphs = rawText.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+      if (paragraphs.length > 1) {
+        return paragraphs.map(p => `<p class="leading-relaxed mb-3">${p.replace(/\n/g, '<br>')}</p>`).join('');
+      }
+      return `<p class="leading-relaxed">${rawText.replace(/\n/g, '<br>')}</p>`;
+    }
+
+    function switchProduct(key) {
+      currentProductKey = key;
+      const data = productsData[key];
+      if (!data) return;
+
+      const titleEl = document.getElementById('prod-title');
+      const descEl = document.getElementById('prod-desc');
+      const badgeEl = document.getElementById('prod-badge');
+      const catEl = document.getElementById('prod-category');
+      const f1TitleEl = document.getElementById('prod-f1-title');
+      const f1DescEl = document.getElementById('prod-f1-desc');
+      const f2TitleEl = document.getElementById('prod-f2-title');
+      const f2DescEl = document.getElementById('prod-f2-desc');
+      const f3TitleEl = document.getElementById('prod-f3-title');
+      const f3DescEl = document.getElementById('prod-f3-desc');
+      const priceEl = document.getElementById('prod-price');
+      const mockupImg = document.getElementById('prod-mockup-img');
+
+      const btnLibro = document.getElementById('tab-btn-libro');
+      const btnMapa = document.getElementById('tab-btn-mapa');
+      const btnAuto = document.getElementById('tab-btn-autoestima');
+
+      if (mockupImg) {
+        mockupImg.style.opacity = '0';
+        mockupImg.style.transform = 'scale(0.96)';
+      }
+
+      setTimeout(() => {
+        if (badgeEl) badgeEl.innerText = data.badge;
+        if (catEl) catEl.innerText = data.category;
+        if (titleEl) titleEl.innerHTML = data.title;
+        if (descEl) descEl.innerText = data.desc;
+        if (f1TitleEl) f1TitleEl.innerText = data.f1Title;
+        if (f1DescEl) f1DescEl.innerText = data.f1Desc;
+        if (f2TitleEl) f2TitleEl.innerText = data.f2Title;
+        if (f2DescEl) f2DescEl.innerText = data.f2Desc;
+        if (f3TitleEl) f3TitleEl.innerText = data.f3Title;
+        if (f3DescEl) f3DescEl.innerText = data.f3Desc;
+        if (priceEl) priceEl.innerText = data.price;
+        const priceUsdEl = document.getElementById('prod-price-usd');
+        if (priceUsdEl) priceUsdEl.innerText = data.priceUsd || '';
+        if (mockupImg) {
+          mockupImg.src = data.mockupImg;
+          mockupImg.style.opacity = '1';
+          mockupImg.style.transform = 'scale(1)';
+        }
+      }, 150);
+
+      const allTabs = [
+        { key: 'libro', el: btnLibro },
+        { key: 'mapa', el: btnMapa },
+        { key: 'autoestima', el: btnAuto }
+      ];
+
+      allTabs.forEach(t => {
+        if (!t.el) return;
+        if (t.key === key) {
+          t.el.className = "px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-2 " + data.activeTabClass;
+        } else {
+          t.el.className = "px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-2 " + data.inactiveTabClass;
+        }
+      });
+    }
+
+    function openProductModal(key) {
+      const prodKey = key || currentProductKey;
+      window._currentOpenModalKey = prodKey;
+      const data = productsData[prodKey];
+      if (!data) return;
+
+      const modal = document.getElementById('modal-product-details');
+      if (!modal) return;
+
+      const coverEl = document.getElementById('modal-prod-cover');
+      const badgeEl = document.getElementById('modal-prod-badge');
+      const priceEl = document.getElementById('modal-prod-price');
+      const modalPriceUsd = document.getElementById('modal-prod-price-usd');
+      const catEl = document.getElementById('modal-prod-category');
+      const titleEl = document.getElementById('modal-prod-title');
+      const descEl = document.getElementById('modal-prod-desc');
+      const buyBtn = document.getElementById('modal-prod-buy-btn');
+
+      if (coverEl) coverEl.src = data.coverImg;
+      if (badgeEl) badgeEl.innerText = data.badge;
+      if (priceEl) priceEl.innerText = data.price;
+      if (modalPriceUsd) modalPriceUsd.innerText = `Exterior: ${data.priceUsd?.replace('/ ', '') || '$25 USD'} (PayPal)`;
+      if (catEl) catEl.innerText = data.category;
+      if (titleEl) titleEl.innerHTML = data.title;
+      if (descEl) descEl.innerHTML = formatDescriptionToHtml(data.desc);
+      if (buyBtn) buyBtn.href = data.ctaUrl;
+
+      // Render audios list & toggle container
+      const audiosBlock = document.getElementById('modal-block-audios');
+      const audiosContainer = document.getElementById('modal-prod-audios');
+      if (audiosBlock && audiosContainer) {
+        if (Array.isArray(data.audios) && data.audios.length > 0) {
+          audiosBlock.classList.remove('hidden');
+          audiosContainer.innerHTML = data.audios.map(a => `
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-900/60 border border-brand-border/60 text-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-brand-accent/15 text-brand-accent font-mono font-bold flex items-center justify-center text-[11px] shrink-0">${a.num}</span>
+                <div>
+                  <div class="font-medium text-white">${a.title}</div>
+                  <div class="text-[10px] text-zinc-400">${a.desc}</div>
+                </div>
+              </div>
+              <span class="text-[10px] text-brand-accent font-mono">Audio MP3</span>
+            </div>
+          `).join('');
+        } else {
+          audiosBlock.classList.add('hidden');
+          audiosContainer.innerHTML = '';
+        }
+      }
+
+      // Render pdfs list & toggle container
+      const pdfsBlock = document.getElementById('modal-block-pdfs');
+      const pdfsContainer = document.getElementById('modal-prod-pdfs');
+      if (pdfsBlock && pdfsContainer) {
+        if (Array.isArray(data.pdfs) && data.pdfs.length > 0) {
+          pdfsBlock.classList.remove('hidden');
+          pdfsContainer.innerHTML = data.pdfs.map(p => `
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-900/60 border border-brand-border/60 text-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-emerald-500/15 text-emerald-400 font-mono font-bold flex items-center justify-center text-[11px] shrink-0">${p.num}</span>
+                <div>
+                  <div class="font-medium text-white">${p.title}</div>
+                  <div class="text-[10px] text-zinc-400">${p.desc}</div>
+                </div>
+              </div>
+              <span class="text-[10px] text-emerald-400 font-mono">PDF Imprimible</span>
+            </div>
+          `).join('');
+        } else {
+          pdfsBlock.classList.add('hidden');
+          pdfsContainer.innerHTML = '';
+        }
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+      window._currentOpenModalKey = null;
+      const modal = document.getElementById('modal-product-details');
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+      document.body.style.overflow = '';
+    }
+
+    window.switchProduct = switchProduct;
+    window.openProductModal = openProductModal;
+    window.closeProductModal = closeProductModal;
+    window.scrollArticles = scrollArticles;
+
     function stripHtml(html) {
       if (!html) return '';
       const tmp = document.createElement("DIV");
@@ -1088,264 +1990,8 @@
       return (tmp.textContent || tmp.innerText || '').replace(/\s+/g, ' ').trim();
     }
 
-    // Renderizar Testimonios Clínicos y Tarjetas de Reflexiones
-    function renderTestimonials() {
-      const container = document.getElementById('testimonials-feed');
-      if (!container) return;
-
-      container.innerHTML = '';
-      
-      // 1. Obtener testimonios independientes de Firestore
-      const listToRender = testimonials;
-
-      const items = [];
-
-      listToRender.forEach((item) => {
-        items.push({
-          type: 'independent',
-          cita: item.cita,
-          autor: item.autor || 'Paciente anónimo'
-        });
-      });
-
-      // 2. Obtener extractos/frases de todas las reflexiones (automático o personalizado)
-      articles.forEach((art) => {
-        let citaText = '';
-        if (art.testimonio && art.testimonio.trim() !== '') {
-          citaText = art.testimonio.trim();
-        } else if (art.contenido) {
-          let cleanText = stripHtml(art.contenido);
-          // Si el texto plano comienza con el título del artículo (por etiquetas H1/H2), removerlo para no duplicar
-          if (cleanText.toLowerCase().startsWith(art.titulo.toLowerCase())) {
-            cleanText = cleanText.substring(art.titulo.length).trim().replace(/^[:\-\s]+/, '');
-          }
-          if (cleanText.length > 0) {
-            citaText = cleanText.length > 130 ? cleanText.substring(0, 130) + '...' : cleanText;
-          }
-        }
-
-        if (citaText) {
-          items.push({
-            type: 'linked',
-            id: art.id,
-            slug: getSlug(art.titulo),
-            cita: citaText,
-            titulo: art.titulo
-          });
-        }
-      });
-
-      const block = document.getElementById('testimonials-block');
-      if (items.length === 0) {
-        if (block) block.classList.add('hidden');
-        return;
-      } else {
-        if (block) block.classList.remove('hidden');
-      }
-
-      // Duplicar por 3 para lograr un bucle infinito real sin cortes visuales
-      for (let copy = 0; copy < 3; copy++) {
-        items.forEach((item) => {
-          const testElement = document.createElement('div');
-          testElement.className = "bg-brand-card border border-brand-border/60 rounded-xl p-6 hover:border-brand-accent/20 transition-all duration-300 flex flex-col justify-between group w-[280px] md:w-[350px] shrink-0 snap-start";
-          
-          if (item.type === 'independent') {
-            testElement.innerHTML = `
-              <div>
-                <span class="text-brand-accent/30 text-4xl font-serif block leading-none select-none mb-1">“</span>
-                <p class="text-zinc-300 italic text-sm leading-relaxed mb-6">${item.cita}</p>
-              </div>
-              <div class="border-t border-brand-border/40 pt-4 flex justify-between items-center">
-                <span class="text-xs text-zinc-500 font-mono">— ${item.autor}</span>
-              </div>
-            `;
-          } else {
-            testElement.innerHTML = `
-              <div>
-                <div class="flex items-center gap-1.5 mb-2.5">
-                  <span class="px-2 py-0.5 bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[10px] font-mono uppercase rounded-md tracking-wider">Reflexión</span>
-                </div>
-                <h4 class="text-white font-serif font-bold text-base leading-snug mb-2 line-clamp-2">${item.titulo}</h4>
-                <p class="text-zinc-300 text-xs leading-relaxed mb-6 font-sans">${item.cita}</p>
-              </div>
-              <div class="border-t border-brand-border/40 pt-4 flex justify-end items-center">
-                <a href="/articulos/${item.slug}" class="text-brand-accent hover:text-white text-xs font-bold transition flex items-center gap-1">
-                  <span>Leer artículo</span>
-                  <span>→</span>
-                </a>
-              </div>
-            `;
-          }
-          container.appendChild(testElement);
-        });
-      }
-
-      // Posicionar el scroll inicial en la copia del medio (sin transición abrupta)
-      setTimeout(() => {
-        const W = container.scrollWidth / 3;
-        if (W > 0) {
-          container.style.scrollBehavior = 'auto';
-          container.scrollLeft = W;
-        }
-      }, 50);
-
-      // Inicializar el auto-scroll loop
-      initTestimonialsAutoScroll();
-    }
-
-    let autoScrollInterval = null;
-    let isUserInteracting = false;
-    let scrollAdjustmentTimeout = null;
-    let scrollAnimationFrameId = null;
-
-    // Función propia de desplazamiento suave para regular la velocidad y asegurar compatibilidad
-    function smoothScrollTo(element, target, duration) {
-      if (scrollAnimationFrameId) {
-        cancelAnimationFrame(scrollAnimationFrameId);
-      }
-
-      const start = element.scrollLeft;
-      const change = target - start;
-      const startTime = performance.now();
-
-      function animateScroll(currentTime) {
-        const elapsedTime = currentTime - startTime;
-        if (elapsedTime >= duration) {
-          element.scrollLeft = target;
-          scrollAnimationFrameId = null;
-          return;
-        }
-
-        const timeFraction = elapsedTime / duration;
-        // Easing suave (easeInOutQuad)
-        const progress = timeFraction < 0.5 
-          ? 2 * timeFraction * timeFraction 
-          : -1 + (4 - 2 * timeFraction) * timeFraction;
-
-        element.scrollLeft = start + change * progress;
-        scrollAnimationFrameId = requestAnimationFrame(animateScroll);
-      }
-
-      scrollAnimationFrameId = requestAnimationFrame(animateScroll);
-    }
-
-    function initTestimonialsAutoScroll() {
-      const feed = document.getElementById('testimonials-feed');
-      if (!feed) return;
-
-      if (autoScrollInterval) {
-        clearInterval(autoScrollInterval);
-      }
-
-      if (!feed.dataset.listenersBound) {
-        feed.dataset.listenersBound = 'true';
-
-        // Eventos para pausar temporalmente el auto-desplazamiento al interactuar
-        feed.addEventListener('mouseenter', () => { isUserInteracting = true; });
-        feed.addEventListener('mouseleave', () => { isUserInteracting = false; });
-        feed.addEventListener('touchstart', () => { 
-          if (scrollAnimationFrameId) {
-            cancelAnimationFrame(scrollAnimationFrameId);
-            scrollAnimationFrameId = null;
-          }
-          isUserInteracting = true; 
-        }, { passive: true });
-        feed.addEventListener('touchend', () => { 
-          setTimeout(() => { isUserInteracting = false; }, 2500); 
-        }, { passive: true });
-
-        // Implementación de arrastre con mouse (drag-to-scroll) para PC
-        let isDown = false;
-        let startX;
-        let scrollLeftVal;
-
-        feed.addEventListener('mousedown', (e) => {
-          if (e.target.closest('button') || e.target.closest('a')) return;
-          if (scrollAnimationFrameId) {
-            cancelAnimationFrame(scrollAnimationFrameId);
-            scrollAnimationFrameId = null;
-          }
-          isDown = true;
-          feed.style.scrollBehavior = 'auto'; // Evita demoras en el arrastre
-          feed.style.scrollSnapType = 'none'; // Desactiva snap durante el arrastre manual
-          startX = e.pageX - feed.offsetLeft;
-          scrollLeftVal = feed.scrollLeft;
-          isUserInteracting = true;
-        });
-
-        feed.addEventListener('mouseleave', () => {
-          if (!isDown) return;
-          isDown = false;
-          feed.style.scrollBehavior = 'smooth';
-          feed.style.scrollSnapType = 'x mandatory';
-          setTimeout(() => { isUserInteracting = false; }, 2500);
-        });
-
-        feed.addEventListener('mouseup', () => {
-          if (!isDown) return;
-          isDown = false;
-          feed.style.scrollBehavior = 'smooth';
-          feed.style.scrollSnapType = 'x mandatory';
-          setTimeout(() => { isUserInteracting = false; }, 2500);
-        });
-
-        feed.addEventListener('mousemove', (e) => {
-          if (!isDown) return;
-          e.preventDefault();
-          const x = e.pageX - feed.offsetLeft;
-          const walk = (x - startX) * 1.5; // multiplicador de velocidad
-          feed.scrollLeft = scrollLeftVal - walk;
-        });
-
-        // Escuchar el scroll para saltar de forma invisible entre las copias y mantener el loop infinito
-        feed.addEventListener('scroll', () => {
-          clearTimeout(scrollAdjustmentTimeout);
-          scrollAdjustmentTimeout = setTimeout(() => {
-            const W = feed.scrollWidth / 3;
-            if (W <= 0) return;
-
-            // Si se desplaza hacia la izquierda entrando a la primera copia, salta adelante
-            if (feed.scrollLeft < W - 10) {
-              feed.style.scrollBehavior = 'auto'; // Salto instantáneo
-              feed.scrollLeft += W;
-            }
-            // Si se desplaza hacia la derecha entrando a la tercera copia, salta atrás
-            else if (feed.scrollLeft >= 2 * W - 10) {
-              feed.style.scrollBehavior = 'auto'; // Salto instantáneo
-              feed.scrollLeft -= W;
-            }
-          }, 100);
-        });
-      }
-
-      autoScrollInterval = setInterval(() => {
-        if (isUserInteracting) return;
-
-        const cards = feed.children;
-        if (cards.length <= 1) return;
-
-        const cardWidth = (cards[0].offsetWidth || 350) + 16; // tarjeta + gap
-        
-        // Desactivar temporalmente snap para realizar una transición lenta y controlada de 1.2 segundos
-        feed.style.scrollSnapType = 'none';
-        smoothScrollTo(feed, feed.scrollLeft + cardWidth, 1200);
-
-        // Reactivar snap tras completarse la animación suave de scroll
-        setTimeout(() => {
-          if (!isUserInteracting) {
-            feed.style.scrollSnapType = 'x mandatory';
-          }
-        }, 1300);
-      }, 4500);
-    }
-
-    function toggleAllArticles() {
-      showAllArticles = !showAllArticles;
-      renderArticles();
-      if (!showAllArticles) {
-        document.getElementById('experiencias-section').scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+    // Bloque de testimonios retirado por redundancia; función segura no-op
+    function renderTestimonials() {}
 
     // Renderizar Preguntas Frecuentes (FAQ) y generar JSON-LD para SEO
     function renderFAQs() {

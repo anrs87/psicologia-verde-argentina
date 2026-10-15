@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword 
 } from '../firebase';
-import { Mail, Lock, User, AlertCircle, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, AlertCircle, ArrowRight, X } from 'lucide-react';
 
 export default function AuthModal({ onClose }) {
   const [isRegister, setIsRegister] = useState(false);
@@ -66,10 +66,18 @@ export default function AuthModal({ onClose }) {
     }
   };
 
-  return (
-    <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#141a14] border border-[#232f23] rounded-2xl p-8 shadow-2xl relative">
-        <div className="text-center mb-6">
+  const content = (
+    <div className="w-full max-w-md bg-[#141a14] border border-[#232f23] rounded-2xl p-8 shadow-2xl relative">
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 text-[#8F9B8D] hover:text-[#E2E8F0] hover:bg-[#1a231a] rounded-lg transition cursor-pointer"
+          aria-label="Cerrar modal"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      )}
+      <div className="text-center mb-6">
           <div className="w-12 h-12 mx-auto mb-3 bg-[#8EB486]/10 rounded-full flex items-center justify-center border border-[#8EB486]/20">
             <span className="text-xl">🌿</span>
           </div>
@@ -201,6 +209,19 @@ export default function AuthModal({ onClose }) {
           </button>
         </div>
       </div>
+  );
+
+  if (onClose) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-[80vh] flex items-center justify-center p-4">
+      {content}
     </div>
   );
 }
