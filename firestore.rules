@@ -2,45 +2,75 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == 'verde.psicologia@gmail.com' ||
+        request.auth.token.email == 'dev@psicologovegano.com' ||
+        request.auth.token.email == 'dev@psicologiavegana.com' ||
+        request.auth.token.email == 'alanriverossaavedra@gmail.com'
+      );
+    }
+
     // Permitir lectura pública a cualquier artículo, pero solo el administrador puede escribir
     match /articulos/{document} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+      allow write: if isAdmin();
     }
     match /testimonios/{document} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+      allow write: if isAdmin();
     }
     match /faqs/{document} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+      allow write: if isAdmin();
     }
     match /registro_visitas/{document} {
       allow create: if true;
-      allow read, update, delete: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+      allow read, update, delete: if isAdmin();
     }
 
     // Ecosistema Tienda Digital & Audioguías
     match /products/{productId} {
-      allow read: if resource.data.estado == 'publicado' || 
-                  (request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com');
-      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     match /users/{userId} {
-      allow read: if request.auth != null && (request.auth.uid == userId || request.auth.token.email == 'verde.psicologia@gmail.com');
-      // El usuario puede crear/actualizar sus datos de perfil (nombre, etc.), pero la inyección de productos adquiridos la realiza el Admin SDK en Cloud Functions
-      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow create: if request.auth != null && request.auth.uid == userId &&
+                    (!('productos_adquiridos' in request.resource.data) || request.resource.data.productos_adquiridos.size() == 0);
       allow update: if request.auth != null && request.auth.uid == userId && 
                     !request.resource.data.diff(resource.data).affectedKeys().hasAny(['productos_adquiridos']);
-      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+      allow write: if isAdmin();
     }
 
     match /transactions/{transactionId} {
       allow read: if request.auth != null && 
-                  (resource.data.uid_usuario == request.auth.uid || request.auth.token.email == 'verde.psicologia@gmail.com');
-      // Las transacciones solo se crean y actualizan a través del Admin SDK en Cloud Functions
-      allow write: if request.auth != null && request.auth.token.email == 'verde.psicologia@gmail.com';
+                  (resource.data.uid_usuario == request.auth.uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /purchases/{purchaseId} {
+      allow read: if request.auth != null && 
+                  (resource.data.uid_usuario == request.auth.uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /pending_emails/{emailId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /coupons/{couponId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /configuracion/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /system_config/{docId} {
+      allow read, write: if isAdmin();
     }
   }
 }

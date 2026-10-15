@@ -17,3 +17,7 @@ firebase-debug.log
 originales/
 .DS_Store
 Thumbs.db
+*.bak
+*.backup*
+scratch_*
+*.mp3
