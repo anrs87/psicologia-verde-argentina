@@ -41,6 +41,15 @@ export default function AudioPlayer({ resource, onClose }) {
     };
   }, [resource, cacheKey]);
 
+  // Autoplay reactivo ante nueva pista o carga de src
+  useEffect(() => {
+    if (!audioRef.current || !audioSrc) return;
+    const playPromise = audioRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => setIsPlaying(true)).catch(() => {});
+    }
+  }, [audioSrc]);
+
   const handleToggleOffline = async () => {
     if (!resource || !cacheKey || !resource.signedUrl) return;
 
@@ -83,6 +92,11 @@ export default function AudioPlayer({ resource, onClose }) {
           setTimeout(() => setResumeNotice(null), 4000);
         }
       }
+
+      // Autoplay inmediato al cargar metadatos
+      audio.play().then(() => setIsPlaying(true)).catch((err) => {
+        console.warn('Autoplay diferido:', err.message);
+      });
     };
 
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
@@ -165,11 +179,12 @@ export default function AudioPlayer({ resource, onClose }) {
         <audio
           ref={audioRef}
           src={audioSrc}
+          autoPlay
           onTimeUpdate={handleTimeUpdate}
           onEnded={() => setIsPlaying(false)}
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
-          preload="metadata"
+          preload="auto"
         />
 
         {/* Notificación de reanudación o modo offline */}
@@ -191,11 +206,23 @@ export default function AudioPlayer({ resource, onClose }) {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Info Producto */}
           <div className="flex items-center gap-3 w-full md:w-1/3">
-            <div className="w-10 h-10 rounded-xl bg-[#8EB486]/20 border border-[#8EB486]/30 flex items-center justify-center shrink-0">
+            {resource.portada ? (
+              <img
+                src={resource.portada}
+                alt={resource.productTitle || resource.titulo}
+                className="w-11 h-11 rounded-xl object-cover border border-[#8EB486]/30 shadow-md shrink-0"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  const fallback = e.currentTarget.parentElement?.querySelector('.audio-fallback-icon');
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+            ) : null}
+            <div className={`audio-fallback-icon w-11 h-11 rounded-xl bg-[#8EB486]/20 border border-[#8EB486]/30 flex items-center justify-center shrink-0 ${resource.portada ? 'hidden' : ''}`}>
               <Headphones className="w-5 h-5 text-[#8EB486]" />
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="text-sm font-medium text-[#E2E8F0] truncate">{resource.titulo}</h4>
+              <h4 className="text-sm font-semibold text-[#E2E8F0] truncate">{resource.titulo}</h4>
               <p className="text-xs text-[#8F9B8D] truncate">{resource.productTitle || 'Audioguía Terapéutica'}</p>
             </div>
           </div>

@@ -119,7 +119,29 @@ export default function App() {
     const targetTab = params.get('tab');
     const paypalOrderId = params.get('token') || params.get('order_id');
 
-    if (status === 'success' && !paypalOrderId) {
+    const mpPaymentId = params.get('payment_id') || params.get('collection_id');
+    if ((status === 'success' || mpPaymentId) && !paypalOrderId) {
+      if (mpPaymentId && user) {
+        const confirmedKey = `mp_confirmed_${mpPaymentId}`;
+        if (!sessionStorage.getItem(confirmedKey)) {
+          sessionStorage.setItem(confirmedKey, 'true');
+          (async () => {
+            try {
+              const userToken = await user.getIdToken();
+              await fetch('https://us-central1-psicologiaveganaarg.cloudfunctions.net/confirmMercadopagoPayment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${userToken}`
+                },
+                body: JSON.stringify({ paymentId: mpPaymentId })
+              });
+            } catch (e) {
+              console.warn('Error confirmando Mercado Pago en retorno:', e);
+            }
+          })();
+        }
+      }
       setAlertMessage({
         type: 'success',
         text: '¡Pago aprobado con éxito! Tu recurso ya está habilitado en tu biblioteca.'
@@ -304,6 +326,7 @@ export default function App() {
         itemId: item ? item.id : null,
         titulo: data.titulo || (item ? item.titulo : product.titulo),
         productTitle: product.titulo,
+        portada: product.url_portada || product.portada || '',
         signedUrl: data.signedUrl,
         tipo: data.tipo || (item ? item.tipo : (product.tipo || 'audio'))
       };

@@ -3,7 +3,7 @@ const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 const { getAuth } = require('firebase-admin/auth');
-const { getStorage } = require('firebase-admin/storage');
+const { getStorage, getDownloadURL } = require('firebase-admin/storage');
 const express = require('express');
 const cors = require('cors')({ origin: true });
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
@@ -264,7 +264,7 @@ async function sendPurchaseConfirmationEmail({ toEmail, patientName, productTitl
   const portalUrl = 'https://psicologovegano.com/portal/';
   const directProductUrl = `${portalUrl}?producto=${encodeURIComponent(productId)}`;
 
-  const subject = `🌿 Acceso habilitado: ${productTitle} | Psicología Verde`;
+  const subject = `🌿 Acceso habilitado: ${productTitle} | Psicólogo Vegano`;
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="es">
@@ -291,7 +291,7 @@ async function sendPurchaseConfirmationEmail({ toEmail, patientName, productTitl
     <body>
       <div class="card">
         <div class="header">
-          <h1>PSICOLOGÍA VERDE ARGENTINA</h1>
+          <h1>PSICÓLOGO VEGANO</h1>
           <p>LIC. MAURO GARCÍA RODRÍGUEZ</p>
         </div>
         <div class="content">
@@ -320,7 +320,7 @@ async function sendPurchaseConfirmationEmail({ toEmail, patientName, productTitl
           </p>
         </div>
         <div class="footer">
-          Psicología Verde Argentina · Espacio clínico y terapéutico con perspectiva antiespecista.<br>
+          Psicólogo Vegano · Espacio clínico y terapéutico con perspectiva antiespecista.<br>
           Entre Ríos / Atención online a toda Argentina y el exterior.
         </div>
       </div>
@@ -343,7 +343,7 @@ async function sendPurchaseConfirmationEmail({ toEmail, patientName, productTitl
   }
 
   try {
-    const fromAddress = process.env.RESEND_FROM_EMAIL || 'Psicología Verde <notificaciones@psicologovegano.com>';
+    const fromAddress = process.env.RESEND_FROM_EMAIL || 'Psicólogo Vegano <notificaciones@psicologovegano.com>';
     const res = await resend.emails.send({
       from: fromAddress,
       to: [toEmail],
@@ -390,12 +390,12 @@ async function sendSaleNotificationToMauro({ patientName, userEmail, productTitl
 
       <p style="font-size: 14px; color: #555;">El recurso ya fue habilitado en el portal del paciente y se le despachó automáticamente el correo de acceso.</p>
       <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-      <p style="font-size: 12px; color: #888;">Notificación automática del sistema de Psicología Verde.</p>
+      <p style="font-size: 12px; color: #888;">Notificación automática del sistema de Psicólogo Vegano.</p>
     </div>
   `;
 
   try {
-    const fromAddress = process.env.RESEND_FROM_EMAIL || 'Psicología Verde <notificaciones@psicologovegano.com>';
+    const fromAddress = process.env.RESEND_FROM_EMAIL || 'Psicólogo Vegano <notificaciones@psicologovegano.com>';
     const res = await resend.emails.send({
       from: fromAddress,
       to: ['verde.psicologia@gmail.com'],
@@ -484,6 +484,8 @@ exports.createCheckoutPreference = functions.https.onRequest((req, res) => {
               currency_id: 'ARS'
             }
           ],
+          external_reference: `${user.uid}___${productId}`,
+          auto_return: 'approved',
           metadata: {
             uid_usuario: user.uid,
             id_producto: productId,
@@ -601,6 +603,184 @@ exports.validateCoupon = functions.https.onRequest((req, res) => {
 });
 
 /**
+ * Función centralizada para procesar y acreditar un pago de Mercado Pago
+ */
+async function processApprovedMpPayment(paymentId) {
+  const paymentClient = new Payment(await getMpClient());
+  const payment = await paymentClient.get({ id: paymentId });
+
+  if (!payment) {
+    throw new Error('Pago no encontrado en Mercado Pago');
+  }
+
+  const { status, metadata, external_reference, transaction_amount } = payment;
+
+  let uid_usuario = metadata?.uid_usuario;
+  let id_producto = metadata?.id_producto;
+
+  if ((!uid_usuario || !id_producto) && external_reference && external_reference.includes('___')) {
+    const parts = external_reference.split('___');
+    uid_usuario = uid_usuario || parts[0];
+    id_producto = id_producto || parts[1];
+  }
+
+  if (!uid_usuario || !id_producto) {
+    console.warn('Pago sin metadata ni external_reference requerida:', paymentId);
+    return { success: false, reason: 'Metadata ausente' };
+  }
+
+  const transactionRef = db.collection('transactions').doc(String(paymentId));
+  const userRef = db.collection('users').doc(uid_usuario);
+
+  if (status === 'approved') {
+    const existingTx = await transactionRef.get();
+    if (existingTx.exists && existingTx.data()?.estado === 'aprobado') {
+      console.log(`Pago ${paymentId} ya acreditado anteriormente. Omitiendo duplicados.`);
+      return { success: true, alreadyProcessed: true };
+    }
+
+    const batch = db.batch();
+
+    // 1. Obtener datos del paciente y producto
+    let userEmail = metadata?.email_usuario || '';
+    let userName = '';
+    if (!userEmail) {
+      try {
+        const userRecord = await auth.getUser(uid_usuario);
+        userEmail = userRecord.email || '';
+        userName = userRecord.displayName || '';
+      } catch (e) {
+        console.warn('No se pudo obtener email de Auth para uid:', uid_usuario);
+      }
+    }
+
+    let productTitle = 'Recurso Terapéutico';
+    let prodDoc = null;
+    try {
+      prodDoc = await db.collection('products').doc(id_producto).get();
+      if (prodDoc.exists) {
+        productTitle = prodDoc.data().titulo || productTitle;
+      } else if (id_producto === 'mapa_de_transiciones') {
+        productTitle = 'Mapa de Transiciones Vitales';
+      } else if (id_producto === 'autoestima_verde') {
+        productTitle = 'Autoestima Verde & El YO que habito';
+      }
+    } catch (e) {
+      console.warn('Error obteniendo producto:', e);
+    }
+
+    // 2. Registrar transacción
+    batch.set(transactionRef, {
+      id_transaccion: String(paymentId),
+      uid_usuario: uid_usuario,
+      id_producto: id_producto,
+      email_usuario: userEmail,
+      codigo_cupon: metadata?.codigo_cupon || null,
+      descuento: metadata?.descuento_aplicado || 0,
+      monto: transaction_amount,
+      estado: 'aprobado',
+      metodo_pago: payment.payment_type_id || 'mercadopago',
+      fecha_aprobacion: FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    // 3. Crear registro formal en la colección purchases
+    const purchaseRef = db.collection('purchases').doc(String(paymentId));
+    batch.set(purchaseRef, {
+      id_compra: String(paymentId),
+      id_transaccion: String(paymentId),
+      uid_usuario: uid_usuario,
+      id_producto: id_producto,
+      email_usuario: userEmail,
+      codigo_cupon: metadata?.codigo_cupon || null,
+      descuento: metadata?.descuento_aplicado || 0,
+      titulo_producto: productTitle,
+      monto: transaction_amount,
+      estado: 'aprobado',
+      metodo_pago: payment.payment_type_id || 'mercadopago',
+      fecha_compra: FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    // 4. Inyección atómica del producto en la colección del usuario (con soporte para combos / packs integrales)
+    let productsToGrant = [id_producto];
+    if (id_producto === 'pack_integral_vegano') {
+      productsToGrant = ['pack_integral_vegano', 'libro_cuerpos_no_humanos', 'mapa_de_transiciones', 'autoestima_verde'];
+    } else if (prodDoc && prodDoc.exists) {
+      const pData = prodDoc.data();
+      if (Array.isArray(pData.bundled_products) && pData.bundled_products.length > 0) {
+        productsToGrant = Array.from(new Set([id_producto, ...pData.bundled_products]));
+      }
+    }
+
+    batch.set(userRef, {
+      productos_adquiridos: FieldValue.arrayUnion(...productsToGrant),
+      fecha_ultima_compra: FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    await batch.commit();
+    console.log(`Pago ${paymentId} aprobado. Productos ${productsToGrant.join(', ')} inyectados a usuario ${uid_usuario}`);
+
+    // Incrementar contador de usos del cupón si aplica
+    if (metadata?.codigo_cupon) {
+      db.collection('coupons').doc(metadata.codigo_cupon).set({
+        usos_actuales: FieldValue.increment(1)
+      }, { merge: true }).catch(cErr => console.warn('Error incrementando cupón:', cErr));
+    }
+
+    // 5. Enviar email transaccional al paciente y notificación a Mauro
+    if (userEmail) {
+      sendPurchaseConfirmationEmail({
+        toEmail: userEmail,
+        patientName: userName,
+        productTitle: productTitle,
+        productId: id_producto,
+        paymentId: String(paymentId)
+      }).then((emailRes) => {
+        if (emailRes.success) {
+          purchaseRef.set({ email_enviado: true, resend_id: emailRes.resendId || null }, { merge: true });
+        }
+      }).catch((emailErr) => {
+        console.error('Error al despachar email de compra:', emailErr);
+      });
+
+      sendSaleNotificationToMauro({
+        patientName: userName,
+        userEmail: userEmail,
+        productTitle: productTitle,
+        productId: id_producto,
+        paymentId: String(paymentId),
+        amount: transaction_amount
+      }).catch((mauroErr) => {
+        console.error('Error al notificar venta a Mauro:', mauroErr);
+      });
+    }
+
+    return { success: true, granted: productsToGrant };
+  } else if (status === 'rejected' || status === 'cancelled') {
+    await transactionRef.set({
+      id_transaccion: String(paymentId),
+      uid_usuario: uid_usuario,
+      id_producto: id_producto,
+      monto: transaction_amount,
+      estado: 'rechazado',
+      fecha_actualizacion: FieldValue.serverTimestamp()
+    }, { merge: true });
+    return { success: false, status: status };
+  } else if (status === 'refunded' || status === 'charged_back') {
+    await transactionRef.set({
+      id_transaccion: String(paymentId),
+      uid_usuario: uid_usuario,
+      id_producto: id_producto,
+      monto: transaction_amount,
+      estado: 'devuelto',
+      fecha_actualizacion: FieldValue.serverTimestamp()
+    }, { merge: true });
+    return { success: false, status: status };
+  }
+
+  return { success: false, status };
+}
+
+/**
  * 2. Webhook seguro para notificaciones de pago de Mercado Pago
  */
 exports.mercadopagoWebhook = functions.https.onRequest(async (req, res) => {
@@ -612,178 +792,41 @@ exports.mercadopagoWebhook = functions.https.onRequest(async (req, res) => {
   }
 
   try {
-    const paymentClient = new Payment(await getMpClient());
-    const payment = await paymentClient.get({ id: paymentId });
-
-    if (!payment) {
-      return res.status(404).send('Pago no encontrado en Mercado Pago');
-    }
-
-    const { status, metadata, external_reference, transaction_amount } = payment;
-
-    let uid_usuario = metadata?.uid_usuario;
-    let id_producto = metadata?.id_producto;
-
-    if ((!uid_usuario || !id_producto) && external_reference && external_reference.includes('___')) {
-      const parts = external_reference.split('___');
-      uid_usuario = uid_usuario || parts[0];
-      id_producto = id_producto || parts[1];
-    }
-
-    if (!uid_usuario || !id_producto) {
-      console.warn('Pago sin metadata requerida:', paymentId);
-      return res.status(200).send('Metadata ausente, transacción registrada');
-    }
-
-    const transactionRef = db.collection('transactions').doc(String(paymentId));
-    const userRef = db.collection('users').doc(uid_usuario);
-
-    if (status === 'approved') {
-      const existingTx = await transactionRef.get();
-      if (existingTx.exists && existingTx.data()?.estado === 'aprobado') {
-        console.log(`Pago ${paymentId} ya acreditado anteriormente. Omitiendo duplicados.`);
-        return res.status(200).send('OK (Ya procesado)');
-      }
-
-      const batch = db.batch();
-
-      // 1. Obtener datos del paciente y producto
-      let userEmail = metadata?.email_usuario || '';
-      let userName = '';
-      if (!userEmail) {
-        try {
-          const userRecord = await auth.getUser(uid_usuario);
-          userEmail = userRecord.email || '';
-          userName = userRecord.displayName || '';
-        } catch (e) {
-          console.warn('No se pudo obtener email de Auth para uid:', uid_usuario);
-        }
-      }
-
-      let productTitle = 'Recurso Terapéutico';
-      try {
-        const prodDoc = await db.collection('products').doc(id_producto).get();
-        if (prodDoc.exists) {
-          productTitle = prodDoc.data().titulo || productTitle;
-        } else if (id_producto === 'mapa_de_transiciones') {
-          productTitle = 'Mapa de Transiciones Vitales';
-        } else if (id_producto === 'autoestima_verde') {
-          productTitle = 'Autoestima Verde & El YO que habito';
-        }
-      } catch (e) {
-        console.warn('Error obteniendo producto:', e);
-      }
-
-      // 2. Registrar transacción
-      batch.set(transactionRef, {
-        id_transaccion: String(paymentId),
-        uid_usuario: uid_usuario,
-        id_producto: id_producto,
-        email_usuario: userEmail,
-        codigo_cupon: metadata?.codigo_cupon || null,
-        descuento: metadata?.descuento_aplicado || 0,
-        monto: transaction_amount,
-        estado: 'aprobado',
-        metodo_pago: payment.payment_type_id || 'mercadopago',
-        fecha_aprobacion: FieldValue.serverTimestamp()
-      }, { merge: true });
-
-      // 3. Crear registro formal en la colección purchases
-      const purchaseRef = db.collection('purchases').doc(String(paymentId));
-      batch.set(purchaseRef, {
-        id_compra: String(paymentId),
-        id_transaccion: String(paymentId),
-        uid_usuario: uid_usuario,
-        id_producto: id_producto,
-        email_usuario: userEmail,
-        codigo_cupon: metadata?.codigo_cupon || null,
-        descuento: metadata?.descuento_aplicado || 0,
-        titulo_producto: productTitle,
-        monto: transaction_amount,
-        estado: 'aprobado',
-        metodo_pago: payment.payment_type_id || 'mercadopago',
-        fecha_compra: FieldValue.serverTimestamp()
-      }, { merge: true });
-
-      // 4. Inyección atómica del producto en la colección del usuario (con soporte para combos / packs integrales)
-      let productsToGrant = [id_producto];
-      if (id_producto === 'pack_integral_vegano') {
-        productsToGrant = ['pack_integral_vegano', 'libro_cuerpos_no_humanos', 'mapa_de_transiciones', 'autoestima_verde'];
-      } else if (prodDoc && prodDoc.exists) {
-        const pData = prodDoc.data();
-        if (Array.isArray(pData.bundled_products) && pData.bundled_products.length > 0) {
-          productsToGrant = Array.from(new Set([id_producto, ...pData.bundled_products]));
-        }
-      }
-
-      batch.set(userRef, {
-        productos_adquiridos: FieldValue.arrayUnion(...productsToGrant),
-        fecha_ultima_compra: FieldValue.serverTimestamp()
-      }, { merge: true });
-
-      await batch.commit();
-      console.log(`Pago ${paymentId} aprobado. Productos ${productsToGrant.join(', ')} inyectados a usuario ${uid_usuario}`);
-
-      // Incrementar contador de usos del cupón si aplica
-      if (metadata?.codigo_cupon) {
-        db.collection('coupons').doc(metadata.codigo_cupon).set({
-          usos_actuales: FieldValue.increment(1)
-        }, { merge: true }).catch(cErr => console.warn('Error incrementando cupón:', cErr));
-      }
-
-      // 5. Enviar email transaccional asincrónicamente al paciente
-      if (userEmail) {
-        sendPurchaseConfirmationEmail({
-          toEmail: userEmail,
-          patientName: userName,
-          productTitle: productTitle,
-          productId: id_producto,
-          paymentId: String(paymentId)
-        }).then((emailRes) => {
-          if (emailRes.success) {
-            purchaseRef.set({ email_enviado: true, resend_id: emailRes.resendId || null }, { merge: true });
-          }
-        }).catch((emailErr) => {
-          console.error('Error al despachar email de compra:', emailErr);
-        });
-
-        // 6. Alerta de venta inmediata a Mauro
-        sendSaleNotificationToMauro({
-          patientName: userName,
-          userEmail: userEmail,
-          productTitle: productTitle,
-          productId: id_producto,
-          paymentId: String(paymentId),
-          amount: transaction_amount
-        }).catch((mauroErr) => {
-          console.error('Error al notificar venta a Mauro:', mauroErr);
-        });
-      }
-    } else if (status === 'rejected' || status === 'cancelled') {
-      await transactionRef.set({
-        id_transaccion: String(paymentId),
-        uid_usuario: uid_usuario,
-        id_producto: id_producto,
-        monto: transaction_amount,
-        estado: 'rechazado',
-        fecha_actualizacion: FieldValue.serverTimestamp()
-      }, { merge: true });
-    } else if (status === 'refunded' || status === 'charged_back') {
-      await transactionRef.set({
-        id_transaccion: String(paymentId),
-        uid_usuario: uid_usuario,
-        id_producto: id_producto,
-        monto: transaction_amount,
-        estado: 'devuelto',
-        fecha_actualizacion: FieldValue.serverTimestamp()
-      }, { merge: true });
-    }
-
-    return res.status(200).send('Webhook procesado exitosamente');
-  } catch (err) {
-    console.error(`Error procesando webhook de pago ${paymentId}:`, err);
-    return res.status(500).send('Error interno en procesamiento de webhook');
+    const result = await processApprovedMpPayment(paymentId);
+    return res.status(200).send(result.success ? 'OK (Aprobado y procesado)' : 'OK (Estado: ' + (result.status || result.reason) + ')');
+  } catch (error) {
+    console.error('Error procesando webhook de Mercado Pago:', error);
+    return res.status(500).send('Error interno');
   }
+});
+
+/**
+ * Confirmación inmediata de pago al volver de Mercado Pago (por si el webhook demoró)
+ */
+exports.confirmMercadopagoPayment = functions.https.onRequest((req, res) => {
+  return cors(req, res, async () => {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Método no permitido' });
+    }
+
+    const user = await verifyAuthToken(req);
+    if (!user) {
+      return res.status(401).json({ error: 'No autenticado' });
+    }
+
+    const { paymentId } = req.body;
+    if (!paymentId) {
+      return res.status(400).json({ error: 'Falta paymentId' });
+    }
+
+    try {
+      const result = await processApprovedMpPayment(paymentId);
+      return res.status(200).json(result);
+    } catch (err) {
+      console.error('Error confirmando pago en retorno:', err);
+      return res.status(500).json({ error: 'Error al verificar pago', detalle: err.message });
+    }
+  });
 });
 
 /**
@@ -866,16 +909,23 @@ exports.getSignedResourceUrl = functions.https.onRequest((req, res) => {
         return res.status(404).json({ error: 'El archivo en Storage no fue encontrado' });
       }
 
-      // Signed URL válida por 2 horas
+      // Signed URL válida por 2 horas, con fallback robusto a getDownloadURL
       const expiresAt = Date.now() + 2 * 60 * 60 * 1000;
-      const [signedUrl] = await file.getSignedUrl({
-        version: 'v4',
-        action: 'read',
-        expires: expiresAt
-      });
+      let finalUrl = '';
+      try {
+        const [signedUrl] = await file.getSignedUrl({
+          version: 'v4',
+          action: 'read',
+          expires: expiresAt
+        });
+        finalUrl = signedUrl;
+      } catch (signErr) {
+        console.warn('file.getSignedUrl falló, recurriendo a getDownloadURL:', signErr.message);
+        finalUrl = await getDownloadURL(file);
+      }
 
       return res.status(200).json({
-        signedUrl: signedUrl,
+        signedUrl: finalUrl,
         expiresAt: expiresAt,
         titulo: targetTitle,
         tipo: targetType
@@ -1158,7 +1208,7 @@ exports.createPaypalOrder = functions.https.onRequest((req, res) => {
           }
         ],
         application_context: {
-          brand_name: 'Psicología Verde',
+          brand_name: 'Psicólogo Vegano',
           landing_page: 'NO_PREFERENCE',
           user_action: 'PAY_NOW',
           return_url: `${hostUrl}/portal/?status=success&product_id=${productId}`,
