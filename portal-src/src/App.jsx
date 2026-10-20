@@ -69,6 +69,29 @@ export default function App() {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [validatingCoupon, setValidatingCoupon] = useState(false);
   const [couponError, setCouponError] = useState(null);
+  const [upsellModalOffer, setUpsellModalOffer] = useState(null);
+
+  // Activar upsell de segunda venta post-compra con 50% de descuento
+  const triggerPostPurchaseUpsell = (purchasedId) => {
+    let upsellTargetId = 'mapa_de_transiciones';
+    if (purchasedId === 'mapa_de_transiciones') {
+      upsellTargetId = 'autoestima_verde';
+    } else if (purchasedId === 'autoestima_verde') {
+      upsellTargetId = 'mapa_de_transiciones';
+    } else if (purchasedId === 'pack_integral_vegano') {
+      return;
+    }
+
+    const targetProd = products.find(p => p.id === upsellTargetId) || DEFAULT_PRODUCTS.find(p => p.id === upsellTargetId);
+    if (!targetProd) return;
+
+    setUpsellModalOffer({
+      purchasedId: purchasedId || 'libro_cuerpos_no_humanos',
+      product: targetProd,
+      coupon: 'UPSELL50',
+      discountPct: 50
+    });
+  };
 
   // Escuchar estado de autenticación
   useEffect(() => {
@@ -83,7 +106,7 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
-    const targetProduct = params.get('producto');
+    const targetProduct = params.get('producto') || params.get('product_id');
     const targetTab = params.get('tab');
     const paypalOrderId = params.get('token') || params.get('order_id');
 
@@ -94,6 +117,7 @@ export default function App() {
       });
       setActiveTab('biblioteca');
       window.history.replaceState({}, document.title, window.location.pathname);
+      triggerPostPurchaseUpsell(targetProduct);
     } else if (status === 'paypal_success' || (status === 'success' && paypalOrderId)) {
       if (paypalOrderId && user) {
         const capturedKey = `paypal_captured_${paypalOrderId}`;
@@ -118,6 +142,7 @@ export default function App() {
                 });
                 setActiveTab('biblioteca');
                 window.history.replaceState({}, document.title, window.location.pathname);
+                triggerPostPurchaseUpsell(targetProduct);
               }
             } catch (e) {
               console.warn('Error capturando PayPal tras redirección:', e);
@@ -130,6 +155,7 @@ export default function App() {
           text: '¡Pago internacional procesado! Tu recurso se habilitará en breve en tu biblioteca.'
         });
         setActiveTab('biblioteca');
+        triggerPostPurchaseUpsell(targetProduct);
       }
     } else if (status === 'failure' || status === 'cancel') {
       setAlertMessage({
@@ -284,7 +310,7 @@ export default function App() {
   };
 
   // Abrir modal de checkout con cupones
-  const openCheckoutModal = (product) => {
+  const openCheckoutModal = (product, autoCoupon = null) => {
     if (!user) {
       setShowAuthModal(true);
       setAlertMessage({
@@ -294,14 +320,19 @@ export default function App() {
       return;
     }
     setCheckoutModalProduct(product);
-    setCouponInput('');
+    setCouponInput(autoCoupon || '');
     setAppliedCoupon(null);
     setCouponError(null);
+    if (autoCoupon) {
+      handleApplyCoupon(autoCoupon, product.id);
+    }
   };
 
   // Validar cupón con el backend
-  const handleApplyCoupon = async () => {
-    if (!couponInput.trim() || !checkoutModalProduct) return;
+  const handleApplyCoupon = async (overrideCode = null, overrideProductId = null) => {
+    const code = (overrideCode || couponInput).trim();
+    const prodId = overrideProductId || checkoutModalProduct?.id;
+    if (!code || !prodId) return;
     setValidatingCoupon(true);
     setCouponError(null);
 
@@ -311,8 +342,8 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          couponCode: couponInput.trim(),
-          productId: checkoutModalProduct.id
+          couponCode: code,
+          productId: prodId
         })
       });
 
@@ -952,6 +983,33 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Order Bump / Upsell In-Checkout (para compradores del libro) */}
+                {checkoutModalProduct.id === 'libro_cuerpos_no_humanos' && (
+                  <div className="p-4 bg-gradient-to-r from-[#172518] to-[#101911] border border-[#8EB486]/50 rounded-2xl space-y-2.5 relative overflow-hidden shadow-lg">
+                    <div className="flex items-start gap-2.5">
+                      <Sparkles className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                      <div className="flex-1 text-xs">
+                        <span className="font-semibold text-white">¿Querés sumar el Mapa de Transiciones al 50% OFF?</span>
+                        <p className="text-[11px] text-zinc-300 mt-1 leading-relaxed">
+                          Por adquirir el libro accedés a la Audioguía completa (9 pistas clínicas + 6 cuadernillos) por solo <strong className="text-[#8EB486] font-mono">$12.500 ARS</strong> / <strong className="text-[#8EB486] font-mono">$12.50 USD</strong> (en lugar de $25.000 ARS / $25 USD).
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const targetProd = products.find(p => p.id === 'mapa_de_transiciones') || DEFAULT_PRODUCTS.find(p => p.id === 'mapa_de_transiciones');
+                        if (targetProd) {
+                          openCheckoutModal(targetProd, 'UPSELL50');
+                        }
+                      }}
+                      className="w-full py-2.5 px-3 bg-[#8EB486]/20 hover:bg-[#8EB486]/35 border border-[#8EB486]/60 rounded-xl text-[#8EB486] font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      <span>Cambiar orden a Mapa de Transiciones al 50% OFF →</span>
+                    </button>
+                  </div>
+                )}
+
                 {/* Cupón de descuento */}
                 <div className="space-y-2">
                   <label className="text-xs font-medium text-[#8F9B8D] flex items-center gap-1.5">
@@ -1112,6 +1170,102 @@ export default function App() {
           </div>
         );
       })()}
+
+      {/* Modal de Upselling Post-Compra (50% OFF en Segunda Venta) */}
+      {upsellModalOffer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+          <div className="relative w-full max-w-lg bg-[#0F1510] border-2 border-[#8EB486]/60 rounded-3xl shadow-[0_0_50px_rgba(142,180,134,0.25)] overflow-hidden">
+            
+            {/* Cabecera con degradé y badge */}
+            <div className="bg-gradient-to-r from-[#1E2B1F] via-[#142015] to-[#0F1510] p-6 pb-4 border-b border-[#233324] relative">
+              <button
+                onClick={() => setUpsellModalOffer(null)}
+                className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-full transition cursor-pointer"
+                title="Cerrar oferta"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8EB486]/15 border border-[#8EB486]/40 text-[#8EB486] text-xs font-semibold uppercase tracking-wider mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>Oferta Especial Post-Compra · 50% OFF</span>
+              </div>
+              <h3 className="font-serif text-2xl text-white font-bold leading-tight">
+                ¡Felicitaciones por tu compra!
+              </h3>
+              <p className="text-zinc-300 text-xs sm:text-sm mt-1.5 leading-relaxed">
+                Por haber confiado en este espacio, tenés un <strong className="text-[#8EB486]">50% de DESCUENTO exclusivo</strong> en tu segunda adquisición para complementar tu biblioteca:
+              </p>
+            </div>
+
+            {/* Tarjeta del Producto en Upsell */}
+            <div className="p-6 space-y-4">
+              <div className="flex gap-4 p-4 bg-[#141C15] border border-[#233324] rounded-2xl items-center">
+                <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-xl overflow-hidden bg-black/50 border border-[#2D3F2E] shrink-0 flex items-center justify-center">
+                  {upsellModalOffer.product.url_portada ? (
+                    <img
+                      src={upsellModalOffer.product.url_portada}
+                      alt={upsellModalOffer.product.titulo}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-2xl">🌿</div>
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#8EB486]">Segunda Venta Bonificada</span>
+                  <h4 className="font-serif text-base sm:text-lg font-bold text-white truncate">
+                    {upsellModalOffer.product.titulo}
+                  </h4>
+                  <p className="text-xs text-zinc-400 line-clamp-2 mt-0.5">
+                    {upsellModalOffer.product.subtitulo || upsellModalOffer.product.descripcion}
+                  </p>
+
+                  <div className="mt-2.5 flex items-baseline gap-2">
+                    <span className="text-xs text-zinc-500 line-through">
+                      ${Number(upsellModalOffer.product.precio || 25000).toLocaleString('es-AR')} ARS
+                    </span>
+                    <span className="text-lg font-bold text-emerald-400 font-mono">
+                      ${(Number(upsellModalOffer.product.precio || 25000) * 0.5).toLocaleString('es-AR')} ARS
+                    </span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">
+                      -50%
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-zinc-400 font-mono mt-0.5">
+                    Exterior: <span className="line-through">${upsellModalOffer.product.precio_usd || 25} USD</span> → <strong className="text-emerald-400">${(Number(upsellModalOffer.product.precio_usd || 25) * 0.5).toFixed(2)} USD</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botón de Acción Principal */}
+              <button
+                onClick={() => {
+                  const target = upsellModalOffer.product;
+                  setUpsellModalOffer(null);
+                  openCheckoutModal(target, 'UPSELL50');
+                }}
+                className="w-full py-3.5 px-4 bg-gradient-to-r from-[#8EB486] to-[#7CA074] hover:from-[#7CA074] hover:to-[#6B8E63] text-[#0A0D0A] font-bold text-sm rounded-xl transition duration-300 shadow-xl shadow-[#8EB486]/20 flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <span>Aprovechar 50% OFF y Adquirir ahora</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              {/* Botón Secundario Descartar */}
+              <div className="text-center pt-1">
+                <button
+                  onClick={() => setUpsellModalOffer(null)}
+                  className="text-xs text-zinc-400 hover:text-zinc-200 transition py-1 cursor-pointer"
+                >
+                  No gracias, continuar a mi biblioteca →
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* Reproductor de Audio Persistente */}
       {activeAudio && (

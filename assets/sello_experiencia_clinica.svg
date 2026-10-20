@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" class="w-full h-full select-none">
+  <defs>
+    <radialGradient id="sealBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1F2820" />
+      <stop offset="65%" stop-color="#131A14" />
+      <stop offset="100%" stop-color="#0B0F0C" />
+    </radialGradient>
+    <linearGradient id="sealGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2E3C6" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#8A6D4B" />
+    </linearGradient>
+    <linearGradient id="sealBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8EB486" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#D4AF37" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#5F7D59" stop-opacity="0.7" />
+    </linearGradient>
+    <filter id="sealShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.7" />
+    </filter>
+  </defs>
+
+  <!-- Outer Scalloped Rosette -->
+  <path d="M 101.22 57.52 Q 98.45 61.04 100.00 65.25 Q 101.55 69.45 97.82 71.94 Q 94.10 74.43 94.27 78.91 Q 94.45 83.39 90.14 84.60 Q 85.82 85.82 84.60 90.14 Q 83.39 94.45 78.91 94.27 Q 74.43 94.10 71.94 97.82 Q 69.45 101.55 65.25 100.00 Q 61.04 98.45 57.52 101.22 Q 54.00 104.00 50.48 101.22 Q 46.96 98.45 42.75 100.00 Q 38.55 101.55 36.06 97.82 Q 33.57 94.10 29.09 94.27 Q 24.61 94.45 23.40 90.14 Q 22.18 85.82 17.86 84.60 Q 13.55 83.39 13.73 78.91 Q 13.90 74.43 10.18 71.94 Q 6.45 69.45 8.00 65.25 Q 9.55 61.04 6.78 57.52 Q 4.00 54.00 6.78 50.48 Q 9.55 46.96 8.00 42.75 Q 6.45 38.55 10.18 36.06 Q 13.90 33.57 13.73 29.09 Q 13.55 24.61 17.86 23.40 Q 22.18 22.18 23.40 17.86 Q 24.61 13.55 29.09 13.73 Q 33.57 13.90 36.06 10.18 Q 38.55 6.45 42.75 8.00 Q 46.96 9.55 50.48 6.78 Q 54.00 4.00 57.52 6.78 Q 61.04 9.55 65.25 8.00 Q 69.45 6.45 71.94 10.18 Q 74.43 13.90 78.91 13.73 Q 83.39 13.55 84.60 17.86 Q 85.82 22.18 90.14 23.40 Q 94.45 24.61 94.27 29.09 Q 94.10 33.57 97.82 36.06 Q 101.55 38.55 100.00 42.75 Q 98.45 46.96 101.22 50.48 Q 104.00 54.00 101.22 57.52 Z" fill="url(#sealBg)" stroke="url(#sealBorder)" stroke-width="1.6" filter="url(#sealShadow)" />
+
+  <!-- Inner Concentric Rings -->
+  <circle cx="54" cy="54" r="41.5" fill="none" stroke="url(#sealGold)" stroke-width="0.9" stroke-dasharray="2 1.2" opacity="0.7" />
+  <circle cx="54" cy="54" r="39" fill="none" stroke="url(#sealGold)" stroke-width="0.5" opacity="0.35" />
+
+  <!-- Mini Decorative Diamond Top -->
+  <path d="M 54 24.5 L 56 26.5 L 54 28.5 L 52 26.5 Z" fill="url(#sealGold)" opacity="0.85" />
+
+  <!-- Text -->
+  <text x="54" y="41.5" text-anchor="middle" fill="#E2D7C3" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="7.2" font-weight="600" letter-spacing="1">17 AÑOS DE</text>
+  <text x="54" y="53.5" text-anchor="middle" fill="url(#sealGold)" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="8.8" font-weight="800" letter-spacing="1.2">EXPERIENCIA</text>
+  <text x="54" y="65.5" text-anchor="middle" fill="#E2D7C3" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="7.2" font-weight="600" letter-spacing="1.4">CLÍNICA</text>
+
+  <!-- Mini Decorative Diamond Bottom -->
+  <path d="M 54 73.5 L 56 75.5 L 54 77.5 L 52 75.5 Z" fill="url(#sealGold)" opacity="0.85" />
+</svg>

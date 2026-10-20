@@ -17,7 +17,7 @@ const auth = getAuth();
 const storage = getStorage();
 const app = express();
 
-const resendApiKey = process.env.RESEND_API_KEY || (functions.config().resend && functions.config().resend.api_key) || '';
+const resendApiKey = process.env.RESEND_API_KEY || '';
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const botUserAgents = [
@@ -180,9 +180,7 @@ async function getMpClient() {
   } catch (err) {
     console.warn('Error leyendo credencial de MP de Firestore:', err);
   }
-  const token = process.env.MP_ACCESS_TOKEN || 
-    (functions.config().mercadopago && functions.config().mercadopago.access_token) || 
-    '';
+  const token = process.env.MP_ACCESS_TOKEN || '';
   return new MercadoPagoConfig({ accessToken: token });
 }
 
@@ -856,8 +854,8 @@ exports.mpOAuthCallback = functions.https.onRequest(async (req, res) => {
     return res.redirect(`${adminBaseUrl}?mp_error=${encodeURIComponent(error || 'Autorización no completada')}`);
   }
 
-  const clientId = process.env.MP_CLIENT_ID || (functions.config().mercadopago && functions.config().mercadopago.client_id) || '';
-  const clientSecret = process.env.MP_CLIENT_SECRET || (functions.config().mercadopago && functions.config().mercadopago.client_secret) || '';
+  const clientId = process.env.MP_CLIENT_ID || '';
+  const clientSecret = process.env.MP_CLIENT_SECRET || '';
   const redirectUri = 'https://us-central1-psicologiaveganaarg.cloudfunctions.net/mpOAuthCallback';
 
   if (!clientId || !clientSecret) {

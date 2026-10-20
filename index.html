@@ -264,10 +264,17 @@
           <p class="text-brand-accent text-xs sm:text-sm font-mono uppercase tracking-[0.2em] mb-4">
             Psicólogo clínico
           </p>
-          <!-- Foto Circular con Halo Verde -->
-          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-brand-border bg-zinc-950 shadow-2xl mb-5 relative group">
-            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-full blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <img src="assets/fotoperfil_v2.webp" alt="Lic. Mauro García" class="relative w-full h-full object-cover object-center select-none rounded-full">
+          <div class="flex items-center justify-center gap-4 sm:gap-6 mb-5">
+            <!-- Foto Circular con Halo Verde -->
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-brand-border bg-zinc-950 shadow-2xl relative group shrink-0">
+              <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-accent to-emerald-800 rounded-full blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+              <img src="assets/fotoperfil_v2.webp" alt="Lic. Mauro García" class="relative w-full h-full object-cover object-center select-none rounded-full">
+            </div>
+
+            <!-- Sello Oficial 17 Años de Experiencia Clínica -->
+            <div class="w-24 h-24 sm:w-28 sm:h-28 shrink-0 relative group hover:scale-105 transition-transform duration-300 cursor-default" title="17 años de experiencia clínica especializada">
+              <img src="assets/sello_experiencia_clinica.svg" alt="17 años de experiencia clínica" class="w-full h-full object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">
+            </div>
           </div>
           <!-- Presentación Directa y Teledirigida -->
           <p class="max-w-2xl mx-auto font-serif text-lg sm:text-xl md:text-2xl text-zinc-200 leading-relaxed px-4">
@@ -436,7 +443,7 @@
           </button>
 
           <!-- Feed de los 3 Recursos -->
-          <div id="recursos-feed" class="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory scrollbar-none px-1 select-none">
+          <div id="recursos-feed" class="flex gap-4 sm:gap-6 overflow-x-auto pt-5 pb-5 scroll-smooth snap-x snap-mandatory scrollbar-none px-1 select-none">
             
             <!-- Recurso 1: Cuerpos no-humanos (Capítulo de Libro & Ensayo Clínico) -->
             <article class="w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl">
@@ -2068,7 +2075,8 @@
     }
 
     // Exponer funciones necesarias al scope global (window)
-    window.toggleAllArticles = toggleAllArticles;
+    window.toggleArticlesView = toggleArticlesView;
+    window.toggleAllArticles = toggleArticlesView;
     window.toggleFaq = toggleFaq;
   </script>
 
