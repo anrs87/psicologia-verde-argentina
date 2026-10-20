@@ -223,9 +223,15 @@
             <p class="text-zinc-400 text-sm mt-1">Conectado de forma segura como <span class="text-brand-accent font-medium">Lic. Mauro García</span></p>
           </div>
         </div>
-        <button onclick="handleLogout()" class="px-4 py-1.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-lg text-xs font-medium transition">
-          Cerrar Sesión
-        </button>
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <button onclick="openChangePasswordModal()" class="px-3.5 py-1.5 border border-brand-accent/40 text-brand-accent hover:bg-brand-accent/10 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-sm">
+            <span>🔑</span>
+            <span>Renovar Contraseña</span>
+          </button>
+          <button onclick="handleLogout()" class="px-4 py-1.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-lg text-xs font-medium transition cursor-pointer">
+            Cerrar Sesión
+          </button>
+        </div>
       </div>
 
       <!-- Estadísticas reales de Firestore (KPI Cards Modernizadas) -->
@@ -802,6 +808,81 @@
 
       <!-- SECCIÓN MANTENIMIENTO -->
       <div id="section-maintenance" class="hidden space-y-6">
+
+        <!-- PANEL DE SEGURIDAD & RENOVACIÓN DE CONTRASEÑA -->
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-card">
+          <div class="border-b border-brand-border pb-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-2xl">🔑</span>
+                <h3 class="font-serif text-2xl text-white">Seguridad de la Cuenta & Renovación de Contraseña</h3>
+              </div>
+              <p class="text-zinc-400 text-xs mt-1">Modificá tu contraseña de acceso a la consola de administración o generá un enlace de restablecimiento a tu correo.</p>
+            </div>
+            <span class="text-zinc-400 text-xs font-mono px-3 py-1 bg-zinc-950 border border-brand-border rounded-full flex items-center gap-1.5 shrink-0">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>Consola Protegida</span>
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Método 1: Cambio directo -->
+            <div class="bg-zinc-950/60 p-5 sm:p-6 border border-brand-border/60 rounded-xl space-y-4 flex flex-col justify-between">
+              <div>
+                <h4 class="text-white font-semibold text-sm flex items-center gap-2">
+                  <span>🔒</span>
+                  <span>Cambiar Contraseña Directamente</span>
+                </h4>
+                <p class="text-zinc-400 text-xs mt-1">Ingresá tu contraseña actual y la nueva clave que querés usar a partir de ahora.</p>
+
+                <form id="panel-change-password-form" onsubmit="handlePanelChangePassword(event)" class="space-y-3.5 mt-4">
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1">Contraseña Actual</label>
+                    <input type="password" id="panel-pass-current" required autocomplete="current-password" placeholder="Ingresá tu contraseña actual..." class="w-full bg-brand-dark border border-brand-border/80 focus:border-brand-accent rounded-xl px-4 py-2.5 text-white text-xs outline-none transition font-mono shadow-inner">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1">Nueva Contraseña</label>
+                    <input type="password" id="panel-pass-new" required minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres..." class="w-full bg-brand-dark border border-brand-border/80 focus:border-brand-accent rounded-xl px-4 py-2.5 text-white text-xs outline-none transition font-mono shadow-inner">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-1">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="panel-pass-confirm" required minlength="6" autocomplete="new-password" placeholder="Repetí la nueva contraseña..." class="w-full bg-brand-dark border border-brand-border/80 focus:border-brand-accent rounded-xl px-4 py-2.5 text-white text-xs outline-none transition font-mono shadow-inner">
+                  </div>
+                  <button type="submit" id="btn-panel-update-pass" class="w-full py-3 bg-brand-accent hover:bg-brand-accentHover text-brand-black font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg cursor-pointer flex items-center justify-center gap-2 mt-2">
+                    <span>Guardar Nueva Contraseña</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Método 2: Envío por correo electrónico -->
+            <div class="bg-zinc-950/60 p-5 sm:p-6 border border-brand-border/60 rounded-xl space-y-4 flex flex-col justify-between">
+              <div class="space-y-3">
+                <h4 class="text-white font-semibold text-sm flex items-center gap-2">
+                  <span>✉️</span>
+                  <span>Restablecer Vía Correo Electrónico</span>
+                </h4>
+                <p class="text-zinc-400 text-xs leading-relaxed">
+                  Si no recordás tu contraseña actual o preferís cambiarla con el asistente oficial seguro de Firebase, podés enviarte un link de un solo uso a tu casilla.
+                </p>
+
+                <div class="p-3.5 bg-brand-surface/60 border border-brand-border/50 rounded-xl space-y-1">
+                  <span class="text-[11px] text-zinc-400 block font-medium">Casilla asociada a la consola:</span>
+                  <strong id="panel-reset-email-display" class="text-emerald-400 font-mono text-xs font-bold block truncate">verde.psicologia@gmail.com</strong>
+                  <span class="text-[10px] text-zinc-500 block pt-1">El enlace expira en unas horas y te permite elegir una contraseña nueva sin ingresar la anterior.</span>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button type="button" onclick="handleSendPasswordResetEmail()" id="btn-send-reset-email" class="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 hover:text-white border border-brand-border hover:border-brand-accent/40 font-semibold text-xs rounded-xl transition cursor-pointer flex items-center justify-center gap-2 shadow-sm">
+                  <span>📩 Enviar Enlace de Restablecimiento</span>
+                </button>
+                <p class="text-[10px] text-zinc-500 text-center mt-2">Revisá tu bandeja de entrada o spam tras solicitar el enlace.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- HERRAMIENTAS DE MANTENIMIENTO Y RESPALDOS -->
         <div class="bg-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 space-y-6 border-t border-brand-border/60 pb-6">
         <div class="border-b border-brand-border pb-3 flex justify-between items-center">
@@ -1573,7 +1654,7 @@
   <!-- Firebase modules and dashboard logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp, limit, getDocs, where, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -1800,6 +1881,9 @@
         updateDashboardStats();
         switchTab('tab-content');
 
+        const resetEmailDisplay = document.getElementById('panel-reset-email-display');
+        if (resetEmailDisplay) resetEmailDisplay.innerText = user.email || 'verde.psicologia@gmail.com';
+
         // Suscribirse a las visitas en tiempo real una vez autenticado
         if (!unsubscribeVisits) {
           const qVisits = query(collection(db, "registro_visitas"), orderBy("timestamp", "desc"), limit(5000));
@@ -1936,6 +2020,92 @@
         }, 150);
       }
     }
+
+    function openChangePasswordModal() {
+      const modal = document.getElementById('update-password-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.firstElementChild.classList.remove('scale-95');
+          modal.firstElementChild.classList.add('scale-100');
+        }, 10);
+        const reauthContainer = document.getElementById('reauth-container');
+        if (reauthContainer) {
+          reauthContainer.classList.remove('hidden');
+          const passCurr = document.getElementById('update-pass-current');
+          if (passCurr) passCurr.setAttribute('required', 'true');
+        }
+      }
+    }
+
+    async function handlePanelChangePassword(e) {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) {
+        showToast('Debes tener una sesión activa para cambiar la contraseña.', 'error');
+        return;
+      }
+
+      const currentPass = document.getElementById('panel-pass-current').value;
+      const newPass = document.getElementById('panel-pass-new').value;
+      const confirmPass = document.getElementById('panel-pass-confirm').value;
+      const btn = document.getElementById('btn-panel-update-pass');
+
+      if (newPass !== confirmPass) {
+        showToast('Las contraseñas no coinciden.', 'error');
+        return;
+      }
+
+      if (newPass.length < 6) {
+        showToast('La nueva contraseña debe tener al menos 6 caracteres.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Guardando...</span>';
+
+      try {
+        const credential = EmailAuthProvider.credential(user.email, currentPass);
+        await reauthenticateWithCredential(user, credential);
+        await updatePassword(user, newPass);
+        showToast('✅ ¡Contraseña actualizada con éxito!');
+        document.getElementById('panel-change-password-form').reset();
+      } catch (err) {
+        console.error('Error al actualizar contraseña:', err);
+        if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+          showToast('La contraseña actual es incorrecta.', 'error');
+        } else {
+          showToast('Error al actualizar contraseña: ' + err.message, 'error');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>Guardar Nueva Contraseña</span>';
+      }
+    }
+
+    async function handleSendPasswordResetEmail() {
+      const user = auth.currentUser;
+      const email = user?.email || 'verde.psicologia@gmail.com';
+      const btn = document.getElementById('btn-send-reset-email');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳ Enviando correo...</span>';
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showToast(`📬 Enlace de restablecimiento enviado a ${email}. Revisá tu bandeja de entrada o spam.`);
+      } catch (err) {
+        console.error('Error enviando email de restablecimiento:', err);
+        showToast('Error al enviar correo: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>📩 Enviar Enlace de Restablecimiento</span>';
+      }
+    }
+
+    window.openChangePasswordModal = openChangePasswordModal;
+    window.handlePanelChangePassword = handlePanelChangePassword;
+    window.handleSendPasswordResetEmail = handleSendPasswordResetEmail;
 
     function updateSEOPreview() {
       const title = document.getElementById('article-title').value;
