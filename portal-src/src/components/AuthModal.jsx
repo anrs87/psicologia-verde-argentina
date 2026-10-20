@@ -101,7 +101,7 @@ export default function AuthModal({ onClose }) {
   };
 
   const content = (
-    <div className="w-full max-w-md bg-[#141a14] border border-[#232f23] rounded-2xl p-8 shadow-2xl relative">
+    <div className="w-full max-w-md bg-[#141a14] border border-[#232f23] rounded-2xl p-5 sm:p-8 shadow-2xl relative mx-auto my-auto max-h-[90vh] overflow-y-auto">
       {onClose && (
         <button
           onClick={onClose}
@@ -265,7 +265,7 @@ export default function AuthModal({ onClose }) {
 
   if (onClose) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
         {content}
       </div>
     );

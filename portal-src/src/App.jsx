@@ -412,7 +412,7 @@ export default function App() {
       }
 
       const data = await res.json();
-      const checkoutUrl = data.sandbox_init_point || data.init_point;
+      const checkoutUrl = data.init_point || data.sandbox_init_point;
       if (checkoutUrl) {
         window.location.href = checkoutUrl;
       }
@@ -498,7 +498,7 @@ export default function App() {
   const explorar = products.filter((p) => !isProductPurchased(p));
 
   return (
-    <div className="min-h-screen bg-[#0A0D0A] text-[#E2E8F0] pb-32">
+    <div className="min-h-screen bg-[#0A0D0A] text-[#E2E8F0] pb-32 overflow-x-hidden w-full">
       <Navbar
         user={user}
         activeTab={activeTab}
@@ -784,40 +784,40 @@ export default function App() {
 
       {/* Modal de Módulos y Entregables del Recurso */}
       {activeResourceModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-2xl bg-[#141a14] border border-[#232f23] rounded-2xl flex flex-col overflow-hidden shadow-2xl max-h-[85vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#141a14] border border-[#232f23] rounded-2xl flex flex-col overflow-hidden shadow-2xl max-h-[90vh] my-auto">
             {/* Modal Header */}
-            <div className="p-6 bg-[#0e130e] border-b border-[#232f23] flex items-start justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-zinc-900 border border-[#232f23] overflow-hidden shrink-0 flex items-center justify-center">
+            <div className="p-4 sm:p-6 bg-[#0e130e] border-b border-[#232f23] flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-zinc-900 border border-[#232f23] overflow-hidden shrink-0 flex items-center justify-center">
                   {activeResourceModal.url_portada ? (
                     <img src={activeResourceModal.url_portada} alt={activeResourceModal.titulo} className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-2xl">📦</span>
+                    <span className="text-xl sm:text-2xl">📦</span>
                   )}
                 </div>
-                <div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#8EB486]/10 text-[#8EB486] border border-[#8EB486]/20 uppercase">
-                    Recurso Integral Multimódulo
+                <div className="min-w-0">
+                  <span className="text-[9px] sm:text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#8EB486]/10 text-[#8EB486] border border-[#8EB486]/20 uppercase inline-block">
+                    Recurso Integral
                   </span>
-                  <h3 className="text-lg font-serif font-medium text-[#E2E8F0] mt-1 leading-snug">
+                  <h3 className="text-base sm:text-lg font-serif font-medium text-[#E2E8F0] mt-0.5 leading-snug truncate">
                     {activeResourceModal.titulo}
                   </h3>
-                  <p className="text-xs text-[#8F9B8D] mt-0.5">
+                  <p className="text-[11px] sm:text-xs text-[#8F9B8D] mt-0.5 truncate">
                     {activeResourceModal.subtitulo || `${activeResourceModal.items?.length || 0} entregables secuenciales`}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setActiveResourceModal(null)}
-                className="p-1.5 rounded-lg text-[#8F9B8D] hover:text-[#E2E8F0] hover:bg-[#232f23] transition cursor-pointer"
+                className="p-1.5 rounded-lg text-[#8F9B8D] hover:text-[#E2E8F0] hover:bg-[#232f23] transition cursor-pointer shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Body / Lista de Módulos */}
-            <div className="p-6 overflow-y-auto space-y-3 flex-1">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-3 flex-1">
               <div className="text-xs text-[#8F9B8D] leading-relaxed mb-4 space-y-2.5" dangerouslySetInnerHTML={{ __html: formatProductDescription(activeResourceModal.descripcion) }} />
               
               <h4 className="text-xs font-semibold uppercase tracking-wider text-[#8EB486] mb-3">
@@ -828,24 +828,24 @@ export default function App() {
                 {(activeResourceModal.items || []).map((item, idx) => (
                   <div
                     key={item.id || idx}
-                    className="p-3.5 bg-[#0e130e] border border-[#232f23] hover:border-[#8EB486]/40 rounded-xl flex items-center justify-between gap-3 transition group"
+                    className="p-3 sm:p-3.5 bg-[#0e130e] border border-[#232f23] hover:border-[#8EB486]/40 rounded-xl flex items-center justify-between gap-2 sm:gap-3 transition group"
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <span className="w-7 h-7 rounded-lg bg-[#1a231a] text-[#8EB486] text-xs font-mono font-bold flex items-center justify-center shrink-0 border border-[#8EB486]/20">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                      <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#1a231a] text-[#8EB486] text-[11px] sm:text-xs font-mono font-bold flex items-center justify-center shrink-0 border border-[#8EB486]/20">
                         {idx + 1}
                       </span>
-                      <div className="min-w-0">
-                        <h5 className="text-sm font-medium text-[#E2E8F0] truncate group-hover:text-[#8EB486] transition">
+                      <div className="min-w-0 flex-1">
+                        <h5 className="text-xs sm:text-sm font-medium text-[#E2E8F0] truncate group-hover:text-[#8EB486] transition">
                           {item.titulo || `Módulo ${idx + 1}`}
                         </h5>
-                        <span className="text-[11px] text-[#8F9B8D] font-mono flex items-center gap-1.5 mt-0.5">
+                        <span className="text-[10px] sm:text-[11px] text-[#8F9B8D] font-mono flex items-center gap-1 mt-0.5">
                           {item.tipo === 'pdf' ? (
                             <>
-                              <FileText className="w-3 h-3 text-amber-400" /> Documento PDF
+                              <FileText className="w-3 h-3 text-amber-400 shrink-0" /> <span className="truncate">PDF</span>
                             </>
                           ) : (
                             <>
-                              <Headphones className="w-3 h-3 text-[#8EB486]" /> Audioguía MP3
+                              <Headphones className="w-3 h-3 text-[#8EB486] shrink-0" /> <span className="truncate">Audio MP3</span>
                             </>
                           )}
                         </span>
@@ -855,9 +855,9 @@ export default function App() {
                     <button
                       onClick={() => handleOpenResource(activeResourceModal, item)}
                       disabled={loadingResource}
-                      className="py-1.5 px-3.5 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shrink-0 shadow-md disabled:opacity-50 cursor-pointer"
+                      className="py-1 px-2.5 sm:py-1.5 sm:px-3.5 bg-[#8EB486] hover:bg-[#7CA074] text-[#0A0D0A] font-semibold text-xs rounded-lg transition flex items-center gap-1 shrink-0 shadow-md disabled:opacity-50 cursor-pointer whitespace-nowrap"
                     >
-                      {item.tipo === 'pdf' ? <FileText className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+                      {item.tipo === 'pdf' ? <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />}
                       <span>{item.tipo === 'pdf' ? 'Leer PDF' : 'Reproducir'}</span>
                     </button>
                   </div>
