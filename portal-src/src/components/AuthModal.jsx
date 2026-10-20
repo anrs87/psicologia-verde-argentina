@@ -4,7 +4,8 @@ import {
   googleProvider, 
   signInWithPopup, 
   signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword 
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail
 } from '../firebase';
 import { Mail, Lock, User, AlertCircle, ArrowRight, X } from 'lucide-react';
 
@@ -16,15 +17,48 @@ export default function AuthModal({ onClose }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [resetMessage, setResetMessage] = useState('');
+
   const handleGoogleSignIn = async () => {
     setError('');
+    setResetMessage('');
     setLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
       if (onClose) onClose();
     } catch (err) {
       console.error(err);
-      setError('Error al conectar con Google. Por favor, intenta de nuevo.');
+      if (err.code === 'auth/unauthorized-domain') {
+        setError('El dominio psicologovegano.com aún no está en "Dominios autorizados" de Firebase Console. Iniciá sesión con email y contraseña mientras se autoriza.');
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        setError('Ventana de acceso con Google cerrada antes de completar el inicio de sesión.');
+      } else if (err.code === 'auth/popup-blocked') {
+        setError('Tu navegador bloqueó la ventana emergente de Google. Por favor permítela.');
+      } else {
+        setError(`Error con Google (${err.code || 'falló autenticación'}). Usá correo y contraseña.`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      setError('Escribí tu correo arriba y hacé clic en "¿Olvidaste tu contraseña?" para enviarte el enlace.');
+      return;
+    }
+    setError('');
+    setLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetMessage(`Te enviamos un enlace de recuperación a ${email}. Revisá tu casilla o correo no deseado.`);
+    } catch (err) {
+      console.error(err);
+      if (err.code === 'auth/user-not-found') {
+        setError('No existe ninguna cuenta registrada con este correo.');
+      } else {
+        setError('No se pudo enviar el email de restablecimiento: ' + err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -90,9 +124,16 @@ export default function AuthModal({ onClose }) {
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-950/40 border border-red-500/30 rounded-lg flex items-center gap-2 text-red-300 text-xs">
+          <div className="mb-4 p-3 bg-red-950/40 border border-red-500/30 rounded-lg flex items-center gap-2 text-red-300 text-xs leading-relaxed">
             <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
             <span>{error}</span>
+          </div>
+        )}
+
+        {resetMessage && (
+          <div className="mb-4 p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-lg flex items-center gap-2 text-emerald-300 text-xs leading-relaxed">
+            <span className="text-base">✉️</span>
+            <span>{resetMessage}</span>
           </div>
         )}
 
@@ -149,9 +190,20 @@ export default function AuthModal({ onClose }) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#8F9B8D] mb-1.5">
-              Contraseña
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-medium text-[#8F9B8D]">
+                Contraseña
+              </label>
+              {!isRegister && (
+                <button
+                  type="button"
+                  onClick={handlePasswordReset}
+                  className="text-[11px] text-[#8EB486] hover:underline cursor-pointer"
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+              )}
+            </div>
             <div className="relative">
               <Lock className="w-4 h-4 text-[#8F9B8D] absolute left-3 top-3.5" />
               <input
