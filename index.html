@@ -1859,6 +1859,101 @@
               }
               cardDesc.innerHTML = `${excerpt} <button type="button" onclick="openProductModal('${key}')" class="text-brand-accent hover:underline text-xs font-semibold inline-flex items-center gap-0.5 cursor-pointer ml-1">Leer más →</button>`;
             }
+          } else if (p.estado === 'publicado' && p.activo_en_vidriera !== false) {
+            // Sincronizar producto adicional creado desde el Panel Admin
+            const cover = p.url_portada || p.portada_url || '/assets/logo_v2.webp';
+            const priceArs = `${Number(p.precio || 0).toLocaleString('es-AR')} ARS`;
+            const priceUsd = `/ ${p.precio_usd || Math.max(5, Math.round(Number(p.precio || 0)/1000))} USD (Exterior)`;
+            
+            const audios = Array.isArray(p.items) ? p.items.filter(it => it.tipo === 'audio').map((it, idx) => ({
+              num: String(idx + 1).padStart(2, '0'),
+              title: it.titulo || `Audio ${idx + 1}`,
+              desc: it.descripcion || 'Pista clínica guiada'
+            })) : [];
+            const pdfs = Array.isArray(p.items) ? p.items.filter(it => it.tipo === 'pdf').map((it, idx) => ({
+              num: String(idx + 1).padStart(2, '0'),
+              title: it.titulo || `Cuadernillo ${idx + 1}`,
+              desc: it.descripcion || 'Documento y dinámica clínica'
+            })) : [];
+
+            productsData[docId] = {
+              id: docId,
+              badge: p.tipo === 'pdf' ? 'CAPÍTULO / DOCUMENTO CLÍNICO' : (p.tipo === 'bundle' ? 'PACK INTEGRAL' : 'AUDIOGUÍA CLÍNICA'),
+              category: p.subtitulo || 'RECURSO TERAPÉUTICO',
+              title: p.titulo,
+              desc: p.descripcion || '',
+              price: priceArs,
+              priceUsd: priceUsd,
+              coverImg: cover,
+              mockupImg: cover,
+              ctaUrl: `/portal/?producto=${encodeURIComponent(docId)}`,
+              audios: audios,
+              pdfs: pdfs
+            };
+
+            const feedContainer = document.getElementById('recursos-feed');
+            if (feedContainer) {
+              let dynCard = document.getElementById(`card-${docId}`);
+              let cleanDesc = (p.descripcion || '').trim();
+              const paras = cleanDesc.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+              let excerpt = paras[0] || cleanDesc;
+              if (excerpt.length > 170) excerpt = excerpt.substring(0, 167) + '...';
+
+              if (!dynCard) {
+                dynCard = document.createElement('article');
+                dynCard.id = `card-${docId}`;
+                dynCard.className = 'w-[80vw] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center sm:snap-start bg-[#0D130E] border border-brand-border/60 hover:border-brand-accent/70 rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 group shadow-xl';
+                dynCard.innerHTML = `
+                  <div>
+                    <div class="block mb-4 h-60 sm:h-64 w-full rounded-xl overflow-hidden border border-brand-border/60 bg-gradient-to-b from-[#141d15] to-[#0a0f0b] p-3 flex items-center justify-center shadow-inner relative group/cover cursor-pointer" onclick="openProductModal('${docId}')">
+                      <img id="card-${docId}-img" src="${cover}" alt="${p.titulo}" class="max-h-full max-w-full object-contain rounded-md shadow-2xl drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] group-hover/cover:scale-105 transition-transform duration-500" loading="lazy">
+                      <span class="absolute top-2.5 right-2.5 bg-black/85 backdrop-blur-md border border-brand-accent/60 text-brand-accent text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-lg">
+                        ${p.tipo === 'pdf' ? 'Capítulo / PDF' : (p.tipo === 'bundle' ? 'Pack' : 'Audioguía')}
+                      </span>
+                    </div>
+                    <header class="mb-2">
+                      <span class="text-[10px] font-mono text-brand-accent uppercase tracking-wider block mb-1">${p.subtitulo || 'Ecosistema Terapéutico'}</span>
+                      <h3 id="card-${docId}-title" class="font-serif text-lg text-white font-bold tracking-tight leading-snug group-hover:text-brand-accent transition-colors">
+                        ${p.titulo}
+                      </h3>
+                    </header>
+                    <p id="card-${docId}-desc" class="text-zinc-300 text-sm leading-relaxed mb-4">
+                      ${excerpt} ${excerpt ? `<button type="button" onclick="openProductModal('${docId}')" class="text-brand-accent hover:underline text-xs font-semibold inline-flex items-center gap-0.5 cursor-pointer ml-1">Leer más →</button>` : ''}
+                    </p>
+                  </div>
+                  <div class="pt-3 border-t border-brand-border/40 flex items-center justify-between gap-3">
+                    <div>
+                      <div id="card-${docId}-price" class="text-white font-serif font-bold text-base">${priceArs}</div>
+                      <div id="card-${docId}-price-usd" class="text-[10px] text-sky-400 font-mono">${priceUsd}</div>
+                    </div>
+                    <button onclick="openProductModal('${docId}')" class="py-2 px-3.5 bg-brand-accent/15 hover:bg-brand-accent text-brand-accent hover:text-brand-black border border-brand-accent/35 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer">
+                      <span>Conocer más</span>
+                      <span>→</span>
+                    </button>
+                  </div>
+                `;
+
+                // Insertar justo antes del combo de lanzamiento si existe, o al final
+                const comboCard = document.getElementById('card-combo-title')?.closest('article');
+                if (comboCard) {
+                  feedContainer.insertBefore(dynCard, comboCard);
+                } else {
+                  feedContainer.appendChild(dynCard);
+                }
+              } else {
+                // Actualizar si ya estaba montado
+                const imgEl = document.getElementById(`card-${docId}-img`);
+                const titleEl = document.getElementById(`card-${docId}-title`);
+                const descEl = document.getElementById(`card-${docId}-desc`);
+                const priceEl = document.getElementById(`card-${docId}-price`);
+                const priceUsdEl = document.getElementById(`card-${docId}-price-usd`);
+                if (imgEl && cover) imgEl.src = cover;
+                if (titleEl) titleEl.innerText = p.titulo;
+                if (descEl) descEl.innerHTML = `${excerpt} ${excerpt ? `<button type="button" onclick="openProductModal('${docId}')" class="text-brand-accent hover:underline text-xs font-semibold inline-flex items-center gap-0.5 cursor-pointer ml-1">Leer más →</button>` : ''}`;
+                if (priceEl) priceEl.innerText = priceArs;
+                if (priceUsdEl) priceUsdEl.innerText = priceUsd;
+              }
+            }
           }
         });
 

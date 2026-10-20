@@ -50,7 +50,16 @@ export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('explorar');
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [products, setProducts] = useState(DEFAULT_PRODUCTS);
+  const [products, setProducts] = useState(() => {
+    try {
+      const cached = localStorage.getItem('portal_catalog_products');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_PRODUCTS;
+  });
   const [purchasedIds, setPurchasedIds] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
 
@@ -175,12 +184,12 @@ export default function App() {
 
     if (targetProduct) {
       setActiveTab('explorar');
-      const found = DEFAULT_PRODUCTS.find((p) => p.id === targetProduct);
+      const found = products.find((p) => p.id === targetProduct) || DEFAULT_PRODUCTS.find((p) => p.id === targetProduct);
       if (found) {
         setActiveResourceModal(found);
       }
     }
-  }, [user]);
+  }, [user, products]);
 
   // Cargar catálogo de productos publicados
   useEffect(() => {
@@ -198,7 +207,11 @@ export default function App() {
           });
           // Incorporar recursos y productos adicionales creados desde el admin
           const dynamicProds = list.filter((p) => !DEFAULT_PRODUCTS.some((def) => def.id === p.id || (p.titulo && p.titulo.toLowerCase().trim() === def.titulo.toLowerCase().trim())));
-          setProducts([...merged, ...dynamicProds]);
+          const fullCatalog = [...merged, ...dynamicProds];
+          setProducts(fullCatalog);
+          try {
+            localStorage.setItem('portal_catalog_products', JSON.stringify(fullCatalog));
+          } catch (e) {}
         } else {
           setProducts(DEFAULT_PRODUCTS);
         }
@@ -709,7 +722,7 @@ export default function App() {
                               ${Number(prod.precio || 0).toLocaleString('es-AR')} ARS
                             </span>
                             <span className="text-[10px] font-mono text-sky-400">
-                              / ${prod.id === 'mapa_de_transiciones' ? 25 : (prod.id === 'autoestima_verde' ? 18 : 5)} USD
+                              / ${prod.precio_usd || (prod.id === 'mapa_de_transiciones' ? 25 : (prod.id === 'autoestima_verde' ? 18 : 5))} USD
                             </span>
                           </div>
                           <h3 className="font-serif text-lg font-medium text-[#E2E8F0] mb-2 leading-snug">
@@ -858,7 +871,7 @@ export default function App() {
                       ${Number(activeResourceModal.precio || 0).toLocaleString('es-AR')} ARS
                     </div>
                     <div className="text-[11px] text-sky-400 font-mono">
-                      Exterior: ${activeResourceModal.id === 'mapa_de_transiciones' ? 25 : (activeResourceModal.id === 'autoestima_verde' ? 18 : 5)} USD (PayPal)
+                      Exterior: ${activeResourceModal.precio_usd || (activeResourceModal.id === 'mapa_de_transiciones' ? 25 : (activeResourceModal.id === 'autoestima_verde' ? 18 : 5))} USD (PayPal)
                     </div>
                   </div>
                   <button
