@@ -3351,13 +3351,8 @@
       const progressEl = document.getElementById('prod-upload-progress');
       const btnSave = document.getElementById('btn-save-product');
 
-      if (!title || !price || isNaN(price)) {
+      if (!title || price === undefined || isNaN(price)) {
         showToast('Por favor completa el título y un precio válido.');
-        return;
-      }
-
-      if (productModules.length === 0) {
-        showToast('Debes agregar al menos un módulo o entregable (Audio o PDF).');
         return;
       }
 
@@ -3692,34 +3687,25 @@
       const countEl = document.getElementById('products-count');
       if (!container) return;
 
-      container.innerHTML = '<div class="text-center py-6 text-zinc-500 text-xs font-mono">⏳ Limpiando duplicados y ordenando los 4 productos oficiales...</div>';
+      container.innerHTML = '<div class="text-center py-6 text-zinc-500 text-xs font-mono">⏳ Cargando recursos del catálogo...</div>';
 
       try {
         const snap = await getDocs(collection(db, 'products'));
 
-        // 1. Purgar de Firestore cualquier documento legado o duplicado viejo
-        for (const docSnap of snap.docs) {
-          if (!CANONICAL_PRODUCT_IDS.includes(docSnap.id)) {
-            console.log('Purgando producto legado/duplicado:', docSnap.id, docSnap.data()?.titulo);
-            try {
-              await deleteDoc(doc(db, 'products', docSnap.id));
-            } catch (errDel) {
-              console.warn('No se pudo borrar producto legado:', docSnap.id, errDel);
-            }
-          }
-        }
-
-        // 2. Traer el snapshot limpio de los 4 productos canónicos
-        const cleanSnap = await getDocs(collection(db, 'products'));
         const existingMap = new Map();
-        cleanSnap.docs.forEach(d => {
+        const customProducts = [];
+
+        snap.docs.forEach(d => {
+          const data = { id: d.id, ...d.data() };
           if (CANONICAL_PRODUCT_IDS.includes(d.id)) {
-            existingMap.set(d.id, { id: d.id, ...d.data() });
+            existingMap.set(d.id, data);
+          } else {
+            customProducts.push(data);
           }
         });
 
-        // 3. Garantizar que los 4 productos oficiales existan y tengan la estética y portada nueva
-        const finalProducts = [];
+        // Garantizar que los 4 productos oficiales canónicos existan en Firestore
+        const canonicalProducts = [];
         for (const defProd of DEFAULT_CATALOG_PRODUCTS) {
           const docRef = doc(db, 'products', defProd.id);
           let current = existingMap.get(defProd.id);
@@ -3737,7 +3723,6 @@
               current = { ...defProd };
             }
           } else {
-            // Si ya existe pero tenía la portada vieja o desactualizada, actualizarla a la nueva estética
             const needsCoverUpdate = !current.url_portada || current.url_portada !== defProd.url_portada;
             if (needsCoverUpdate) {
               try {
@@ -3748,17 +3733,25 @@
               }
             }
           }
-          finalProducts.push(current);
+          canonicalProducts.push(current);
         }
 
-        // 4. Fijar orden de visualización exacto: Trilogía, Mapa, Autoestima, Libro
-        finalProducts.sort((a, b) => {
+        // Orden de los 4 canónicos principales
+        canonicalProducts.sort((a, b) => {
           const idxA = CANONICAL_PRODUCT_IDS.indexOf(a.id);
           const idxB = CANONICAL_PRODUCT_IDS.indexOf(b.id);
           return idxA - idxB;
         });
 
-        productsList = finalProducts;
+        // Ordenar los productos personalizados creados por el admin por fecha más reciente
+        customProducts.sort((a, b) => {
+          const timeA = a.creadoEn?.toMillis ? a.creadoEn.toMillis() : (a.actualizadoEn?.toMillis ? a.actualizadoEn.toMillis() : (a.creadoEn ? new Date(a.creadoEn).getTime() : 0));
+          const timeB = b.creadoEn?.toMillis ? b.creadoEn.toMillis() : (b.actualizadoEn?.toMillis ? b.actualizadoEn.toMillis() : (b.creadoEn ? new Date(b.creadoEn).getTime() : 0));
+          return timeB - timeA;
+        });
+
+        // Lista completa unificada
+        productsList = [...canonicalProducts, ...customProducts];
 
         countEl.innerText = `${productsList.length} recursos`;
 

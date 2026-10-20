@@ -196,7 +196,9 @@ export default function App() {
             const found = list.find((p) => p.id === def.id || (p.titulo && p.titulo.toLowerCase().trim() === def.titulo.toLowerCase().trim()));
             return found ? { ...def, ...found, url_portada: def.url_portada, items: (def.items || found.items) } : def;
           });
-          setProducts(merged);
+          // Incorporar recursos y productos adicionales creados desde el admin
+          const dynamicProds = list.filter((p) => !DEFAULT_PRODUCTS.some((def) => def.id === p.id || (p.titulo && p.titulo.toLowerCase().trim() === def.titulo.toLowerCase().trim())));
+          setProducts([...merged, ...dynamicProds]);
         } else {
           setProducts(DEFAULT_PRODUCTS);
         }
