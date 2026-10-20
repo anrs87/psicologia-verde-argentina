@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Psicólogo Vegano | Lic. Mauro García</title>
   <meta name="description" content="Atención psicológica especializada en personas veganas en Argentina. Ansiedad, culpa, aislamiento y sufrimiento en un mundo especista. Un espacio de terapia empático y seguro.">
-  <link rel="canonical" href="https://psicologiaveganaarg.web.app/">
+  <link rel="canonical" href="https://psicologovegano.com/">
   
   <!-- Favicon -->
   <link rel="icon" type="image/webp" href="/assets/logo_v2.webp">
@@ -21,17 +21,18 @@
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://psicologiaveganaarg.web.app/">
+  <meta property="og:url" content="https://psicologovegano.com/">
   <meta property="og:title" content="Psicólogo Vegano | Lic. Mauro García">
   <meta property="og:description" content="Atención psicológica especializada en personas veganas en Argentina. Ansiedad, culpa, aislamiento y sufrimiento en un mundo especista. Un espacio de terapia empático y seguro.">
-  <meta property="og:image" content="https://psicologiaveganaarg.web.app/assets/logo_v2.webp">
+  <meta property="og:image" content="https://psicologovegano.com/assets/logo_v2.webp">
+  <meta property="og:site_name" content="Psicólogo Vegano">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://psicologiaveganaarg.web.app/">
+  <meta property="twitter:url" content="https://psicologovegano.com/">
   <meta property="twitter:title" content="Psicólogo Vegano | Lic. Mauro García">
   <meta property="twitter:description" content="Atención psicológica especializada en personas veganas en Argentina. Ansiedad, culpa, aislamiento y sufrimiento en un mundo especista. Un espacio de terapia empático y seguro.">
-  <meta property="twitter:image" content="https://psicologiaveganaarg.web.app/assets/logo_v2.webp">
+  <meta property="twitter:image" content="https://psicologovegano.com/assets/logo_v2.webp">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -103,40 +104,95 @@
     }
   </script>
 
-  <!-- Datos estructurados de Google (JSON-LD) para SEO local y profesional -->
+  <!-- Datos estructurados de Google (JSON-LD) para SEO local, profesional y de productos -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    "name": "Psicólogo Vegano | Lic. Mauro García Rodriguez",
-    "alternateName": "Psicólogo Vegano Argentina",
-    "image": "https://psicologiaveganaarg.web.app/assets/logo.jpg",
-    "@id": "https://psicologiaveganaarg.web.app/#professional-profile",
-    "url": "https://psicologiaveganaarg.web.app/",
-    "telephone": "+5491133791108",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "AR",
-      "addressRegion": "Entre Ríos"
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ],
-      "opens": "09:00",
-      "closes": "20:00"
-    },
-    "sameAs": [
-      "https://www.instagram.com/maurogarcia.psicoverde/"
-    ],
-    "knowsAbout": ["Terapia Psicológica", "Veganismo", "Fatiga por Compasión", "Acompañamiento en el Duelo", "Liberación Animal", "Ansiedad Social", "Desilusión Relacional"],
-    "description": "Atención psicológica profesional y especializada para personas veganas en Argentina. Espacio clínico seguro para abordar la culpa, la ansiedad social, la desilusión relacional y el malestar derivado del especismo."
+    "@graph": [
+      {
+        "@type": ["Psychologist", "MedicalBusiness"],
+        "@id": "https://psicologovegano.com/#lic-mauro-garcia",
+        "name": "Psicólogo Vegano | Lic. Mauro García Rodriguez",
+        "alternateName": "Psicólogo Vegano Argentina",
+        "image": "https://psicologovegano.com/assets/logo_v2.webp",
+        "url": "https://psicologovegano.com/",
+        "telephone": "+5491133791108",
+        "priceRange": "$",
+        "medicalSpecialty": "Psychotherapy, HealthPsychology",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "AR",
+          "addressRegion": "Entre Ríos"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "20:00"
+        },
+        "sameAs": [
+          "https://www.instagram.com/maurogarcia.psicoverde/"
+        ],
+        "knowsAbout": ["Terapia Psicológica", "Veganismo", "Fatiga por Compasión", "Acompañamiento en el Duelo", "Liberación Animal", "Ansiedad Social", "Desilusión Relacional"],
+        "description": "Atención psicológica profesional y especializada para personas veganas en Argentina. Espacio clínico seguro para abordar la culpa, la ansiedad social, la desilusión relacional y el malestar derivado del especismo."
+      },
+      {
+        "@type": "Product",
+        "@id": "https://psicologovegano.com/portal/#pack_integral_vegano",
+        "name": "Pack Integral: Trilogía Vegana",
+        "description": "Libro Cuerpos no-humanos + Audioguía Mapa de Transiciones + Audioguía Autoestima Verde (21 piezas clínicas completas).",
+        "image": "https://psicologovegano.com/assets/portada_combo_trilogia.jpg",
+        "offers": {
+          "@type": "Offer",
+          "price": "35000",
+          "priceCurrency": "ARS",
+          "availability": "https://schema.org/InStock",
+          "url": "https://psicologovegano.com/portal/?producto=pack_integral_vegano"
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://psicologovegano.com/portal/#mapa_de_transiciones",
+        "name": "Audioguía: Mapa de Transiciones Vitales",
+        "description": "9 Audios Guiados + 6 Cuadernillos Clínicos de Auto-Revisión en PDF para navegar la transición al veganismo sin culpas.",
+        "image": "https://psicologovegano.com/assets/portada_mapa_focused.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "25000",
+          "priceCurrency": "ARS",
+          "availability": "https://schema.org/InStock",
+          "url": "https://psicologovegano.com/portal/?producto=mapa_de_transiciones"
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://psicologovegano.com/portal/#autoestima_verde",
+        "name": "Audioguía: Autoestima Verde",
+        "description": "4 Microterapias sonoras guiadas + Cuadernillo Clínico de Autoanálisis 'El YO que habito'.",
+        "image": "https://psicologovegano.com/assets/portada_autoestima_focused.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "18000",
+          "priceCurrency": "ARS",
+          "availability": "https://schema.org/InStock",
+          "url": "https://psicologovegano.com/portal/?producto=autoestima_verde"
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://psicologovegano.com/portal/#libro_cuerpos_no_humanos",
+        "name": "Obra Editorial: Cuerpos no-humanos",
+        "description": "Capítulo completo del Lic. Mauro García Rodríguez en Cuadernos Tópica Nº 29. Abordaje psicoanalítico sobre el narcisismo residual y la empatía ética.",
+        "image": "https://psicologovegano.com/assets/portada_cuerpos_extraida.jpeg",
+        "offers": {
+          "@type": "Offer",
+          "price": "5000",
+          "priceCurrency": "ARS",
+          "availability": "https://schema.org/InStock",
+          "url": "https://psicologovegano.com/portal/?producto=libro_cuerpos_no_humanos"
+        }
+      }
+    ]
   }
   </script>
 

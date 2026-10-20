@@ -16,7 +16,8 @@
       "*.bak*",
       "*.pdf",
       "*.md",
-      "dev-server.js"
+      "dev-server.js",
+      "sitemap.xml"
     ],
     "headers": [
       {

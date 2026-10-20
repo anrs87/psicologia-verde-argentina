@@ -351,7 +351,45 @@
           canonicalLink.setAttribute('rel', 'canonical');
           document.head.appendChild(canonicalLink);
         }
-        canonicalLink.setAttribute('href', `${window.location.origin}/articulos/${getSlug(foundArt.titulo)}`);
+        const articleSlug = getSlug(foundArt.titulo);
+        canonicalLink.setAttribute('href', `https://psicologovegano.com/articulos/${articleSlug}`);
+
+        // Datos estructurados Schema.org BlogPosting dinámicos
+        let schemaScript = document.getElementById('schema-article-structured');
+        if (!schemaScript) {
+          schemaScript = document.createElement('script');
+          schemaScript.id = 'schema-article-structured';
+          schemaScript.type = 'application/ld+json';
+          document.head.appendChild(schemaScript);
+        }
+        const plainDesc = foundArt.testimonio || (foundArt.contenido ? foundArt.contenido.replace(/<[^>]*>/g, '').substring(0, 160) + '...' : '');
+        const coverImg = (foundArt.imagenPortada && foundArt.imagenPortada.startsWith('http')) ? foundArt.imagenPortada : 'https://psicologovegano.com/assets/logo_v2.webp';
+        schemaScript.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": foundArt.titulo,
+          "description": plainDesc,
+          "image": coverImg,
+          "datePublished": foundArt.fecha || new Date().toISOString().split('T')[0],
+          "author": {
+            "@type": "Person",
+            "name": "Lic. Mauro García Rodríguez",
+            "jobTitle": "Psicólogo Clínico",
+            "url": "https://psicologovegano.com/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Psicólogo Vegano",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://psicologovegano.com/assets/logo_v2.webp"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://psicologovegano.com/articulos/${articleSlug}`
+          }
+        });
 
         document.getElementById('article-date').innerText = formattedDate;
         document.getElementById('article-title').innerText = foundArt.titulo;

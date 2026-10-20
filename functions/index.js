@@ -62,7 +62,9 @@ app.get('/articulos/:slug', async (req, res) => {
             id: doc.id,
             titulo: data.titulo,
             testimonio: data.testimonio || '',
-            contenido: data.contenido || ''
+            contenido: data.contenido || '',
+            imagenPortada: data.imagenPortada || data.portada_url || '',
+            fecha: data.fecha || null
           };
         }
       });
@@ -75,31 +77,67 @@ app.get('/articulos/:slug', async (req, res) => {
 
         const title = matchedArticle.titulo;
         const description = matchedArticle.testimonio || cleanContent;
+        
+        // Portada real del artículo si es URL pública HTTP/HTTPS; fallback al logo HD oficial
+        const hasValidCover = matchedArticle.imagenPortada && matchedArticle.imagenPortada.startsWith('http');
+        const coverImage = hasValidCover ? matchedArticle.imagenPortada : 'https://psicologovegano.com/assets/logo_v2.webp';
 
-        // Responder con metaetiquetas de Open Graph para los bots de redes sociales
+        const structuredData = {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": title,
+          "description": description,
+          "image": coverImage,
+          "author": {
+            "@type": "Person",
+            "name": "Lic. Mauro García Rodríguez",
+            "jobTitle": "Psicólogo Clínico",
+            "url": "https://psicologovegano.com/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Psicólogo Vegano",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://psicologovegano.com/assets/logo_v2.webp"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://psicologovegano.com/articulos/${slug}`
+          }
+        };
+
+        // Responder con metaetiquetas de Open Graph y Schema.org para Google y redes
         return res.status(200).send(`<!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <title>${title} | Psicólogo Vegano</title>
   <meta name="description" content="${description}">
-  <link rel="canonical" href="https://psicologiaveganaarg.web.app/articulos/${slug}">
+  <link rel="canonical" href="https://psicologovegano.com/articulos/${slug}">
   
   <!-- Open Graph -->
   <meta property="og:title" content="${title} | Psicólogo Vegano">
   <meta property="og:description" content="${description}">
-  <meta property="og:image" content="https://psicologiaveganaarg.web.app/assets/logo.webp">
-  <meta property="og:url" content="https://psicologiaveganaarg.web.app/articulos/${slug}">
+  <meta property="og:image" content="${coverImage}">
+  <meta property="og:url" content="https://psicologovegano.com/articulos/${slug}">
   <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Psicólogo Vegano">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:title" content="${title} | Psicólogo Vegano">
   <meta property="twitter:description" content="${description}">
-  <meta property="twitter:image" content="https://psicologiaveganaarg.web.app/assets/logo.webp">
+  <meta property="twitter:image" content="${coverImage}">
+
+  <!-- Schema.org Structured Data (Google Rich Snippets) -->
+  <script type="application/ld+json">
+  ${JSON.stringify(structuredData, null, 2)}
+  </script>
 
   <!-- Redirección de respaldo por si el bot tiene JS habilitado -->
-  <meta http-equiv="refresh" content="0; url=https://psicologiaveganaarg.web.app/articulo.html?slug=${slug}">
+  <meta http-equiv="refresh" content="0; url=https://psicologovegano.com/articulo.html?slug=${slug}">
 </head>
 <body>
   <p>Redirigiendo a Psicólogo Vegano...</p>
@@ -124,15 +162,23 @@ exports.sitemap = functions.https.onRequest(async (req, res) => {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
     
-    // Home
+    // 1. Home / Landing Principal
     xml += `  <url>\n`;
-    xml += `    <loc>https://psicologiaveganaarg.web.app/</loc>\n`;
+    xml += `    <loc>https://psicologovegano.com/</loc>\n`;
     xml += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>1.0</priority>\n`;
     xml += `  </url>\n`;
+
+    // 2. Portal de Pacientes / Tienda de Audioguías
+    xml += `  <url>\n`;
+    xml += `    <loc>https://psicologovegano.com/portal/</loc>\n`;
+    xml += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
+    xml += `    <changefreq>weekly</changefreq>\n`;
+    xml += `    <priority>0.9</priority>\n`;
+    xml += `  </url>\n`;
     
-    // Artículos
+    // 3. Artículos y Reflexiones Clínicas
     snapshot.forEach(doc => {
       const data = doc.data();
       if (data.titulo) {
@@ -148,7 +194,7 @@ exports.sitemap = functions.https.onRequest(async (req, res) => {
         }
         
         xml += `  <url>\n`;
-        xml += `    <loc>https://psicologiaveganaarg.web.app/articulos/${slug}</loc>\n`;
+        xml += `    <loc>https://psicologovegano.com/articulos/${slug}</loc>\n`;
         xml += `    <lastmod>${dateStr}</lastmod>\n`;
         xml += `    <changefreq>monthly</changefreq>\n`;
         xml += `    <priority>0.8</priority>\n`;
@@ -215,7 +261,7 @@ function isUserAdmin(user) {
 async function sendPurchaseConfirmationEmail({ toEmail, patientName, productTitle, productId, paymentId }) {
   if (!toEmail) return { success: false, reason: 'Email no provisto' };
 
-  const portalUrl = 'https://psicologiaveganaarg.web.app/portal/';
+  const portalUrl = 'https://psicologovegano.com/portal/';
   const directProductUrl = `${portalUrl}?producto=${encodeURIComponent(productId)}`;
 
   const subject = `🌿 Acceso habilitado: ${productTitle} | Psicología Verde`;
@@ -424,7 +470,7 @@ exports.createCheckoutPreference = functions.https.onRequest((req, res) => {
       }
 
       const preferenceClient = new Preference(await getMpClient());
-      const hostUrl = req.headers.origin || 'https://psicologiaveganaarg.web.app';
+      const hostUrl = req.headers.origin || 'https://psicologovegano.com';
 
       const preference = await preferenceClient.create({
         body: {
@@ -1089,7 +1135,7 @@ exports.createPaypalOrder = functions.https.onRequest((req, res) => {
       const token = await getPaypalAccessToken();
       const { env } = await getPaypalConfig();
       const baseUrl = env === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
-      const hostUrl = req.headers.origin || 'https://psicologiaveganaarg.web.app';
+      const hostUrl = req.headers.origin || 'https://psicologovegano.com';
 
       const orderPayload = {
         intent: 'CAPTURE',
