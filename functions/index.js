@@ -30,7 +30,10 @@ const botUserAgents = [
   'googlebot',
   'bingbot',
   'yandex',
-  'baiduspider'
+  'baiduspider',
+  'linkedinbot',
+  'pinterest',
+  'applebot'
 ];
 
 function isBot(userAgent) {
@@ -45,7 +48,68 @@ function getSlug(title) {
     .replace(/-+/g, '-');
 }
 
-app.get('/articulos/:slug', async (req, res) => {
+function extractCleanText(html, maxLength = 160) {
+  if (!html) return '';
+  let text = html
+    .replace(/<\/(p|div|h[1-6]|li|blockquote)>/gi, '. ')
+    .replace(/<(br|hr)\s*\/?>/gi, '. ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/\s*\.\s*\./g, '.')
+    .replace(/\s*([,.;:!?])\s*/g, '$1 ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  text = text.replace(/^[\s,.;:-]+/, '').trim();
+
+  if (text.length <= maxLength) return text;
+  const truncated = text.substring(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 60 ? truncated.substring(0, lastSpace) : truncated).trim() + '...';
+}
+
+// Endpoint dedicado para servir la portada del artículo en formato binario real para WhatsApp y redes
+app.get(['/articulos/:slug/portada.jpg', '/articulos/:slug/portada'], async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const snapshot = await db.collection('articulos').orderBy('fecha', 'desc').get();
+    let matchedArticle = null;
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (getSlug(data.titulo) === slug) {
+        matchedArticle = { id: doc.id, ...data };
+      }
+    });
+
+    if (matchedArticle) {
+      const cover = matchedArticle.imagenPortada || matchedArticle.portada_url || matchedArticle.portada || '';
+      if (cover.startsWith('data:image/')) {
+        const matches = cover.match(/^data:(image\/[a-zA-Z0-9\+\-]+);base64,(.+)$/);
+        if (matches) {
+          const mimeType = matches[1];
+          const imgBuffer = Buffer.from(matches[2], 'base64');
+          res.setHeader('Content-Type', mimeType);
+          res.setHeader('Content-Length', imgBuffer.length);
+          res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+          return res.status(200).send(imgBuffer);
+        }
+      } else if (cover.startsWith('http://') || cover.startsWith('https://')) {
+        return res.redirect(302, cover);
+      }
+    }
+  } catch (err) {
+    console.error('Error sirviendo portada de artículo:', err);
+  }
+  return res.redirect(302, 'https://psicologovegano.com/assets/logo_v2.webp');
+});
+
+app.get(['/articulos/:slug', '/articulos/:slug/'], async (req, res) => {
   const slug = req.params.slug;
   const userAgent = req.headers['user-agent'];
 
@@ -70,17 +134,13 @@ app.get('/articulos/:slug', async (req, res) => {
       });
 
       if (matchedArticle) {
-        // Extraer texto plano para la descripción
-        const cleanContent = matchedArticle.contenido
-          .replace(/<[^>]*>/g, '') // Quitar etiquetas HTML
-          .substring(0, 160) + '...';
-
+        // Extraer texto plano formateado profesionalmente para la descripción
+        const cleanContent = extractCleanText(matchedArticle.contenido, 160);
         const title = matchedArticle.titulo;
-        const description = matchedArticle.testimonio || cleanContent;
+        const description = (matchedArticle.testimonio ? matchedArticle.testimonio.trim() : '') || cleanContent;
         
-        // Portada real del artículo si es URL pública HTTP/HTTPS; fallback al logo HD oficial
-        const hasValidCover = matchedArticle.imagenPortada && matchedArticle.imagenPortada.startsWith('http');
-        const coverImage = hasValidCover ? matchedArticle.imagenPortada : 'https://psicologovegano.com/assets/logo_v2.webp';
+        // URL canónica de la portada real para que WhatsApp y Facebook descarguen la imagen binaria
+        const coverImage = `https://psicologovegano.com/articulos/${slug}/portada.jpg`;
 
         const structuredData = {
           "@context": "https://schema.org",
@@ -117,19 +177,27 @@ app.get('/articulos/:slug', async (req, res) => {
   <meta name="description" content="${description}">
   <link rel="canonical" href="https://psicologovegano.com/articulos/${slug}">
   
-  <!-- Open Graph -->
+  <!-- Open Graph / WhatsApp / Facebook -->
+  <meta property="og:site_name" content="Psicólogo Vegano">
   <meta property="og:title" content="${title} | Psicólogo Vegano">
   <meta property="og:description" content="${description}">
   <meta property="og:image" content="${coverImage}">
+  <meta property="og:image:secure_url" content="${coverImage}">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${title}">
   <meta property="og:url" content="https://psicologovegano.com/articulos/${slug}">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="Psicólogo Vegano">
   
   <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="${title} | Psicólogo Vegano">
-  <meta property="twitter:description" content="${description}">
-  <meta property="twitter:image" content="${coverImage}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${title} | Psicólogo Vegano">
+  <meta name="twitter:description" content="${description}">
+  <meta name="twitter:image" content="${coverImage}">
+
+  <!-- WhatsApp fallback -->
+  <link rel="image_src" href="${coverImage}">
 
   <!-- Schema.org Structured Data (Google Rich Snippets) -->
   <script type="application/ld+json">
